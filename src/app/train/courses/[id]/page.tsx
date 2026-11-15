@@ -5,7 +5,7 @@ import { Alert, ErrorAlert, Spinner, api, toErr, type ApiErr } from "@/component
 import { JoinSessionButton } from "@/components/connect";
 import { DemoContentBadge, ProgressBar } from "@/components/train";
 
-type Lesson = { id: string; title: string; durationMinutes: number; objectives: string[]; explanation: string | null };
+type Lesson = { id: string; title: string; durationMinutes: number; objectives: string[]; explanation: string | null; videoUrl?: string };
 type Module = { id: string; title: string; summary: string; lessons: Lesson[] };
 type MySub = { id: string; status: string; score: number | null; feedback: string; submissionText: string; repositoryUrl: string; projectUrl: string; late: boolean };
 type Assignment = { id: string; moduleId: string; title: string; description: string; instructions: string; skillTags: string[]; due: string; dueAt: string; maxMarks: number; mySubmission: MySub | null };
@@ -48,7 +48,7 @@ function OwnerTools({ d, reload }: { d: Detail; reload: () => void }) {
   const c = d.course;
   const [err, setErr] = useState<ApiErr | null>(null), [ok, setOk] = useState<string | null>(null), [busy, setBusy] = useState(false);
   const [mod, setMod] = useState({ title: "", summary: "" });
-  const [les, setLes] = useState({ moduleId: c.modules[0]?.id ?? "", title: "", explanation: "", objectives: "", durationMinutes: 30 });
+  const [les, setLes] = useState({ moduleId: c.modules[0]?.id ?? "", title: "", explanation: "", objectives: "", durationMinutes: 30, videoUrl: "" });
   const [asg, setAsg] = useState({ moduleId: c.modules[0]?.id ?? "", title: "", description: "", instructions: "", skillTags: "", dueDate: "", maxMarks: 10 });
   const [ses, setSes] = useState({ title: "", agenda: "", date: "", startTime: "11:00", durationMinutes: 90 });
   async function send(body: object, msg: string, reset: () => void) {
@@ -84,6 +84,7 @@ function OwnerTools({ d, reload }: { d: Detail; reload: () => void }) {
           <input className="input" placeholder="Lesson title" value={les.title} onChange={(e) => setLes({ ...les, title: e.target.value })} required />
           <textarea className="input" rows={4} placeholder="Explanation" value={les.explanation} onChange={(e) => setLes({ ...les, explanation: e.target.value })} required />
           <textarea className="input" rows={2} placeholder="Learning objectives (one per line)" value={les.objectives} onChange={(e) => setLes({ ...les, objectives: e.target.value })} />
+          <input className="input" placeholder="YouTube URL (optional, e.g. https://youtu.be/abc123)" value={les.videoUrl} onChange={(e) => setLes({ ...les, videoUrl: e.target.value })} />
           <label className="text-sm">Estimated minutes <input className="input mt-1 w-28" type="number" min={5} max={600} value={les.durationMinutes} onChange={(e) => setLes({ ...les, durationMinutes: Number(e.target.value) })} /></label>
           <button className="btn-primary w-fit" disabled={busy}>Add lesson</button>
         </form></details>
@@ -114,6 +115,11 @@ function OwnerTools({ d, reload }: { d: Detail; reload: () => void }) {
       <p className="text-xs text-slate-500">Review submissions in the <Link href="/train?tab=trainer" className="text-blue-700 underline">Trainer Dashboard</Link>.</p>
     </section>
   );
+}
+
+function getYouTubeId(url: string): string | null {
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
 }
 
 export default function CoursePage({ params }: { params: Promise<{ id: string }> }) {
@@ -249,6 +255,11 @@ export default function CoursePage({ params }: { params: Promise<{ id: string }>
               <div className="space-y-3">
                 <div className="flex flex-wrap items-start justify-between gap-2"><h2 className="h2">{lesson.title}</h2><span className="chip bg-slate-100 text-slate-600">⏱ {lesson.durationMinutes} min</span></div>
                 {lesson.objectives.length > 0 && <div><div className="label">Learning objectives</div><ul className="list-disc space-y-0.5 pl-5 text-sm text-slate-700">{lesson.objectives.map((o) => <li key={o}>{o}</li>)}</ul></div>}
+                {lesson.videoUrl && getYouTubeId(lesson.videoUrl) && (
+                  <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+                    <iframe src={`https://www.youtube.com/embed/${getYouTubeId(lesson.videoUrl)}`} className="h-full w-full" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title={lesson.title} />
+                  </div>
+                )}
                 {canLearn && lesson.explanation ? <div className="space-y-3 text-sm leading-relaxed text-slate-700">{lesson.explanation.split("\n\n").map((p, i) => <p key={i}>{p}</p>)}</div>
                   : <Alert kind="info">Enroll to read the full lesson.</Alert>}
                 {d.enrollment && (

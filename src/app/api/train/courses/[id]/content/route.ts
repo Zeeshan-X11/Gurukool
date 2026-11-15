@@ -42,6 +42,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
           const lesson = {
             _id: new mongoose.Types.ObjectId(), title: str("title", 3, 140, "Lesson title"),
             explanation: str("explanation", 20, 6000, "Lesson explanation"), objectives: cleanList(b.objectives, 10, 200), durationMinutes: d,
+            videoUrl: b.videoUrl ? String(b.videoUrl).trim().slice(0, 300) : "",
           };
           await TrainingCourse.updateOne({ _id: c._id, "modules._id": b.moduleId }, { $push: { "modules.$.lessons": lesson } });
           return NextResponse.json({ id: String(lesson._id) }, { status: 201 });

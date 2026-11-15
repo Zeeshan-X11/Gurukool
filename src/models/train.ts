@@ -14,6 +14,7 @@ const LessonSchema = new Schema(
     explanation: { type: String, required: true, maxlength: 6000 },
     objectives: { type: [String], default: [] },
     durationMinutes: { type: Number, required: true, min: 5, max: 600 },
+    videoUrl: { type: String, default: "" }, // YouTube URL e.g. https://youtu.be/abc or https://www.youtube.com/watch?v=abc
   },
   { _id: true }
 );
@@ -113,7 +114,7 @@ export const TrainingAssignment = models.TrainingAssignment || model("TrainingAs
 export const TrainingSubmission = models.TrainingSubmission || model("TrainingSubmission", TrainingSubmissionSchema);
 export const TrainingSession = models.TrainingSession || model("TrainingSession", TrainingSessionSchema);
 
-export type LessonT = { _id: mongoose.Types.ObjectId; title: string; explanation: string; objectives: string[]; durationMinutes: number };
+export type LessonT = { _id: mongoose.Types.ObjectId; title: string; explanation: string; objectives: string[]; durationMinutes: number; videoUrl?: string };
 export type ModuleT = { _id: mongoose.Types.ObjectId; title: string; summary: string; lessons: LessonT[] };
 export type CourseT = {
   _id: mongoose.Types.ObjectId; title: string; description: string; trainerId: mongoose.Types.ObjectId; category: string;

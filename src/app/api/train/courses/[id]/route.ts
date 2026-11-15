@@ -51,6 +51,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
           lessons: m.lessons.map((l) => ({
             id: String(l._id), title: l.title, durationMinutes: l.durationMinutes, objectives: l.objectives,
             explanation: canSeeContent ? l.explanation : null, // full lesson content for enrolled students / trainer
+            videoUrl: l.videoUrl ?? "", // YouTube embed URL — always visible (public preview)
           })),
         })),
       },
