@@ -117,11 +117,8 @@ export default function Sidebar() {
   if (PUBLIC.test(path)) return null;
 
   const brand = (
-    <div className="px-4 py-5">
-      <div className="text-[15px] font-bold tracking-tight text-gray-900">GURUKOOL</div>
-      <div className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-gray-400">
-        Engineering Career Platform
-      </div>
+    <div className="px-4 py-4">
+      <img src="/udaan-logo.png" alt="UDAAN" className="h-10 w-auto object-contain" />
     </div>
   );
 
@@ -129,7 +126,7 @@ export default function Sidebar() {
     <>
       {/* Mobile top bar */}
       <header className="no-print sticky top-0 z-30 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 md:hidden">
-        <span className="text-sm font-bold tracking-tight text-gray-900">GURUKOOL</span>
+        <img src="/udaan-logo.png" alt="UDAAN" className="h-8 w-auto object-contain" />
         <button
           className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100"
           onClick={() => setOpen(!open)}

@@ -7,7 +7,7 @@ export default function Welcome() {
   return (
     <div className="mx-auto max-w-5xl py-10">
       <div className="mb-10 text-center">
-        <h1 className="text-5xl font-extrabold tracking-tight text-slate-900">GURUKOOL</h1>
+        <img src="/udaan-logo.png" alt="UDAAN" className="mx-auto h-16 w-auto object-contain" />
         <p className="mt-2 text-lg text-blue-700">Learn. Build. Connect. Compete. Grow.</p>
         <p className="mt-2 text-sm text-slate-500">An intelligent, industry-connected learning &amp; training ecosystem.</p>
       </div>

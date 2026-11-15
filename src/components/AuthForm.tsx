@@ -29,9 +29,8 @@ export default function AuthForm({ portal, mode, next }: { portal: PortalKey; mo
   return (
     <div className="flex min-h-[85vh] items-center justify-center">
       <div className="w-full max-w-md">
-        <Link href="/welcome" className="mb-6 block text-center">
-          <div className="text-3xl font-extrabold tracking-tight text-blue-700">GURUKOOL</div>
-          <div className="text-xs text-slate-500">Learn. Build. Connect. Compete. Grow.</div>
+        <Link href="/welcome" className="mb-6 flex justify-center">
+          <img src="/udaan-logo.png" alt="UDAAN" className="h-14 w-auto object-contain" />
         </Link>
         <form onSubmit={submit} className="card space-y-4 p-7">
           <div>
