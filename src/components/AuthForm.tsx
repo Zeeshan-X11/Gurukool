@@ -34,7 +34,7 @@ export default function AuthForm({ portal, mode, next }: { portal: PortalKey; mo
         </Link>
         <form onSubmit={submit} className="card space-y-5 p-8">
           <div>
-            <h1 className="text-xl font-bold text-zinc-900">{info.name} {mode === "login" ? "Sign In" : "Registration"}</h1>
+            <h1 className="text-xl font-semibold text-zinc-900">{info.name} {mode === "login" ? "Sign In" : "Registration"}</h1>
             <p className="mt-1 text-[13px] text-zinc-400">{info.blurb}</p>
           </div>
           {mode === "register" && (

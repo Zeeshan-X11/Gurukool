@@ -24,10 +24,10 @@ export default function SkillMastery({ goal, refreshKey }: { goal: string; refre
     <section className="card">
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="h2">Skill Mastery (Skill Intelligence Engine)</h2>
-        <span className="text-xs text-slate-500">Bayesian estimate from quiz answers and trainer-graded assignments{p ? ` · ${p.evidenceCount} evidence points` : ""}</span>
+        <span className="text-xs text-zinc-500">Bayesian estimate from quiz answers and trainer-graded assignments{p ? ` · ${p.evidenceCount} evidence points` : ""}</span>
       </div>
-      {err ? <p className="text-sm text-slate-500">Mastery estimates are unavailable right now.</p>
-        : !p ? <div className="text-sm text-slate-500"><Spinner /> Estimating…</div>
+      {err ? <p className="text-sm text-zinc-500">Mastery estimates are unavailable right now.</p>
+        : !p ? <div className="text-sm text-zinc-500"><Spinner /> Estimating…</div>
         : (
           <>
             <div className="grid gap-x-6 gap-y-2 md:grid-cols-2">
@@ -37,14 +37,14 @@ export default function SkillMastery({ goal, refreshKey }: { goal: string; refre
                 return (
                   <div key={m.skill} className="text-sm">
                     <div className="mb-1 flex items-center justify-between gap-2">
-                      <span className="truncate font-medium text-slate-700">{m.skill}</span>
+                      <span className="truncate font-medium text-zinc-700">{m.skill}</span>
                       <span className="flex shrink-0 items-center gap-1.5">
-                        {!m.verified && <span className="text-[10px] text-slate-400">{m.selfReported ? "self-reported" : "no evidence"}</span>}
+                        {!m.verified && <span className="text-[10px] text-zinc-400">{m.selfReported ? "self-reported" : "no evidence"}</span>}
                         <span className={`chip ${s.cls}`}>{s.label} · {Math.round(m.mean * 100)}%</span>
                       </span>
                     </div>
-                    <div className="relative h-2 rounded-full bg-slate-100" title={`mean ${Math.round(m.mean * 100)}%, ±${Math.round(m.sd * 100)}% uncertainty, ${m.evidenceCount} evidence`}>
-                      <div className="absolute h-2 rounded-full bg-slate-300/70" style={{ left: `${lo}%`, width: `${hi - lo}%` }} />
+                    <div className="relative h-2 rounded-full bg-zinc-100" title={`mean ${Math.round(m.mean * 100)}%, ±${Math.round(m.sd * 100)}% uncertainty, ${m.evidenceCount} evidence`}>
+                      <div className="absolute h-2 rounded-full bg-zinc-300/70" style={{ left: `${lo}%`, width: `${hi - lo}%` }} />
                       <div className={`absolute h-2 rounded-full ${s.bar}`} style={{ width: `${m.mean * 100}%`, opacity: 0.85 }} />
                     </div>
                   </div>
@@ -56,7 +56,7 @@ export default function SkillMastery({ goal, refreshKey }: { goal: string; refre
                 <b>Next assessment will focus on:</b> {p.nextTopics.join(", ")}. These are the skills we are least certain about (uncertainty sampling).
               </p>
             )}
-            <p className="mt-2 text-xs text-slate-400">
+            <p className="mt-2 text-xs text-zinc-400">
               &quot;Mastered&quot; means the 80% credible lower bound is at least {Math.round(p.model.masteredLowerBound * 100)}%. Evidence older than {p.model.halfLifeDays} days counts half as much.
             </p>
           </>

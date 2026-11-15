@@ -7,7 +7,7 @@ import type { Monaco as MonacoT } from "@monaco-editor/react";
 
 const Monaco = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
-  loading: () => <div className="flex h-full items-center justify-center text-sm text-slate-400"><Spinner /> Loading editor…</div>,
+  loading: () => <div className="flex h-full items-center justify-center text-sm text-zinc-400"><Spinner /> Loading editor…</div>,
 });
 
 type Lang = "javascript" | "typescript" | "python" | "cpp" | "c" | "java";
@@ -17,15 +17,15 @@ const LANGS: Record<Lang, { label: string; file: string; runnable: boolean; icon
   python:     { label: "Python 3",   file: "main.py", runnable: true, icon: "PY" },
   cpp:        { label: "C++",        file: "main.cpp", runnable: false, icon: "C++" },
   c:          { label: "C",          file: "main.c",   runnable: false, icon: "C" },
-  java:       { label: "Java",       file: "Main.java", runnable: false, icon: "☕" },
+  java:       { label: "Java",       file: "Main.java", runnable: false, icon: "JV" },
 };
 const LANG_COLOR: Record<Lang, string> = {
-  javascript: "bg-yellow-400 text-yellow-900",
-  typescript: "bg-blue-500 text-white",
-  python:     "bg-green-500 text-white",
-  cpp:        "bg-purple-500 text-white",
-  c:          "bg-indigo-500 text-white",
-  java:       "bg-orange-500 text-white",
+  javascript: "bg-zinc-200 text-zinc-700",
+  typescript: "bg-zinc-300 text-zinc-800",
+  python:     "bg-zinc-200 text-zinc-700",
+  cpp:        "bg-zinc-300 text-zinc-800",
+  c:          "bg-zinc-200 text-zinc-700",
+  java:       "bg-zinc-300 text-zinc-800",
 };
 const STARTERS: Record<Lang, string> = {
   javascript: `// CodeLab — JavaScript
@@ -104,8 +104,8 @@ const QUICK_ASK = [
 
 type Msg = { role: "user" | "assistant"; content: string };
 const LOG_CLS: Record<LogLine["type"], string> = {
-  log: "text-slate-100", info: "text-sky-300", warn: "text-amber-300",
-  error: "text-red-400", system: "text-slate-500",
+  log: "text-zinc-100", info: "text-sky-300", warn: "text-amber-300",
+  error: "text-red-400", system: "text-zinc-500",
 };
 
 export default function BuildPage() {
@@ -187,31 +187,31 @@ export default function BuildPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-slate-50">
+    <div className="flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-zinc-50">
 
       {/* Top bar */}
-      <div className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-2 shadow-sm">
+      <div className="flex shrink-0 items-center justify-between border-b border-zinc-200 bg-white px-4 py-2">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-bold text-slate-900">⚡ CodeLab</span>
-          <span className="hidden rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500 sm:inline">sandboxed · no network</span>
+          <span className="text-sm font-semibold text-zinc-900">CodeLab</span>
+          <span className="hidden rounded bg-zinc-100 px-2 py-0.5 text-xs text-zinc-500 sm:inline">sandboxed · no network</span>
         </div>
         {/* Language tabs */}
         <div className="flex items-center gap-1 overflow-x-auto">
           {(Object.keys(LANGS) as Lang[]).map((l) => (
             <button key={l} onClick={() => setLang(l)}
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${lang === l ? "bg-slate-900 text-white shadow-sm" : "text-slate-500 hover:bg-slate-100 hover:text-slate-800"}`}>
-              <span className={`rounded px-1 py-0.5 text-[10px] font-bold ${lang === l ? "opacity-90" : ""} ${LANG_COLOR[l]}`}>{LANGS[l].icon}</span>
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${lang === l ? "bg-zinc-900 text-white" : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"}`}>
+              <span className={`rounded px-1 py-0.5 text-[10px] font-semibold ${lang === l ? "opacity-90" : ""} ${LANG_COLOR[l]}`}>{LANGS[l].icon}</span>
               <span className="hidden sm:inline">{LANGS[l].label}</span>
               {!LANGS[l].runnable && <span className="hidden text-[9px] opacity-50 sm:inline">edit</span>}
             </button>
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <span className="hidden text-xs text-slate-400 sm:inline">{LANGS[lang].file}</span>
+          <span className="hidden text-xs text-zinc-400 sm:inline">{LANGS[lang].file}</span>
           <button onClick={() => { setCodes((c) => ({ ...c, [lang]: STARTERS[lang] })); setLogs([]); }}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-500 hover:border-slate-300 hover:text-slate-800 transition-all">Reset</button>
+            className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-500 hover:border-zinc-300 hover:text-zinc-800 transition-colors">Reset</button>
           <button onClick={run} disabled={running}
-            className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-1.5 text-xs font-semibold text-white hover:bg-slate-700 disabled:opacity-50 transition-all shadow-sm">
+            className="flex items-center gap-1.5 rounded-lg bg-zinc-900 px-4 py-1.5 text-xs font-semibold text-white hover:bg-zinc-700 disabled:opacity-50 transition-colors">
             {running ? <Spinner /> : <span>▶</span>}
             {running ? "Running…" : "Run"}
           </button>
@@ -220,7 +220,7 @@ export default function BuildPage() {
 
       {unavailable && (
         <div className="shrink-0 bg-amber-50 border-b border-amber-100 px-4 py-2 text-xs text-amber-700">
-          ⚠ Secure sandbox not available in this browser. Try Chrome, Edge or Firefox.
+          Secure sandbox not available in this browser. Try Chrome, Edge or Firefox.
         </div>
       )}
 
@@ -228,7 +228,7 @@ export default function BuildPage() {
       <div className="flex flex-1 overflow-hidden">
 
         {/* Left: editor + console */}
-        <div className="flex flex-1 flex-col overflow-hidden border-r border-slate-200">
+        <div className="flex flex-1 flex-col overflow-hidden border-r border-zinc-200">
 
           {/* Editor */}
           <div className="flex-1 overflow-hidden">
@@ -265,22 +265,22 @@ export default function BuildPage() {
           </div>
 
           {/* Console */}
-          <div className="h-44 shrink-0 border-t border-slate-200 bg-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-700/60 px-4 py-1.5">
+          <div className="h-44 shrink-0 border-t border-zinc-200 bg-zinc-900">
+            <div className="flex items-center justify-between border-b border-zinc-700/60 px-4 py-1.5">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-400"></span>
                 <span className="text-xs font-medium text-zinc-400">OUTPUT</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-slate-600">{lang === "python" ? "Pyodide · 60s" : "sandbox · 5s"}</span>
+                <span className="text-xs text-zinc-600">{lang === "python" ? "Pyodide · 60s" : "sandbox · 5s"}</span>
                 {logs.length > 0 && (
-                  <button onClick={() => setLogs([])} className="text-xs text-slate-600 hover:text-slate-300 transition-colors">Clear</button>
+                  <button onClick={() => setLogs([])} className="text-xs text-zinc-600 hover:text-zinc-300 transition-colors">Clear</button>
                 )}
               </div>
             </div>
             <pre className="h-[calc(100%-32px)] overflow-auto p-4 font-mono text-xs leading-relaxed">
               {logs.length === 0
-                ? <span className="text-slate-600">Hit Run to see output here…</span>
+                ? <span className="text-zinc-600">Hit Run to see output here…</span>
                 : logs.map((l, i) => <div key={i} className={`whitespace-pre-wrap ${LOG_CLS[l.type]}`}>{l.text}</div>)}
             </pre>
           </div>
@@ -289,17 +289,17 @@ export default function BuildPage() {
         {/* Right: URBro chat */}
         <div className="flex w-80 shrink-0 flex-col bg-white xl:w-96">
           {/* Chat header */}
-          <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+          <div className="flex items-center justify-between border-b border-zinc-100 px-4 py-3">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-blue-500 text-sm font-bold text-white shadow-sm">U</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-sm font-semibold text-white">U</div>
               <div>
-                <p className="text-sm font-bold text-slate-900">URBro</p>
-                <p className="text-[10px] text-slate-400">your coding buddy</p>
+                <p className="text-sm font-semibold text-zinc-900">URBro</p>
+                <p className="text-[10px] text-zinc-400">code assistant</p>
               </div>
-              <span className="ml-1 rounded-full bg-emerald-50 border border-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-600">● online</span>
+              <span className="ml-1 rounded bg-emerald-50 border border-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-600">online</span>
             </div>
             {messages.length > 0 && (
-              <button onClick={() => setMessages([])} className="text-xs text-slate-400 hover:text-slate-700 transition-colors">Clear</button>
+              <button onClick={() => setMessages([])} className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors">Clear</button>
             )}
           </div>
 
@@ -308,34 +308,34 @@ export default function BuildPage() {
             {messages.length === 0 ? (
               <div className="space-y-3">
                 <div className="flex items-start gap-2 px-1">
-                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-blue-500 text-xs font-bold text-white">U</div>
-                  <div className="rounded-2xl rounded-tl-sm bg-slate-100 px-3 py-2.5 text-xs leading-relaxed text-slate-700">
-                    Yo! I can see your code and output. Ask me anything 👀
+                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-zinc-900 text-xs font-semibold text-white">U</div>
+                  <div className="rounded-lg rounded-tl-sm bg-zinc-100 px-3 py-2.5 text-xs leading-relaxed text-zinc-700">
+                    I can see your code and output. Ask me anything about it.
                   </div>
                 </div>
                 <div className="space-y-1.5 pt-1">
                   {QUICK_ASK.map((s) => (
                     <button key={s} onClick={() => ask(s)}
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs text-slate-600 hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700 transition-all font-medium">
-                      {s} →
+                      className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-left text-xs text-zinc-600 hover:border-zinc-300 hover:bg-zinc-100 hover:text-zinc-800 transition-colors font-medium">
+                      {s}
                     </button>
                   ))}
                 </div>
-                <div className="mt-2 rounded-xl bg-gradient-to-br from-violet-50 to-blue-50 border border-violet-100 p-3 text-xs text-slate-500">
-                  <p className="font-semibold text-slate-700 mb-1">💡 Try asking:</p>
-                  <p className="text-slate-500">&ldquo;Why is my loop off by one?&rdquo;</p>
-                  <p className="mt-1 text-slate-500">&ldquo;What&apos;s the time complexity of this?&rdquo;</p>
+                <div className="mt-2 rounded-lg bg-zinc-50 border border-zinc-200 p-3 text-xs text-zinc-500">
+                  <p className="font-semibold text-zinc-700 mb-1">Try asking:</p>
+                  <p className="text-zinc-500">&ldquo;Why is my loop off by one?&rdquo;</p>
+                  <p className="mt-1 text-zinc-500">&ldquo;What&apos;s the time complexity of this?&rdquo;</p>
                 </div>
               </div>
             ) : messages.map((m, i) => (
               <div key={i} className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 {m.role === "assistant" && (
-                  <div className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-blue-500 text-xs font-bold text-white">U</div>
+                  <div className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-zinc-900 text-xs font-semibold text-white">U</div>
                 )}
-                <div className={`max-w-[80%] rounded-2xl px-3 py-2.5 text-xs leading-relaxed ${
+                <div className={`max-w-[80%] rounded-lg px-3 py-2.5 text-xs leading-relaxed ${
                   m.role === "user"
-                    ? "bg-slate-900 text-white rounded-br-sm"
-                    : "bg-slate-100 text-slate-800 rounded-bl-sm"
+                    ? "bg-zinc-900 text-white rounded-br-sm"
+                    : "bg-zinc-100 text-zinc-800 rounded-bl-sm"
                 }`}>
                   <div className="whitespace-pre-wrap break-words">{m.content}</div>
                 </div>
@@ -343,12 +343,12 @@ export default function BuildPage() {
             ))}
             {busy && (
               <div className="flex items-end gap-2 justify-start">
-                <div className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-blue-500 text-xs font-bold text-white">U</div>
-                <div className="bg-slate-100 rounded-2xl rounded-bl-sm px-4 py-3">
-                  <div className="flex gap-1 items-center">
-                    <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-bounce" style={{ animationDelay: "0ms" }}></span>
-                    <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-bounce" style={{ animationDelay: "150ms" }}></span>
-                    <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-bounce" style={{ animationDelay: "300ms" }}></span>
+                <div className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-zinc-900 text-xs font-semibold text-white">U</div>
+                <div className="bg-zinc-100 rounded-lg rounded-bl-sm px-4 py-3">
+                  <div className="flex gap-1.5 items-center">
+                    <span className="h-1.5 w-1.5 rounded-full bg-zinc-400 animate-pulse"></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-zinc-400 animate-pulse" style={{ animationDelay: "150ms" }}></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-zinc-400 animate-pulse" style={{ animationDelay: "300ms" }}></span>
                   </div>
                 </div>
               </div>
@@ -360,16 +360,16 @@ export default function BuildPage() {
           {chatErr && <div className="px-3 pb-2"><ErrorAlert err={chatErr} /></div>}
 
           {/* Input */}
-          <div className="border-t border-slate-100 p-3 bg-white">
+          <div className="border-t border-zinc-100 p-3 bg-white">
             <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); ask(q); }}>
               <input
-                className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs text-slate-800 placeholder-slate-400 outline-none focus:border-violet-300 focus:bg-white focus:ring-2 focus:ring-violet-100 transition-all"
+                className="flex-1 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-xs text-zinc-800 placeholder-zinc-400 outline-none focus:border-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-100 transition-colors"
                 placeholder="Ask URBro anything…"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
               />
               <button
-                className="rounded-xl bg-slate-900 px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-700 disabled:opacity-30 transition-all"
+                className="rounded-lg bg-zinc-900 px-3 py-2.5 text-xs font-semibold text-white hover:bg-zinc-700 disabled:opacity-30 transition-colors"
                 disabled={busy || !q.trim()}>
                 {busy ? <Spinner /> : "↑"}
               </button>

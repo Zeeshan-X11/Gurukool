@@ -19,13 +19,13 @@ export function MatchBreakdown({ r }: { r: MatchRec }) {
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between text-xs">
-        <span className="font-semibold text-slate-700">Mentor Match Engine</span>
+        <span className="font-semibold text-zinc-700">Mentor Match Engine</span>
         <span className="font-semibold text-zinc-900 tabular-nums">{r.matchScore}% match</span>
       </div>
       {PARTS.map(([k, label, w]) => (
-        <div key={k} className="flex items-center gap-2 text-[11px] text-slate-500">
+        <div key={k} className="flex items-center gap-2 text-[11px] text-zinc-500">
           <span className="w-24 shrink-0">{label} ({w}%)</span>
-          <div className="h-1.5 flex-1 rounded-full bg-slate-100"><div className="h-1.5 rounded-full bg-zinc-700" style={{ width: `${Math.round(r.components[k] * 100)}%` }} /></div>
+          <div className="h-1.5 flex-1 rounded-full bg-zinc-100"><div className="h-1.5 rounded-full bg-zinc-700" style={{ width: `${Math.round(r.components[k] * 100)}%` }} /></div>
           <span className="w-8 text-right">{Math.round(r.components[k] * 100)}%</span>
         </div>
       ))}
@@ -50,13 +50,13 @@ export default function MentorRecommendations({ refreshKey }: { refreshKey: stri
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="h2">Get Help from an Industry Expert</h2>
-          <p className="text-sm text-slate-500">Matched by the GURUKOOL Mentor Match Engine from your skill gaps, assessment and roadmap. Deterministic, no AI call.</p>
+          <p className="text-sm text-zinc-500">Matched by the GURUKOOL Mentor Match Engine from your skill gaps, assessment and roadmap. Deterministic, no AI call.</p>
         </div>
         <Link href="/connect" className="btn-ghost">Browse all mentors →</Link>
       </div>
-      {recs === null ? <div className="text-sm text-slate-500"><Spinner /> Matching mentors…</div>
+      {recs === null ? <div className="text-sm text-zinc-500"><Spinner /> Matching mentors…</div>
         : recs.length === 0 ? (
-          <p className="rounded-lg bg-slate-50 p-4 text-sm text-slate-600">
+          <p className="rounded-lg bg-zinc-50 p-4 text-sm text-zinc-600">
             {failed ? "Mentor matching is unavailable right now. Check the MongoDB connection."
               : note ?? "No mentor matches your current gaps yet. Analyze your skills or take the assessment, or browse all mentors."}
           </p>
@@ -67,9 +67,9 @@ export default function MentorRecommendations({ refreshKey }: { refreshKey: stri
               const expertise = [...new Set(r.matchingSkills.map((x) => x.mentorTerm))];
               const next = r.availableSlots[0];
               return (
-                <div key={m.id} className="flex flex-col rounded-lg border border-slate-200 p-4">
+                <div key={m.id} className="flex flex-col rounded-lg border border-zinc-200 p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <div><div className="font-semibold">{m.name}</div><div className="text-sm text-slate-500">{m.designation} · {m.organization}</div></div>
+                    <div><div className="font-semibold">{m.name}</div><div className="text-sm text-zinc-500">{m.designation} · {m.organization}</div></div>
                     <ProfileBadge isDemo={m.isDemo} verified={m.verified} />
                   </div>
                   <div className="mt-2 flex flex-wrap gap-1.5">
@@ -78,9 +78,9 @@ export default function MentorRecommendations({ refreshKey }: { refreshKey: stri
                     </span>
                     {expertise.slice(0, 4).map((e) => <span key={e} className="chip bg-zinc-100 text-zinc-600">{e}</span>)}
                   </div>
-                  <p className="mt-2 text-sm text-slate-700">{r.explanation}</p>
+                  <p className="mt-2 text-sm text-zinc-700">{r.explanation}</p>
                   <div className="mt-3"><MatchBreakdown r={r} /></div>
-                  <p className="mt-3 text-xs text-slate-500">{next ? <>Next available: <b>{next.label}</b></> : "No open weekend slots in the next 4 weeks"}</p>
+                  <p className="mt-3 text-xs text-zinc-500">{next ? <>Next available: <b>{next.label}</b></> : "No open weekend slots in the next 4 weeks"}</p>
                   <div className="mt-3 flex gap-2">
                     <Link href={`/connect/mentors/${m.id}`} className="btn-ghost flex-1">View Mentor</Link>
                     {next && <Link href={`/connect/mentors/${m.id}#book`} className="btn-primary flex-1">Book Session</Link>}

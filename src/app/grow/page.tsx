@@ -91,10 +91,10 @@ function ResumeStudio() {
     <div className="space-y-6">
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-zinc-900">Resume Studio</h2>
+          <h2 className="text-lg font-semibold text-zinc-900">Resume Studio</h2>
           <p className="mt-0.5 text-sm text-zinc-500">Build an ATS-friendly resume pre-filled from your profile. Use AI to polish your project descriptions.</p>
         </div>
-        <button className="btn-primary" onClick={() => window.print()}>⤓ Export PDF</button>
+        <button className="btn-primary" onClick={() => window.print()}>Export PDF</button>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -133,7 +133,7 @@ function ResumeStudio() {
 
         {/* Live preview */}
         <div className="card print-area bg-white font-serif text-[13px] leading-relaxed text-black">
-          <h1 className="text-center text-2xl font-bold tracking-wide">{r.name || "Your Name"}</h1>
+          <h1 className="text-center text-2xl font-semibold">{r.name || "Your Name"}</h1>
           {links.length > 0 && <p className="text-center text-xs">{links.join("  |  ")}</p>}
           {[
             ["EDUCATION", r.education && <p>{r.education}</p>],
@@ -159,8 +159,8 @@ function ResumeStudio() {
             <p className="text-xs text-zinc-500">Score your resume against a role or paste a real job description.</p>
           </div>
           <div className="flex rounded-lg border border-zinc-200 overflow-hidden text-sm">
-            <button onClick={() => setAtsTab("role")} className={`px-3 py-1.5 ${atsTab === "role" ? "bg-zinc-900 text-white" : "text-gray-600 hover:bg-zinc-50"}`}>By Role</button>
-            <button onClick={() => setAtsTab("jd")} className={`px-3 py-1.5 ${atsTab === "jd" ? "bg-zinc-900 text-white" : "text-gray-600 hover:bg-zinc-50"}`}>Paste JD</button>
+            <button onClick={() => setAtsTab("role")} className={`px-3 py-1.5 ${atsTab === "role" ? "bg-zinc-900 text-white" : "text-zinc-600 hover:bg-zinc-50"}`}>By Role</button>
+            <button onClick={() => setAtsTab("jd")} className={`px-3 py-1.5 ${atsTab === "jd" ? "bg-zinc-900 text-white" : "text-zinc-600 hover:bg-zinc-50"}`}>Paste JD</button>
           </div>
         </div>
 
@@ -170,13 +170,13 @@ function ResumeStudio() {
               <select className="input w-auto" value={target} onChange={(e) => setTarget(e.target.value as CareerGoal)} aria-label="Target role">
                 {CAREER_GOALS.map((g) => <option key={g}>{g}</option>)}
               </select>
-              <span className={`text-4xl font-bold ${ats.score >= 75 ? "text-emerald-600" : ats.score >= 50 ? "text-amber-600" : "text-red-600"}`}>{ats.score}<span className="text-base font-normal text-zinc-400">/100</span></span>
+              <span className={`text-4xl font-semibold ${ats.score >= 75 ? "text-emerald-600" : ats.score >= 50 ? "text-amber-600" : "text-red-600"}`}>{ats.score}<span className="text-base font-normal text-zinc-400">/100</span></span>
             </div>
             <div className="grid gap-4 md:grid-cols-4">
               {(Object.keys(ATS_WEIGHTS) as (keyof typeof ATS_WEIGHTS)[]).map((k) => (
                 <div key={k} className="text-sm">
-                  <div className="mb-1 flex justify-between"><span className="capitalize text-gray-600">{k}</span><span className="text-zinc-400">{Math.round(ATS_WEIGHTS[k] * 100)}%</span></div>
-                  <div className="h-2 rounded-full bg-zinc-100"><div className="h-2 rounded-full bg-zinc-500 transition-all" style={{ width: `${ats.components[k] * 100}%` }} /></div>
+                  <div className="mb-1 flex justify-between"><span className="capitalize text-zinc-600">{k}</span><span className="text-zinc-400">{Math.round(ATS_WEIGHTS[k] * 100)}%</span></div>
+                  <div className="h-2 rounded-full bg-zinc-100"><div className="h-2 rounded-full bg-zinc-500 transition-colors" style={{ width: `${ats.components[k] * 100}%` }} /></div>
                 </div>
               ))}
             </div>
@@ -189,7 +189,7 @@ function ResumeStudio() {
             </div>
             <p className="text-xs text-zinc-400">🟢 Used in project · 🟡 Only listed · Strikethrough: missing</p>
             {ats.suggestions.length > 0 && (
-              <ul className="list-disc space-y-1 pl-5 text-sm text-gray-700">{ats.suggestions.map((x) => <li key={x}>{x}</li>)}</ul>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-zinc-700">{ats.suggestions.map((x) => <li key={x}>{x}</li>)}</ul>
             )}
           </>
         ) : (
@@ -207,7 +207,7 @@ function ResumeStudio() {
               </button>
               {jdScore !== null && (
                 <div className="flex items-center gap-2">
-                  <span className={`text-3xl font-bold ${jdScore >= 60 ? "text-emerald-600" : jdScore >= 40 ? "text-amber-600" : "text-red-600"}`}>{jdScore}<span className="text-sm font-normal text-zinc-400">/100</span></span>
+                  <span className={`text-3xl font-semibold ${jdScore >= 60 ? "text-emerald-600" : jdScore >= 40 ? "text-amber-600" : "text-red-600"}`}>{jdScore}<span className="text-sm font-normal text-zinc-400">/100</span></span>
                   <span className="text-sm text-zinc-500">{jdScore >= 60 ? "Good match" : jdScore >= 40 ? "Partial match — add more keywords" : "Low match — update skills & projects"}</span>
                 </div>
               )}
@@ -274,7 +274,7 @@ function JobBoard() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-zinc-900">Job Board</h2>
+        <h2 className="text-lg font-semibold text-zinc-900">Job Board</h2>
         <p className="mt-0.5 text-sm text-zinc-500">Real job listings filtered for your profile. Click to apply directly on the company site.</p>
       </div>
 
@@ -292,8 +292,8 @@ function JobBoard() {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
-        <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-          <input type="checkbox" checked={remote} onChange={(e) => setRemote(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-zinc-600" />
+        <label className="flex items-center gap-2 text-sm text-zinc-600 cursor-pointer">
+          <input type="checkbox" checked={remote} onChange={(e) => setRemote(e.target.checked)} className="h-4 w-4 rounded border-zinc-300 text-zinc-600" />
           Remote only
         </label>
         <button type="submit" className="btn-primary">Search</button>
@@ -308,7 +308,7 @@ function JobBoard() {
       ) : (
         <>
           <p className="text-sm text-zinc-500">{jobs.length} jobs found</p>
-          <div className="divide-y divide-gray-100 rounded-xl border border-zinc-200 bg-white">
+          <div className="divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white">
             {jobs.map((j) => (
               <div key={j.id} className="flex flex-wrap items-start gap-4 p-4 hover:bg-zinc-50 transition-colors">
                 {/* Company avatar */}
@@ -324,7 +324,7 @@ function JobBoard() {
                   <p className="text-sm text-zinc-500">{j.company} · {j.location}</p>
                   {j.tags.length > 0 && (
                     <div className="mt-1.5 flex flex-wrap gap-1">
-                      {j.tags.map((t) => <span key={t} className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-gray-600">{t}</span>)}
+                      {j.tags.map((t) => <span key={t} className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-600">{t}</span>)}
                     </div>
                   )}
                 </div>
@@ -364,7 +364,7 @@ function GrowInner() {
           <button
             key={t.id} role="tab" aria-selected={tab === t.id}
             onClick={() => router.replace(`/grow?tab=${t.id}`, { scroll: false })}
-            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-slate-900 text-zinc-900" : "border-transparent text-zinc-500 hover:text-gray-800"}`}
+            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-zinc-900 text-zinc-900" : "border-transparent text-zinc-500 hover:text-zinc-800"}`}
           >{t.label}</button>
         ))}
       </div>

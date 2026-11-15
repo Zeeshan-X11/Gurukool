@@ -95,7 +95,7 @@ export default function CompetePage() {
             <div className="label">Filter by theme {student && "(pre-selected from your profile interests)"}</div>
             <div className="flex flex-wrap gap-2">
               {allThemes.map((t) => (
-                <button key={t} onClick={() => toggle(t)} className={`chip border px-3 py-1 ${selected.includes(t) ? "border-blue-600 bg-zinc-900 text-white" : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300"}`}>{t}</button>
+                <button key={t} onClick={() => toggle(t)} className={`chip border px-3 py-1 ${selected.includes(t) ? "border-zinc-900 bg-zinc-900 text-white" : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300"}`}>{t}</button>
               ))}
               {selected.length > 0 && <button className="text-xs text-zinc-500 hover:underline" onClick={() => setSelected([])}>Show all</button>}
             </div>
@@ -115,7 +115,7 @@ export default function CompetePage() {
           {shown.length === 0 && <Alert kind="info">No hackathons match these filters. Try clearing themes or a different search.</Alert>}
           <div className="grid gap-4 md:grid-cols-2">
             {shown.map((h) => (
-              <a key={h.id} href={h.url} target="_blank" rel="noopener noreferrer" className="card flex gap-4 transition hover:border-zinc-300 hover:shadow-md">
+              <a key={h.id} href={h.url} target="_blank" rel="noopener noreferrer" className="card flex gap-4 transition-colors hover:border-zinc-300">
                 {h.thumbnail && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={h.thumbnail} alt="" className="h-16 w-16 shrink-0 rounded-lg border border-zinc-100 object-cover" />
@@ -124,25 +124,25 @@ export default function CompetePage() {
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="font-semibold text-zinc-900">{h.title}</h3>
                     {ranking && (ranking.get(h.id)?.relevance ?? 0) > 0 && (
-                      <span className="chip shrink-0 bg-violet-100 text-violet-700" title={`Matched on: ${ranking.get(h.id)!.matchedTerms.join(", ")}`}>
+                      <span className="chip shrink-0 bg-zinc-100 text-zinc-700" title={`Matched on: ${ranking.get(h.id)!.matchedTerms.join(", ")}`}>
                         {ranking.get(h.id)!.relevance}% match
                       </span>
                     )}
-                    {h.state && <span className={`chip shrink-0 ${h.state === "open" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-zinc-700"}`}>{h.state}</span>}
+                    {h.state && <span className={`chip shrink-0 ${h.state === "open" ? "bg-emerald-100 text-emerald-700" : "bg-zinc-200 text-zinc-700"}`}>{h.state}</span>}
                   </div>
                   <div className="mt-1 text-sm text-zinc-500">
                     {[h.organization, h.location, h.dates].filter(Boolean).join(" · ")}
                   </div>
                   <div className="mt-1 text-sm">
-                    {h.prize && <span className="font-medium text-zinc-700">🏆 {h.prize}</span>}
-                    {h.timeLeft && <span className="ml-2 text-amber-700">⏱ {h.timeLeft}</span>}
-                    {h.registrations > 0 && <span className="ml-2 text-zinc-500">👥 {h.registrations.toLocaleString()}</span>}
+                    {h.prize && <span className="font-medium text-zinc-700">{h.prize}</span>}
+                    {h.timeLeft && <span className="ml-2 text-amber-700">{h.timeLeft}</span>}
+                    {h.registrations > 0 && <span className="ml-2 text-zinc-500">{h.registrations.toLocaleString()} registrations</span>}
                   </div>
                   {ranking && (ranking.get(h.id)?.matchedTerms.length ?? 0) > 0 && (
-                    <div className="mt-1 text-xs text-violet-700">Why: matches your {ranking.get(h.id)!.matchedTerms.join(", ")}</div>
+                    <div className="mt-1 text-xs text-zinc-600">Why: matches your {ranking.get(h.id)!.matchedTerms.join(", ")}</div>
                   )}
                   <div className="mt-2 flex flex-wrap gap-1.5">
-                    {h.themes.map((t) => <span key={t} className={`chip ${selected.includes(t) ? "bg-blue-100 text-zinc-700" : "bg-slate-100 text-zinc-600"}`}>{t}</span>)}
+                    {h.themes.map((t) => <span key={t} className={`chip ${selected.includes(t) ? "bg-zinc-200 text-zinc-700" : "bg-zinc-100 text-zinc-600"}`}>{t}</span>)}
                   </div>
                 </div>
               </a>

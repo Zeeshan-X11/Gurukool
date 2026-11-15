@@ -148,7 +148,7 @@ export default function Sidebar() {
       )}
 
       {/* Desktop sidebar */}
-      <aside className="no-print sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col overflow-y-auto bg-zinc-900 md:flex">
+      <aside className="no-print sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col overflow-y-auto bg-zinc-900 border-r border-zinc-800 md:flex" style={{boxShadow: '2px 0 8px rgba(0,0,0,0.08)'}}>
         <div className="flex justify-center px-4 py-6">
           <img src="/udaan-logo-dark.png" alt="UDAAN" style={{width:"210px",height:"75px"}} className="object-contain" />
         </div>
