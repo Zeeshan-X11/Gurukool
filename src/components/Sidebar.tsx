@@ -64,7 +64,7 @@ const NAV: { href: string; label: string; iconKey: string; sub?: boolean; roles:
   { href: "/",               label: "Dashboard",        iconKey: "dashboard", roles: ["student"] },
   { href: "/learn",          label: "Learn",            iconKey: "learn",     roles: ["student"] },
   { href: "/train",          label: "Train",            iconKey: "train",     roles: ["student", "mentor"] },
-  { href: "/build",          label: "Build",            iconKey: "build",     roles: ["student"] },
+  { href: "/build",          label: "CodeLab",          iconKey: "build",     roles: ["student"] },
   { href: "/connect",        label: "Connect",          iconKey: "connect",   roles: ["student", "mentor"] },
   { href: "/connect/mentor", label: "Mentor Dashboard", iconKey: "sub",       sub: true, roles: ["mentor"] },
   { href: "/compete",        label: "Compete",          iconKey: "compete",   roles: ["student"] },

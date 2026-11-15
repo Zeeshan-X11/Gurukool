@@ -112,7 +112,7 @@ export default function Dashboard() {
           <div className="card">
             <h2 className="h2 mb-3">Modules</h2>
             <div className="grid grid-cols-2 gap-2 text-sm">
-              {[["/learn","Learn","Skill gaps, quiz, roadmap"],["/build","Build","Code + AI mentor"],["/connect","Connect","Join the community"],["/compete","Compete","Hackathons"],["/grow","Grow","Resume builder"]].map(([h,t,d]) => (
+              {[["/learn","Learn","Skill gaps, quiz, roadmap"],["/build","CodeLab","Code + AI mentor"],["/connect","Connect","Join the community"],["/compete","Compete","Hackathons"],["/grow","Grow","Resume builder"]].map(([h,t,d]) => (
                 <Link key={h} href={h} className="rounded-lg border border-slate-200 p-3 hover:border-blue-300 hover:bg-blue-50">
                   <div className="font-semibold text-slate-800">{t}</div><div className="text-xs text-slate-500">{d}</div>
                 </Link>

@@ -240,7 +240,7 @@ export default function LearnPage() {
             </ol>
             <div className="flex flex-wrap justify-end gap-2">
               <Link href="/connect" className="btn-ghost">Find an Industry Mentor →</Link>
-              <Link href="/build" className="btn-ghost">Practice in Build →</Link>
+              <Link href="/build" className="btn-ghost">Practice in CodeLab →</Link>
             </div>
           </div>
         )}

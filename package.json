@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "GURUKOOL — AI-assisted career platform for engineering students (Learn, Build, Compete, Grow, Connect, Train).",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.mjs",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.mjs",
     "typecheck": "tsc --noEmit",
     "create-user": "node scripts/create-user.mjs",
     "test:flow": "node scripts/e2e-flow.mjs",
@@ -24,6 +24,8 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "server-only": "^0.0.1",
+    "socket.io": "^4.8.4",
+    "socket.io-client": "^4.8.4",
     "zod": "^3.25.76"
   },
   "devDependencies": {

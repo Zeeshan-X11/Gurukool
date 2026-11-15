@@ -20,7 +20,7 @@ const LANGS: Record<Lang, { label: string; file: string; runnable: boolean }> = 
   java: { label: "Java", file: "Main.java", runnable: false },
 };
 const STARTERS: Record<Lang, string> = {
-  javascript: `// GURUKOOL Build — JavaScript workspace
+  javascript: `// GURUKOOL CodeLab — JavaScript workspace
 // Click "Run" to execute in an isolated sandbox. Ask the AI mentor for help →
 
 function fibonacci(n) {
@@ -35,7 +35,7 @@ const students = [{ name: "Aarav", score: 82 }, { name: "Diya", score: 91 }];
 const topper = students.reduce((a, b) => (a.score > b.score ? a : b));
 console.log(\`Topper: \${topper.name}\`);
 `,
-  typescript: `// GURUKOOL Build — TypeScript (compiled in your browser, then run in the sandbox)
+  typescript: `// GURUKOOL CodeLab — TypeScript (compiled in your browser, then run in the sandbox)
 type Student = { name: string; score: number };
 
 const students: Student[] = [{ name: "Aarav", score: 82 }, { name: "Diya", score: 91 }];
@@ -43,7 +43,7 @@ const average = (xs: number[]): number => xs.reduce((a, b) => a + b, 0) / xs.len
 
 console.log("Average score:", average(students.map((s) => s.score)));
 `,
-  python: `# GURUKOOL Build — Python 3 (runs in your browser via Pyodide)
+  python: `# GURUKOOL CodeLab — Python 3 (runs in your browser via Pyodide)
 def fibonacci(n):
     seq = [0, 1]
     while len(seq) < n:
@@ -54,7 +54,7 @@ print("First 10 Fibonacci numbers:", fibonacci(10))
 scores = {"Aarav": 82, "Diya": 91}
 print("Topper:", max(scores, key=scores.get))
 `,
-  cpp: `// GURUKOOL Build — C++ (editing + AI help; execution needs a server-side runner)
+  cpp: `// GURUKOOL CodeLab — C++ (editing + AI help; execution needs a server-side runner)
 #include <iostream>
 using namespace std;
 
@@ -63,7 +63,7 @@ int main() {
     return 0;
 }
 `,
-  c: `// GURUKOOL Build — C (editing + AI help; execution needs a server-side runner)
+  c: `// GURUKOOL CodeLab — C (editing + AI help; execution needs a server-side runner)
 #include <stdio.h>
 
 int main(void) {
@@ -71,7 +71,7 @@ int main(void) {
     return 0;
 }
 `,
-  java: `// GURUKOOL Build — Java (editing + AI help; execution needs a server-side runner)
+  java: `// GURUKOOL CodeLab — Java (editing + AI help; execution needs a server-side runner)
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello from GURUKOOL!");
@@ -166,7 +166,7 @@ export default function BuildPage() {
 
   return (
     <div className="mx-auto max-w-7xl">
-      <PageHeader title="Build" subtitle="Write JavaScript, run it safely in a sandbox, and get help from the AI coding mentor." />
+      <PageHeader title="CodeLab" subtitle="Write JavaScript, run it safely in a sandbox, and get help from the AI coding mentor." />
       {unavailable && <div className="mb-4"><Alert kind="warn">Secure execution is unavailable in this browser. Try a recent Chrome, Edge or Firefox.</Alert></div>}
       <div className="grid gap-6 xl:grid-cols-5">
         <div className="space-y-4 xl:col-span-3">

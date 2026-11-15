@@ -14,6 +14,7 @@ type Rec = MatchRec;
 const TABS = [
   { id: "find", label: "Find Mentors" },
   { id: "sessions", label: "My Sessions" },
+  { id: "meetings", label: "Meetings" },
   { id: "network", label: "Industry Network" },
 ] as const;
 
@@ -190,6 +191,139 @@ function IndustryNetwork() {
   );
 }
 
+// ── Meetings (ported from SparkMeet home.jsx + history.jsx) ──
+type MeetingRecord = { _id: string; meetingCode: string; date: string };
+
+function Meetings() {
+  const router = useRouter();
+  const { info } = usePersona();
+  const [meetingCode, setMeetingCode] = useState("");
+  const [inputErr, setInputErr] = useState("");
+  const [history, setHistory] = useState<MeetingRecord[] | null>(null);
+  const [histErr, setHistErr] = useState<ApiErr | null>(null);
+
+  const loadHistory = useCallback(() => {
+    api<{ meetings: MeetingRecord[] }>("/api/meetings/history")
+      .then((d) => { setHistory(d.meetings); setHistErr(null); })
+      .catch((e) => setHistErr(toErr(e)));
+  }, []);
+
+  useEffect(() => { loadHistory(); }, [loadHistory]);
+
+  const handleJoin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const code = meetingCode.trim();
+    if (!code) { setInputErr("Enter a meeting code to continue."); return; }
+    setInputErr("");
+    // Record in history (non-blocking)
+    api("/api/meetings/add", { method: "POST", body: JSON.stringify({ meeting_code: code }) }).catch(() => {});
+    router.push(`/connect/meeting?room=${encodeURIComponent(code)}`);
+  };
+
+  const handleNew = () => {
+    // Create a room with a random code
+    const code = `gurukool-${Math.random().toString(36).slice(2, 8)}`;
+    api("/api/meetings/add", { method: "POST", body: JSON.stringify({ meeting_code: code }) }).catch(() => {});
+    router.push(`/connect/meeting?room=${encodeURIComponent(code)}`);
+  };
+
+  const formatDate = (d: string) => {
+    const date = new Date(d);
+    if (Number.isNaN(date.getTime())) return "Date unavailable";
+    return new Intl.DateTimeFormat(undefined, { day: "numeric", month: "long", year: "numeric" }).format(date);
+  };
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Video Meetings</h2>
+        <p className="mt-1 text-sm text-gray-500">Start a new meeting or join with a code. Powered by WebRTC — no downloads needed.</p>
+      </div>
+
+      {/* Join / Start cards */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="card">
+          <h3 className="font-semibold text-gray-900 mb-1">Join a meeting</h3>
+          <p className="text-sm text-gray-500 mb-4">Enter the code shared by your host.</p>
+          <form onSubmit={handleJoin} className="space-y-3">
+            <input
+              className="input"
+              placeholder="Meeting code (e.g. cs301-study)"
+              value={meetingCode}
+              onChange={(e) => setMeetingCode(e.target.value)}
+            />
+            {inputErr && <p className="text-xs text-red-600">{inputErr}</p>}
+            <button type="submit" className="btn-primary w-full">Join →</button>
+          </form>
+        </div>
+
+        <div className="card flex flex-col justify-between">
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-1">Start a new meeting</h3>
+            <p className="text-sm text-gray-500 mb-4">Create an instant room and share the code with others.</p>
+          </div>
+          <button onClick={handleNew} className="btn-ghost w-full">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
+              <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+            </svg>
+            New meeting room
+          </button>
+        </div>
+      </div>
+
+      {/* Features */}
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 text-center text-sm">
+        {[
+          ["🎥", "Video & Audio"],
+          ["🖥", "Screen Share"],
+          ["💬", "In-call Chat"],
+          ["🔗", "Share by Code"],
+        ].map(([icon, label]) => (
+          <div key={label} className="card py-4">
+            <div className="text-2xl mb-1">{icon}</div>
+            <div className="text-xs font-medium text-gray-700">{label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Meeting history */}
+      <section>
+        <h3 className="font-semibold text-gray-900 mb-3">Recent meetings</h3>
+        <ErrorAlert err={histErr} />
+        {history === null ? (
+          <div className="text-sm text-gray-500"><Spinner /> Loading history…</div>
+        ) : history.length === 0 ? (
+          <Alert kind="info">Your past meetings will appear here once you join one.</Alert>
+        ) : (
+          <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 bg-white">
+            {history.map((m, i) => (
+              <div key={`${m._id}-${i}`} className="flex items-center justify-between gap-4 px-4 py-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-gray-900">{m.meetingCode}</div>
+                    <div className="text-xs text-gray-400">{formatDate(m.date)}</div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => router.push(`/connect/meeting?room=${encodeURIComponent(m.meetingCode)}`)}
+                  className="btn-ghost text-xs"
+                >Rejoin</button>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <p className="text-xs text-gray-400">
+        Meetings use browser WebRTC (no recordings stored). Signed in as <b>{info?.current?.label ?? "you"}</b>.
+      </p>
+    </div>
+  );
+}
+
 function ConnectInner() {
   const sp = useSearchParams();
   const router = useRouter();
@@ -227,6 +361,7 @@ function ConnectInner() {
       </div>
       {tab === "find" && <FindMentors />}
       {tab === "sessions" && <MySessions />}
+      {tab === "meetings" && <Meetings />}
       {tab === "network" && <IndustryNetwork />}
       <p className="mt-10 text-xs text-slate-400">All times are in IST (Asia/Kolkata). Profiles marked “Demo · fictional” are illustrative and do not represent real people or companies.</p>
     </div>
