@@ -11,10 +11,10 @@ export function DemoContentBadge() {
   return <span className="chip bg-amber-100 text-amber-800" title="Sample course content for the demo">Demo content</span>;
 }
 
-export function ProgressBar({ pct, color = "bg-blue-600", label }: { pct: number; color?: string; label?: string }) {
+export function ProgressBar({ pct, color = "bg-zinc-900", label }: { pct: number; color?: string; label?: string }) {
   return (
     <div>
-      {label && <div className="mb-1 flex justify-between text-xs text-slate-500"><span>{label}</span><span>{pct}%</span></div>}
+      {label && <div className="mb-1 flex justify-between text-xs text-zinc-500"><span>{label}</span><span>{pct}%</span></div>}
       <div className="h-2 rounded-full bg-slate-100"><div className={`h-2 rounded-full ${color} transition-all`} style={{ width: `${Math.min(100, Math.max(0, pct))}%` }} /></div>
     </div>
   );
@@ -24,20 +24,20 @@ export function CourseCardView({ c, onEnroll, busy }: { c: CourseCard; onEnroll?
   return (
     <div className="card flex flex-col">
       <div className="flex items-start justify-between gap-2">
-        <h3 className="font-semibold text-slate-900">{c.title}</h3>
-        <div className="flex shrink-0 gap-1">{c.isDemo && <DemoContentBadge />}{!c.published && <span className="chip bg-slate-100 text-slate-600">Draft</span>}</div>
+        <h3 className="font-semibold text-zinc-900">{c.title}</h3>
+        <div className="flex shrink-0 gap-1">{c.isDemo && <DemoContentBadge />}{!c.published && <span className="chip bg-slate-100 text-zinc-600">Draft</span>}</div>
       </div>
-      <p className="mt-1 line-clamp-3 text-sm text-slate-600">{c.description}</p>
-      <p className="mt-2 text-sm text-slate-500">
-        Trainer: <b className="font-medium text-slate-700">{c.trainer.name}</b>{c.trainer.isDemo && <span className="text-amber-700"> (fictional demo profile)</span>}
+      <p className="mt-1 line-clamp-3 text-sm text-zinc-600">{c.description}</p>
+      <p className="mt-2 text-sm text-zinc-500">
+        Trainer: <b className="font-medium text-zinc-700">{c.trainer.name}</b>{c.trainer.isDemo && <span className="text-amber-700"> (fictional demo profile)</span>}
       </p>
       <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
-        <div className="rounded-lg bg-slate-50 p-2"><div className="font-semibold text-slate-800">{c.difficulty}</div><div className="text-slate-500">Level</div></div>
-        <div className="rounded-lg bg-slate-50 p-2"><div className="font-semibold text-slate-800">{c.moduleCount}</div><div className="text-slate-500">Modules</div></div>
-        <div className="rounded-lg bg-slate-50 p-2"><div className="font-semibold text-slate-800">{c.durationWeeks} wk</div><div className="text-slate-500">Duration</div></div>
+        <div className="rounded-lg bg-zinc-50 p-2"><div className="font-semibold text-slate-800">{c.difficulty}</div><div className="text-zinc-500">Level</div></div>
+        <div className="rounded-lg bg-zinc-50 p-2"><div className="font-semibold text-slate-800">{c.moduleCount}</div><div className="text-zinc-500">Modules</div></div>
+        <div className="rounded-lg bg-zinc-50 p-2"><div className="font-semibold text-slate-800">{c.durationWeeks} wk</div><div className="text-zinc-500">Duration</div></div>
       </div>
-      <div className="mt-3 text-xs text-slate-500">{c.category}</div>
-      <div className="mt-1 flex flex-wrap gap-1.5">{c.skillTags.map((s) => <span key={s} className="chip bg-blue-50 text-blue-700">{s}</span>)}</div>
+      <div className="mt-3 text-xs text-zinc-500">{c.category}</div>
+      <div className="mt-1 flex flex-wrap gap-1.5">{c.skillTags.map((s) => <span key={s} className="chip bg-zinc-50 text-zinc-700">{s}</span>)}</div>
       <div className="mt-4 flex gap-2 pt-1">
         <Link href={`/train/courses/${c.id}`} className="btn-ghost flex-1">View Course</Link>
         {c.isOwner ? <Link href={`/train/courses/${c.id}`} className="btn-primary flex-1">Manage</Link>

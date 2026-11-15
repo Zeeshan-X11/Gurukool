@@ -86,7 +86,7 @@ export default function CompetePage() {
             <option value="match">Sort: best match for you</option>
             <option value="deadline">Sort: deadline</option>
           </select>
-          <label className="flex items-center gap-2 text-sm text-slate-600">
+          <label className="flex items-center gap-2 text-sm text-zinc-600">
             <input type="checkbox" checked={onlineOnly} onChange={(e) => setOnlineOnly(e.target.checked)} /> Online only
           </label>
         </form>
@@ -95,54 +95,54 @@ export default function CompetePage() {
             <div className="label">Filter by theme {student && "(pre-selected from your profile interests)"}</div>
             <div className="flex flex-wrap gap-2">
               {allThemes.map((t) => (
-                <button key={t} onClick={() => toggle(t)} className={`chip border px-3 py-1 ${selected.includes(t) ? "border-blue-600 bg-slate-900 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-blue-300"}`}>{t}</button>
+                <button key={t} onClick={() => toggle(t)} className={`chip border px-3 py-1 ${selected.includes(t) ? "border-blue-600 bg-zinc-900 text-white" : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300"}`}>{t}</button>
               ))}
-              {selected.length > 0 && <button className="text-xs text-slate-500 hover:underline" onClick={() => setSelected([])}>Show all</button>}
+              {selected.length > 0 && <button className="text-xs text-zinc-500 hover:underline" onClick={() => setSelected([])}>Show all</button>}
             </div>
           </div>
         )}
       </div>
 
       {err && <Alert kind="error">{err.error}. Check your internet connection and refresh.</Alert>}
-      {loading && !live && <div className="text-sm text-slate-500"><Spinner /> Loading live hackathons…</div>}
+      {loading && !live && <div className="text-sm text-zinc-500"><Spinner /> Loading live hackathons…</div>}
 
       {live && (
         <>
-          <p className="mb-3 text-sm text-slate-500">
+          <p className="mb-3 text-sm text-zinc-500">
             Showing {shown.length} of {live.hackathons.length} loaded ({live.total} open/upcoming on Devpost).
             {sort === "match" && ranking && " Ranked by TF-IDF similarity between each event's themes and your interests, goal and skills."}
           </p>
           {shown.length === 0 && <Alert kind="info">No hackathons match these filters. Try clearing themes or a different search.</Alert>}
           <div className="grid gap-4 md:grid-cols-2">
             {shown.map((h) => (
-              <a key={h.id} href={h.url} target="_blank" rel="noopener noreferrer" className="card flex gap-4 transition hover:border-blue-300 hover:shadow-md">
+              <a key={h.id} href={h.url} target="_blank" rel="noopener noreferrer" className="card flex gap-4 transition hover:border-zinc-300 hover:shadow-md">
                 {h.thumbnail && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={h.thumbnail} alt="" className="h-16 w-16 shrink-0 rounded-lg border border-slate-100 object-cover" />
+                  <img src={h.thumbnail} alt="" className="h-16 w-16 shrink-0 rounded-lg border border-zinc-100 object-cover" />
                 )}
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-semibold text-slate-900">{h.title}</h3>
+                    <h3 className="font-semibold text-zinc-900">{h.title}</h3>
                     {ranking && (ranking.get(h.id)?.relevance ?? 0) > 0 && (
                       <span className="chip shrink-0 bg-violet-100 text-violet-700" title={`Matched on: ${ranking.get(h.id)!.matchedTerms.join(", ")}`}>
                         {ranking.get(h.id)!.relevance}% match
                       </span>
                     )}
-                    {h.state && <span className={`chip shrink-0 ${h.state === "open" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"}`}>{h.state}</span>}
+                    {h.state && <span className={`chip shrink-0 ${h.state === "open" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-zinc-700"}`}>{h.state}</span>}
                   </div>
-                  <div className="mt-1 text-sm text-slate-500">
+                  <div className="mt-1 text-sm text-zinc-500">
                     {[h.organization, h.location, h.dates].filter(Boolean).join(" · ")}
                   </div>
                   <div className="mt-1 text-sm">
-                    {h.prize && <span className="font-medium text-slate-700">🏆 {h.prize}</span>}
+                    {h.prize && <span className="font-medium text-zinc-700">🏆 {h.prize}</span>}
                     {h.timeLeft && <span className="ml-2 text-amber-700">⏱ {h.timeLeft}</span>}
-                    {h.registrations > 0 && <span className="ml-2 text-slate-500">👥 {h.registrations.toLocaleString()}</span>}
+                    {h.registrations > 0 && <span className="ml-2 text-zinc-500">👥 {h.registrations.toLocaleString()}</span>}
                   </div>
                   {ranking && (ranking.get(h.id)?.matchedTerms.length ?? 0) > 0 && (
                     <div className="mt-1 text-xs text-violet-700">Why: matches your {ranking.get(h.id)!.matchedTerms.join(", ")}</div>
                   )}
                   <div className="mt-2 flex flex-wrap gap-1.5">
-                    {h.themes.map((t) => <span key={t} className={`chip ${selected.includes(t) ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"}`}>{t}</span>)}
+                    {h.themes.map((t) => <span key={t} className={`chip ${selected.includes(t) ? "bg-blue-100 text-zinc-700" : "bg-slate-100 text-zinc-600"}`}>{t}</span>)}
                   </div>
                 </div>
               </a>

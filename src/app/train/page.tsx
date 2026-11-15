@@ -8,7 +8,7 @@ import { CourseCardView, ProgressBar, type CourseCard } from "@/components/train
 import { RESOURCES, RESOURCE_DOMAINS } from "@/lib/train/resources";
 
 const TABS = [
-  { id: "resources", label: "🎓 Free Resources" },
+  { id: "resources", label: "Free Resources" },
   { id: "my", label: "My Learning" },
   { id: "trainer", label: "Trainer Dashboard" },
 ] as const;
@@ -47,7 +47,7 @@ function Catalog() {
       </div>
       <ErrorAlert err={err} />
       {msg && <Alert kind="success">{msg} <Link href="/train?tab=my" className="font-semibold underline">Go to My Training</Link></Alert>}
-      {!courses ? <div className="text-sm text-slate-500"><Spinner /> Loading courses…</div>
+      {!courses ? <div className="text-sm text-zinc-500"><Spinner /> Loading courses…</div>
         : courses.length === 0 ? <Alert kind="info">No training programs match these filters.</Alert>
         : <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{courses.map((c) => <CourseCardView key={c.id} c={c} busy={busy === c.id} onEnroll={() => enroll(c)} />)}</div>}
     </div>
@@ -72,7 +72,7 @@ function MyTraining() {
   return (
     <PersonaGate need="student" info={info}>
       <ErrorAlert err={err} />
-      {!d ? (!err && <div className="text-sm text-slate-500"><Spinner /> Loading your training…</div>) : (
+      {!d ? (!err && <div className="text-sm text-zinc-500"><Spinner /> Loading your training…</div>) : (
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="space-y-4 lg:col-span-2">
             <h2 className="h2">Enrolled programs</h2>
@@ -80,25 +80,25 @@ function MyTraining() {
               : d.enrollments.map((e) => (
                 <div key={e.id} className="card space-y-3">
                   <div className="flex flex-wrap items-start justify-between gap-2">
-                    <div><h3 className="font-semibold">{e.title}</h3><p className="text-sm text-slate-500">Trainer: {e.trainer}</p></div>
+                    <div><h3 className="font-semibold">{e.title}</h3><p className="text-sm text-zinc-500">Trainer: {e.trainer}</p></div>
                     {e.completed && <span className="chip bg-emerald-50 text-emerald-700 border border-emerald-200">Completed</span>}
                   </div>
                   <ProgressBar pct={e.engagementPct} label={`Lessons completed: ${e.completedLessons}/${e.totalLessons} (engagement)`} />
-                  <div className="text-sm text-slate-600">
+                  <div className="text-sm text-zinc-600">
                     Assignments: {e.submitted}/{e.totalAssignments} submitted · {e.reviewed} reviewed
-                    {e.demonstratedPct !== null && <> · <b className="text-blue-700">{e.demonstratedPct}% average trainer-evaluated score</b></>}
+                    {e.demonstratedPct !== null && <> · <b className="text-zinc-700">{e.demonstratedPct}% average trainer-evaluated score</b></>}
                   </div>
                   <Link href={`/train/courses/${e.courseId}`} className="btn-primary">Continue learning →</Link>
                 </div>
               ))}
             {freeEnrolls.length > 0 && (
               <>
-                <h3 className="font-medium text-slate-700 mt-2">Free YouTube Courses</h3>
+                <h3 className="font-medium text-zinc-700 mt-2">Free YouTube Courses</h3>
                 {freeEnrolls.map((e) => (
                   <div key={e.id} className="card flex items-center justify-between gap-3 p-4">
                     <div>
-                      <p className="font-semibold text-slate-900">{e.title}</p>
-                      <p className="text-xs text-slate-500">{e.domain}</p>
+                      <p className="font-semibold text-zinc-900">{e.title}</p>
+                      <p className="text-xs text-zinc-500">{e.domain}</p>
                     </div>
                     <a href={e.url} target="_blank" rel="noopener noreferrer" className="btn-primary whitespace-nowrap text-sm">Watch ↗</a>
                   </div>
@@ -110,30 +110,30 @@ function MyTraining() {
             <div className="card space-y-3">
               <h2 className="h2">Upcoming sessions</h2>
               {d.mentorshipSessions.map((m) => (
-                <div key={m.id} className="space-y-1 rounded-lg border border-emerald-200 bg-emerald-50/40 p-3">
-                  <div className="flex items-start justify-between gap-2"><b className="text-sm">{m.topic}</b><span className="chip bg-emerald-100 text-emerald-700">1:1 mentorship</span></div>
-                  <p className="text-xs text-slate-500">with <Link className="text-blue-700 hover:underline" href={`/connect/mentors/${m.mentorId}`}>{m.mentor}</Link></p>
-                  <p className="text-sm text-slate-700">{m.when} · {m.durationMinutes} min</p>
+                <div key={m.id} className="space-y-1 rounded-lg border border-emerald-100 bg-emerald-50 p-3">
+                  <div className="flex items-start justify-between gap-2"><b className="text-sm">{m.topic}</b><span className="chip bg-emerald-50 text-emerald-600">1:1 mentorship</span></div>
+                  <p className="text-xs text-zinc-500">with <Link className="text-zinc-700 hover:underline" href={`/connect/mentors/${m.mentorId}`}>{m.mentor}</Link></p>
+                  <p className="text-sm text-zinc-700">{m.when} · {m.durationMinutes} min</p>
                   <JoinSessionButton startAt={m.startAt} endAt={m.endAt} />
                 </div>
               ))}
-              {d.upcomingSessions.length === 0 && d.mentorshipSessions.length === 0 ? <p className="text-sm text-slate-500">No upcoming classes or mentorship sessions.</p> : d.upcomingSessions.map((s) => (
-                <div key={s.id} className="space-y-1 rounded-lg border border-slate-200 p-3">
-                  <div className="flex items-start justify-between gap-2"><b className="text-sm">{s.title}</b><span className="chip bg-emerald-100 text-emerald-700">{s.status}</span></div>
-                  <p className="text-xs text-slate-500">{s.courseTitle} · {s.trainer}{s.isDemo && " · demo session"}</p>
-                  <p className="text-sm text-slate-700">{s.when} · {s.durationMinutes} min</p>
-                  {s.agenda && <p className="text-xs text-slate-500">{s.agenda}</p>}
-                  <p className="text-xs text-slate-500">Joining: open the GURUKOOL collaboration space at the scheduled time.</p>
+              {d.upcomingSessions.length === 0 && d.mentorshipSessions.length === 0 ? <p className="text-sm text-zinc-500">No upcoming classes or mentorship sessions.</p> : d.upcomingSessions.map((s) => (
+                <div key={s.id} className="space-y-1 rounded-lg border border-zinc-200 p-3">
+                  <div className="flex items-start justify-between gap-2"><b className="text-sm">{s.title}</b><span className="chip bg-emerald-50 text-emerald-600">{s.status}</span></div>
+                  <p className="text-xs text-zinc-500">{s.courseTitle} · {s.trainer}{s.isDemo && " · demo session"}</p>
+                  <p className="text-sm text-zinc-700">{s.when} · {s.durationMinutes} min</p>
+                  {s.agenda && <p className="text-xs text-zinc-500">{s.agenda}</p>}
+                  <p className="text-xs text-zinc-500">Joining: open the GURUKOOL collaboration space at the scheduled time.</p>
                   <JoinSessionButton />
                 </div>
               ))}
             </div>
             <div className="card space-y-3">
               <h2 className="h2">Trainer feedback</h2>
-              {d.feedback.length === 0 ? <p className="text-sm text-slate-500">No reviewed assignments yet.</p> : d.feedback.map((f, i) => (
-                <div key={i} className="rounded-lg border border-slate-200 p-3 text-sm">
-                  <div className="flex justify-between gap-2"><b>{f.assignmentTitle}</b><span className="font-semibold text-blue-700">{f.score}/{f.maxMarks}</span></div>
-                  <p className="mt-1 text-slate-600">{f.feedback}</p>
+              {d.feedback.length === 0 ? <p className="text-sm text-zinc-500">No reviewed assignments yet.</p> : d.feedback.map((f, i) => (
+                <div key={i} className="rounded-lg border border-zinc-200 p-3 text-sm">
+                  <div className="flex justify-between gap-2"><b>{f.assignmentTitle}</b><span className="font-semibold text-zinc-700">{f.score}/{f.maxMarks}</span></div>
+                  <p className="mt-1 text-zinc-600">{f.feedback}</p>
                 </div>
               ))}
             </div>
@@ -188,34 +188,34 @@ function TrainerDashboard() {
 
   return (
     <PersonaGate need="mentor" info={info}>
-      <p className="mb-4 text-xs text-slate-500">Trainers are existing GURUKOOL mentor profiles. Trainer access uses the demo persona (simulation, not real login).</p>
+      <p className="mb-4 text-xs text-zinc-500">Trainers are existing GURUKOOL mentor profiles. Trainer access uses the demo persona (simulation, not real login).</p>
       <ErrorAlert err={err} />
-      {!d ? (!err && <div className="text-sm text-slate-500"><Spinner /> Loading…</div>) : (
+      {!d ? (!err && <div className="text-sm text-zinc-500"><Spinner /> Loading…</div>) : (
         <div className="space-y-6">
           <div className="grid gap-4 sm:grid-cols-3">
-            <div className="card"><div className="label">My courses</div><div className="text-3xl font-bold text-slate-900">{d.courses.length}</div></div>
-            <div className="card"><div className="label">Enrolled students</div><div className="text-3xl font-bold text-slate-900">{d.students.length}</div></div>
-            <div className="card"><div className="label">Awaiting review</div><div className="text-3xl font-bold text-slate-900">{d.pendingReviews}</div></div>
+            <div className="card"><div className="label">My courses</div><div className="text-3xl font-bold text-zinc-900">{d.courses.length}</div></div>
+            <div className="card"><div className="label">Enrolled students</div><div className="text-3xl font-bold text-zinc-900">{d.students.length}</div></div>
+            <div className="card"><div className="label">Awaiting review</div><div className="text-3xl font-bold text-zinc-900">{d.pendingReviews}</div></div>
           </div>
 
           <section className="card space-y-3">
             <h2 className="h2">Submissions to review</h2>
-            {!subs ? <Spinner /> : subs.filter((s) => s.status === "SUBMITTED").length === 0 ? <p className="text-sm text-slate-500">Nothing waiting for review.</p>
+            {!subs ? <Spinner /> : subs.filter((s) => s.status === "SUBMITTED").length === 0 ? <p className="text-sm text-zinc-500">Nothing waiting for review.</p>
               : subs.filter((s) => s.status === "SUBMITTED").map((s) => (
-                <div key={s.id} className="rounded-lg border border-slate-200 p-4">
-                  <div className="flex flex-wrap justify-between gap-2"><b>{s.assignmentTitle}</b><span className="text-xs text-slate-500">{s.courseTitle}</span></div>
-                  <p className="text-sm text-slate-600">{s.studentName} · submitted {s.submitted}{s.late && <span className="text-amber-700"> · late</span>}</p>
-                  {s.submissionText && <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap rounded bg-slate-50 p-3 text-xs">{s.submissionText}</pre>}
+                <div key={s.id} className="rounded-lg border border-zinc-200 p-4">
+                  <div className="flex flex-wrap justify-between gap-2"><b>{s.assignmentTitle}</b><span className="text-xs text-zinc-500">{s.courseTitle}</span></div>
+                  <p className="text-sm text-zinc-600">{s.studentName} · submitted {s.submitted}{s.late && <span className="text-amber-600"> · late</span>}</p>
+                  {s.submissionText && <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap rounded bg-zinc-50 p-3 text-xs">{s.submissionText}</pre>}
                   <div className="mt-2 flex flex-wrap gap-3 text-sm">
-                    {s.repositoryUrl && <a className="text-blue-700 hover:underline" href={s.repositoryUrl} target="_blank" rel="noopener noreferrer nofollow">Repository ↗</a>}
-                    {s.projectUrl && <a className="text-blue-700 hover:underline" href={s.projectUrl} target="_blank" rel="noopener noreferrer nofollow">Project ↗</a>}
+                    {s.repositoryUrl && <a className="text-zinc-700 hover:underline" href={s.repositoryUrl} target="_blank" rel="noopener noreferrer nofollow">Repository ↗</a>}
+                    {s.projectUrl && <a className="text-zinc-700 hover:underline" href={s.projectUrl} target="_blank" rel="noopener noreferrer nofollow">Project ↗</a>}
                   </div>
                   <ReviewForm s={s} onDone={load} />
                 </div>
               ))}
             {subs && subs.some((s) => s.status === "REVIEWED") && (
-              <details className="text-sm"><summary className="cursor-pointer text-slate-500">Reviewed ({subs.filter((s) => s.status === "REVIEWED").length})</summary>
-                {subs.filter((s) => s.status === "REVIEWED").map((s) => <p key={s.id} className="mt-1 text-slate-600">{s.studentName}: {s.assignmentTitle}: <b>{s.score}/{s.maxMarks}</b></p>)}
+              <details className="text-sm"><summary className="cursor-pointer text-zinc-500">Reviewed ({subs.filter((s) => s.status === "REVIEWED").length})</summary>
+                {subs.filter((s) => s.status === "REVIEWED").map((s) => <p key={s.id} className="mt-1 text-zinc-600">{s.studentName}: {s.assignmentTitle}: <b>{s.score}/{s.maxMarks}</b></p>)}
               </details>
             )}
           </section>
@@ -223,9 +223,9 @@ function TrainerDashboard() {
           <div className="grid gap-6 lg:grid-cols-2">
             <section className="card space-y-3">
               <h2 className="h2">My courses</h2>
-              {d.courses.length === 0 ? <p className="text-sm text-slate-500">No courses yet. Create one below.</p> : d.courses.map((c) => (
-                <div key={c.id} className="flex items-center justify-between gap-2 rounded-lg border border-slate-200 p-3">
-                  <div><b className="text-sm">{c.title}</b><p className="text-xs text-slate-500">{c.published ? "Published" : "Draft"} · {c.moduleCount} modules · {c.enrolledCount} enrolled</p></div>
+              {d.courses.length === 0 ? <p className="text-sm text-zinc-500">No courses yet. Create one below.</p> : d.courses.map((c) => (
+                <div key={c.id} className="flex items-center justify-between gap-2 rounded-lg border border-zinc-200 p-3">
+                  <div><b className="text-sm">{c.title}</b><p className="text-xs text-zinc-500">{c.published ? "Published" : "Draft"} · {c.moduleCount} modules · {c.enrolledCount} enrolled</p></div>
                   <Link href={`/train/courses/${c.id}`} className="btn-ghost px-3 py-1.5">Manage</Link>
                 </div>
               ))}
@@ -233,17 +233,17 @@ function TrainerDashboard() {
             <section className="card space-y-3">
               <h2 className="h2">Weekend live sessions</h2>
               {d.mentorshipSessions.map((m) => (
-                <div key={m.id} className="rounded-lg border border-emerald-200 bg-emerald-50/40 p-3 text-sm">
-                  <b>{m.topic}</b> <span className="chip bg-emerald-100 text-emerald-700">1:1 mentorship</span>
-                  <p className="text-slate-500">{m.student} · {m.when}</p>
+                <div key={m.id} className="rounded-lg border border-emerald-100 bg-emerald-50 p-3 text-sm">
+                  <b>{m.topic}</b> <span className="chip bg-emerald-50 text-emerald-600">1:1 mentorship</span>
+                  <p className="text-zinc-500">{m.student} · {m.when}</p>
                 </div>
               ))}
-              {d.sessions.length === 0 ? <p className="text-sm text-slate-500">No scheduled sessions. Schedule one from a course page.</p> : d.sessions.map((s) => (
-                <div key={s.id} className="rounded-lg border border-slate-200 p-3 text-sm">
-                  <b>{s.title}</b><p className="text-slate-500">{s.courseTitle} · {s.when}</p>
+              {d.sessions.length === 0 ? <p className="text-sm text-zinc-500">No scheduled sessions. Schedule one from a course page.</p> : d.sessions.map((s) => (
+                <div key={s.id} className="rounded-lg border border-zinc-200 p-3 text-sm">
+                  <b>{s.title}</b><p className="text-zinc-500">{s.courseTitle} · {s.when}</p>
                   <div className="mt-2 flex gap-3">
-                    {s.started && <button className="text-blue-700 hover:underline" onClick={() => sessionAction(s.id, "COMPLETED")}>Mark completed</button>}
-                    <button className="text-red-600 hover:underline" onClick={() => confirm("Cancel this session?") && sessionAction(s.id, "CANCELLED")}>Cancel</button>
+                    {s.started && <button className="text-zinc-700 hover:underline" onClick={() => sessionAction(s.id, "COMPLETED")}>Mark completed</button>}
+                    <button className="text-red-500 hover:underline" onClick={() => confirm("Cancel this session?") && sessionAction(s.id, "CANCELLED")}>Cancel</button>
                   </div>
                 </div>
               ))}
@@ -252,10 +252,10 @@ function TrainerDashboard() {
 
           <section className="card space-y-3">
             <h2 className="h2">Enrolled students</h2>
-            {d.students.length === 0 ? <p className="text-sm text-slate-500">No enrollments yet.</p> : (
+            {d.students.length === 0 ? <p className="text-sm text-zinc-500">No enrollments yet.</p> : (
               <div className="overflow-x-auto"><table className="w-full text-sm">
-                <thead><tr className="text-left text-xs uppercase text-slate-500"><th className="py-2">Student</th><th>Course</th><th className="w-48">Lesson progress</th></tr></thead>
-                <tbody>{d.students.map((s, i) => <tr key={i} className="border-t border-slate-100"><td className="py-2">{s.name}</td><td>{s.courseTitle}</td><td><ProgressBar pct={s.engagementPct} /></td></tr>)}</tbody>
+                <thead><tr className="text-left text-xs uppercase text-zinc-500"><th className="py-2">Student</th><th>Course</th><th className="w-48">Lesson progress</th></tr></thead>
+                <tbody>{d.students.map((s, i) => <tr key={i} className="border-t border-zinc-100"><td className="py-2">{s.name}</td><td>{s.courseTitle}</td><td><ProgressBar pct={s.engagementPct} /></td></tr>)}</tbody>
               </table></div>
             )}
           </section>
@@ -285,14 +285,14 @@ function TrainerDashboard() {
 }
 
 const LEVEL_COLOR: Record<string, string> = {
-  "Beginner": "bg-teal-50 text-teal-700 border border-teal-100",
-  "Intermediate": "bg-indigo-50 text-indigo-700 border border-indigo-100",
-  "Advanced": "bg-purple-50 text-purple-700 border border-purple-100",
+  "Beginner": "bg-emerald-50 text-emerald-600",
+  "Intermediate": "bg-zinc-50 text-blue-600",
+  "Advanced": "bg-violet-50 text-violet-600",
 };
 const LANG_COLOR: Record<string, string> = {
-  "English": "bg-slate-100 text-slate-500",
-  "Hindi+English": "bg-orange-50 text-orange-600",
-  "Hindi": "bg-orange-50 text-orange-600",
+  "English": "bg-zinc-100 text-zinc-500",
+  "Hindi+English": "bg-amber-50 text-amber-600",
+  "Hindi": "bg-amber-50 text-amber-600",
 };
 
 function FreeResources() {
@@ -328,18 +328,14 @@ function FreeResources() {
   });
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-2xl border border-slate-200 bg-gradient-to-r from-slate-50 to-white px-5 py-4">
-        <p className="text-sm text-slate-600">Hand-picked free YouTube courses — zero cost, zero signup. Hit <b>Start Course</b> to save it to your learning, then watch on YouTube.</p>
-      </div>
-
-      {/* Filters */}
-      <div className="card grid gap-3 sm:grid-cols-3">
-        <input className="input sm:col-span-1" placeholder="Search courses, creators…" value={q} onChange={(e) => setQ(e.target.value)} />
-        <select className="input" value={domain} onChange={(e) => setDomain(e.target.value)}>
+    <div className="space-y-6">
+      {/* Filters — compact inline */}
+      <div className="flex flex-wrap gap-3">
+        <input className="input max-w-xs" placeholder="Search courses, creators…" value={q} onChange={(e) => setQ(e.target.value)} />
+        <select className="input max-w-[200px]" value={domain} onChange={(e) => setDomain(e.target.value)}>
           {RESOURCE_DOMAINS.map((d) => <option key={d}>{d}</option>)}
         </select>
-        <select className="input" value={level} onChange={(e) => setLevel(e.target.value)}>
+        <select className="input max-w-[160px]" value={level} onChange={(e) => setLevel(e.target.value)}>
           {["All", "Beginner", "Intermediate", "Advanced"].map((l) => <option key={l}>{l}</option>)}
         </select>
       </div>
@@ -351,33 +347,29 @@ function FreeResources() {
         const items = filtered.filter((r) => r.domain === dom);
         if (!items.length) return null;
         return (
-          <div key={dom} className="space-y-3">
-            <h2 className="text-base font-semibold text-slate-800">{dom}</h2>
+          <div key={dom} className="space-y-4">
+            <h2 className="text-[15px] font-semibold text-zinc-900 tracking-tight">{dom}</h2>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {items.map((r) => {
                 const isEnrolled = enrolled.has(r.id);
                 return (
-                  <div key={r.id} className="card flex flex-col gap-4 p-4 transition-all duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1">
-                        <p className="font-semibold text-slate-900 leading-tight">{r.title}</p>
-                        <p className="text-xs text-slate-500 mt-0.5">{r.creator}</p>
-                      </div>
-                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-slate-500 text-xs">▶</span>
+                  <div key={r.id} className="card-hover flex flex-col gap-3 p-5">
+                    <div className="flex-1">
+                      <p className="font-semibold text-zinc-900 leading-snug">{r.title}</p>
+                      <p className="text-xs text-zinc-400 mt-1">{r.creator}</p>
+                      <p className="text-[13px] text-zinc-500 leading-relaxed mt-2">{r.description}</p>
                     </div>
-                    <p className="text-sm text-slate-600 leading-relaxed flex-1">{r.description}</p>
                     <div className="flex flex-wrap gap-1.5">
-                      <span className={`chip text-xs ${LEVEL_COLOR[r.level]}`}>{r.level}</span>
-                      <span className={`chip text-xs ${LANG_COLOR[r.language]}`}>{r.language}</span>
-                      {r.lessons && <span className="chip text-xs bg-slate-100 text-slate-500">{r.lessons}+ videos</span>}
-                      <span className="chip bg-red-50 text-red-500 border border-red-100">YouTube Free</span>
+                      <span className={`chip ${LEVEL_COLOR[r.level]}`}>{r.level}</span>
+                      <span className={`chip ${LANG_COLOR[r.language]}`}>{r.language}</span>
+                      {r.lessons && <span className="chip bg-zinc-100 text-zinc-500">{r.lessons}+ videos</span>}
                     </div>
                     <div className="flex gap-2 mt-auto pt-1">
                       <a href={r.url} target="_blank" rel="noopener noreferrer" className="btn-ghost btn-sm flex-1 text-center">Watch ↗</a>
                       {info?.persona.role === "student" && (
                         isEnrolled
-                          ? <span className="flex-1 text-center rounded-lg py-1 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">✓ Saved</span>
-                          : <button className="btn-primary btn-sm flex-1" disabled={enrolling === r.id} onClick={() => enroll(r)}>{enrolling === r.id ? <Spinner /> : "Add to My Learning"}</button>
+                          ? <span className="flex-1 text-center rounded-lg py-1.5 text-[11px] font-semibold bg-emerald-50 text-emerald-600">✓ Saved</span>
+                          : <button className="btn-primary btn-sm flex-1" disabled={enrolling === r.id} onClick={() => enroll(r)}>{enrolling === r.id ? <Spinner /> : "Save course"}</button>
                       )}
                     </div>
                   </div>
@@ -388,7 +380,7 @@ function FreeResources() {
         );
       })}
 
-      <p className="text-xs text-slate-400 pt-2">All resources link to free publicly available YouTube content. GURUKOOL does not host any of this content.</p>
+      <p className="text-xs text-zinc-300 pt-4">All resources link to free publicly available YouTube content. UDAAN does not host any of this content.</p>
     </div>
   );
 }
@@ -402,20 +394,24 @@ function TrainInner() {
   return (
     <div className="mx-auto max-w-6xl">
       <PageHeader title="Upskill" subtitle="Curated courses, structured learning, real progress." />
-      <div role="tablist" className="mb-6 flex gap-1 overflow-x-auto border-b border-slate-200">
+      <div role="tablist" className="mb-8 flex gap-1 rounded-xl bg-zinc-100 p-1 max-w-fit">
         {tabs.map((t) => (
           <button key={t.id} role="tab" aria-selected={tab === t.id} onClick={() => router.replace(`/train?tab=${t.id}`, { scroll: false })}
-            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium ${tab === t.id ? "border-slate-900 text-slate-900" : "border-transparent text-slate-400 hover:text-slate-700"}`}>{t.label}</button>
+            className={`whitespace-nowrap rounded-lg px-4 py-2 text-[13px] font-medium transition-all duration-200 ${
+              tab === t.id
+                ? "bg-white text-zinc-900 shadow-sm"
+                : "text-zinc-400 hover:text-zinc-600"
+            }`}>{t.label}</button>
         ))}
       </div>
       {tab === "resources" && <FreeResources />}
       {tab === "my" && <MyTraining />}
       {tab === "trainer" && <TrainerDashboard />}
-      <p className="mt-10 text-xs text-slate-400">Lesson completion measures engagement, not mastery. Demonstrated skill comes from trainer-evaluated assignments. Courses marked “Demo content” are sample material; their trainer is a fictional demo profile. Times are IST.</p>
+      <p className="mt-10 text-xs text-zinc-400">Lesson completion measures engagement, not mastery. Demonstrated skill comes from trainer-evaluated assignments. Courses marked “Demo content” are sample material; their trainer is a fictional demo profile. Times are IST.</p>
     </div>
   );
 }
 
 export default function TrainPage() {
-  return <Suspense fallback={<div className="text-sm text-slate-500"><Spinner /> Loading…</div>}><TrainInner /></Suspense>;
+  return <Suspense fallback={<div className="text-sm text-zinc-500"><Spinner /> Loading…</div>}><TrainInner /></Suspense>;
 }

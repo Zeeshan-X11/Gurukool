@@ -3,7 +3,7 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
 export const metadata: Metadata = {
-  title: "GURUKOOL — Learn. Build. Connect. Compete. Grow.",
+  title: "UDAAN — Learn. Build. Connect. Compete. Grow.",
   description: "AI-powered engineering education platform",
 };
 

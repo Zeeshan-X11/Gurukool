@@ -57,14 +57,14 @@ function BecomeMentorModal({ onClose }: { onClose: () => void }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-lg rounded-2xl bg-white shadow-xl">
         <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
-          <h2 className="text-lg font-bold text-gray-900">Apply to become a mentor</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">✕</button>
+          <h2 className="text-lg font-bold text-zinc-900">Apply to become a mentor</h2>
+          <button onClick={onClose} className="text-zinc-400 hover:text-gray-600">✕</button>
         </div>
         {done ? (
           <div className="px-6 py-8 text-center space-y-3">
             <div className="text-4xl">🎉</div>
-            <p className="font-semibold text-gray-900">Application submitted!</p>
-            <p className="text-sm text-gray-500">Our admin will review and get back to you soon.</p>
+            <p className="font-semibold text-zinc-900">Application submitted!</p>
+            <p className="text-sm text-zinc-500">Our admin will review and get back to you soon.</p>
             <button onClick={onClose} className="btn-primary mt-2">Done</button>
           </div>
         ) : (
@@ -158,8 +158,8 @@ function FindMentor() {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Find Your Mentor</h2>
-          <p className="mt-0.5 text-sm text-gray-500">Connect with verified professionals. Once accepted, book a video call in their available hours.</p>
+          <h2 className="text-xl font-bold text-zinc-900">Find Your Mentor</h2>
+          <p className="mt-0.5 text-sm text-zinc-500">Connect with verified professionals. Once accepted, book a video call in their available hours.</p>
         </div>
         <button onClick={() => setShowApply(true)} className="btn-ghost text-sm">
           🎓 Become a mentor
@@ -176,7 +176,7 @@ function FindMentor() {
       <ErrorAlert err={err} />
 
       {!mentors ? (
-        <div className="text-sm text-gray-500"><Spinner /> Loading mentors…</div>
+        <div className="text-sm text-zinc-500"><Spinner /> Loading mentors…</div>
       ) : filtered?.length === 0 ? (
         <Alert kind="info">No mentors match &ldquo;{q}&rdquo;.</Alert>
       ) : (
@@ -192,15 +192,15 @@ function FindMentor() {
               <div key={m.id} className="card flex flex-col gap-3">
                 {/* Avatar + name */}
                 <div className="flex items-start gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-50 font-semibold text-blue-700 text-sm">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-zinc-50 font-semibold text-zinc-700 text-sm">
                     {m.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="font-semibold text-gray-900">{m.name}</span>
+                      <span className="font-semibold text-zinc-900">{m.name}</span>
                       {m.verified && <span className="rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-semibold text-green-700">✓ Verified</span>}
                     </div>
-                    <p className="text-xs text-gray-500">{m.designation} · {m.organization} · {m.yearsOfExperience}y exp</p>
+                    <p className="text-xs text-zinc-500">{m.designation} · {m.organization} · {m.yearsOfExperience}y exp</p>
                   </div>
                 </div>
 
@@ -210,13 +210,13 @@ function FindMentor() {
                 {/* Expertise chips */}
                 <div className="flex flex-wrap gap-1.5">
                   {m.expertise.slice(0, 5).map((e) => (
-                    <span key={e} className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-700">{e}</span>
+                    <span key={e} className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs text-gray-700">{e}</span>
                   ))}
                 </div>
 
                 {/* Available slots */}
                 {m.availability.length > 0 && (
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-zinc-500">
                     🕐 {m.availability.map((s) => `${s.day} ${s.start}–${s.end}`).join(", ")}
                   </div>
                 )}
@@ -243,7 +243,7 @@ function FindMentor() {
                     </div>
                   )}
                   {isRejected && (
-                    <span className="text-xs text-gray-400">Request declined. You can send a new request.</span>
+                    <span className="text-xs text-zinc-400">Request declined. You can send a new request.</span>
                   )}
                   {(!conn || isRejected) && (
                     isExpanding ? (
@@ -310,30 +310,30 @@ function MyConnections() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">My Connections</h2>
-        <p className="mt-0.5 text-sm text-gray-500">Track your mentor connection requests. Once accepted you can book a video call.</p>
+        <h2 className="text-xl font-bold text-zinc-900">My Connections</h2>
+        <p className="mt-0.5 text-sm text-zinc-500">Track your mentor connection requests. Once accepted you can book a video call.</p>
       </div>
       <ErrorAlert err={err} />
       {connections === null ? (
-        <div className="text-sm text-gray-500"><Spinner /> Loading…</div>
+        <div className="text-sm text-zinc-500"><Spinner /> Loading…</div>
       ) : connections.length === 0 ? (
         <Alert kind="info">No connection requests yet. Go to <b>Find Mentor</b> and send your first request.</Alert>
       ) : (
-        <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 bg-white">
+        <div className="divide-y divide-gray-100 rounded-xl border border-zinc-200 bg-white">
           {connections.map((c) => {
             const m = c.mentorId;
             return (
               <div key={c._id} className="flex flex-wrap items-start gap-4 p-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-50 text-sm font-semibold text-zinc-700">
                   {m?.name?.split(" ").map((w) => w[0]).slice(0, 2).join("") ?? "?"}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-semibold text-gray-900">{m?.name ?? "Unknown"}</span>
+                    <span className="font-semibold text-zinc-900">{m?.name ?? "Unknown"}</span>
                     <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusColor(c.status)}`}>{statusLabel(c.status)}</span>
                   </div>
-                  <p className="text-xs text-gray-500">{m?.designation} · {m?.organization}</p>
-                  {c.message && <p className="mt-1 text-xs text-gray-400 italic">&ldquo;{c.message}&rdquo;</p>}
+                  <p className="text-xs text-zinc-500">{m?.designation} · {m?.organization}</p>
+                  {c.message && <p className="mt-1 text-xs text-zinc-400 italic">&ldquo;{c.message}&rdquo;</p>}
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   {c.status === "accepted" && (
@@ -394,13 +394,13 @@ function Meetings() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Video Meetings</h2>
-        <p className="mt-0.5 text-sm text-gray-500">Start or join a meeting. Powered by WebRTC — no downloads needed.</p>
+        <h2 className="text-xl font-bold text-zinc-900">Video Meetings</h2>
+        <p className="mt-0.5 text-sm text-zinc-500">Start or join a meeting. Powered by WebRTC — no downloads needed.</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <div className="card">
-          <h3 className="font-semibold text-gray-900 mb-1">Join a meeting</h3>
-          <p className="text-sm text-gray-500 mb-4">Enter the code shared by your host.</p>
+          <h3 className="font-semibold text-zinc-900 mb-1">Join a meeting</h3>
+          <p className="text-sm text-zinc-500 mb-4">Enter the code shared by your host.</p>
           <form onSubmit={handleJoin} className="space-y-3">
             <input className="input" placeholder="Meeting code (e.g. cs301-study)" value={meetingCode} onChange={(e) => setMeetingCode(e.target.value)} />
             {inputErr && <p className="text-xs text-red-600">{inputErr}</p>}
@@ -409,8 +409,8 @@ function Meetings() {
         </div>
         <div className="card flex flex-col justify-between">
           <div>
-            <h3 className="font-semibold text-gray-900 mb-1">Start a new meeting</h3>
-            <p className="text-sm text-gray-500 mb-4">Create an instant room and share the code.</p>
+            <h3 className="font-semibold text-zinc-900 mb-1">Start a new meeting</h3>
+            <p className="text-sm text-zinc-500 mb-4">Create an instant room and share the code.</p>
           </div>
           <button onClick={handleNew} className="btn-ghost w-full">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
@@ -429,23 +429,23 @@ function Meetings() {
         ))}
       </div>
       <section>
-        <h3 className="font-semibold text-gray-900 mb-3">Recent meetings</h3>
+        <h3 className="font-semibold text-zinc-900 mb-3">Recent meetings</h3>
         <ErrorAlert err={histErr} />
         {history === null ? (
-          <div className="text-sm text-gray-500"><Spinner /> Loading…</div>
+          <div className="text-sm text-zinc-500"><Spinner /> Loading…</div>
         ) : history.length === 0 ? (
           <Alert kind="info">Your past meetings will appear here once you join one.</Alert>
         ) : (
-          <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 bg-white">
+          <div className="divide-y divide-gray-100 rounded-xl border border-zinc-200 bg-white">
             {history.map((m, i) => (
               <div key={`${m._id}-${i}`} className="flex items-center justify-between gap-4 px-4 py-3">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-50 text-zinc-600">
                     <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" /></svg>
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-gray-900">{m.meetingCode}</div>
-                    <div className="text-xs text-gray-400">{formatDate(m.date)}</div>
+                    <div className="text-sm font-medium text-zinc-900">{m.meetingCode}</div>
+                    <div className="text-xs text-zinc-400">{formatDate(m.date)}</div>
                   </div>
                 </div>
                 <button onClick={() => router.push(`/connect/meeting?room=${encodeURIComponent(m.meetingCode)}`)} className="btn-ghost text-xs">Rejoin</button>
@@ -454,7 +454,7 @@ function Meetings() {
           </div>
         )}
       </section>
-      <p className="text-xs text-gray-400">Meetings use browser WebRTC (no recordings stored). Signed in as <b>{info?.current?.label ?? "you"}</b>.</p>
+      <p className="text-xs text-zinc-400">Meetings use browser WebRTC (no recordings stored). Signed in as <b>{info?.current?.label ?? "you"}</b>.</p>
     </div>
   );
 }
@@ -472,12 +472,12 @@ function ConnectInner() {
         subtitle="Find a mentor, send a connection request, and book a 1:1 video call once accepted."
       />
 
-      <div role="tablist" className="mb-6 flex gap-1 overflow-x-auto border-b border-gray-200">
+      <div role="tablist" className="mb-6 flex gap-1 overflow-x-auto border-b border-zinc-200">
         {TABS.map((t) => (
           <button
             key={t.id} role="tab" aria-selected={tab === t.id}
             onClick={() => router.replace(`/connect?tab=${t.id}`, { scroll: false })}
-            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-slate-900 text-slate-900" : "border-transparent text-gray-500 hover:text-gray-800"}`}
+            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-slate-900 text-zinc-900" : "border-transparent text-zinc-500 hover:text-gray-800"}`}
           >{t.label}</button>
         ))}
       </div>
@@ -491,7 +491,7 @@ function ConnectInner() {
 
 export default function ConnectPage() {
   return (
-    <Suspense fallback={<div className="text-sm text-gray-500"><Spinner /> Loading…</div>}>
+    <Suspense fallback={<div className="text-sm text-zinc-500"><Spinner /> Loading…</div>}>
       <ConnectInner />
     </Suspense>
   );

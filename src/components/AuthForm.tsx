@@ -27,15 +27,15 @@ export default function AuthForm({ portal, mode, next }: { portal: PortalKey; mo
   }
 
   return (
-    <div className="flex min-h-[85vh] items-center justify-center">
+    <div className="flex min-h-[85vh] items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <Link href="/welcome" className="mb-6 flex justify-center">
-          <img src="/udaan-logo.png" alt="UDAAN" style={{width:"145px",height:"50px"}} className="object-contain" />
+        <Link href="/welcome" className="mb-8 flex justify-center">
+          <img src="/udaan-logo.png" alt="UDAAN" style={{width:"150px",height:"50px"}} className="object-contain" />
         </Link>
-        <form onSubmit={submit} className="card space-y-4 p-7">
+        <form onSubmit={submit} className="card space-y-5 p-8">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">{info.name} {mode === "login" ? "Sign In" : "Registration"}</h1>
-            <p className="mt-1 text-sm text-slate-500">{info.blurb}</p>
+            <h1 className="text-xl font-bold text-zinc-900">{info.name} {mode === "login" ? "Sign In" : "Registration"}</h1>
+            <p className="mt-1 text-[13px] text-zinc-400">{info.blurb}</p>
           </div>
           {mode === "register" && (
             <div><label className="label" htmlFor="name">Full name</label><input id="name" className="input" value={f.name} onChange={set("name")} required autoComplete="name" /></div>
@@ -49,18 +49,18 @@ export default function AuthForm({ portal, mode, next }: { portal: PortalKey; mo
           <div><label className="label" htmlFor="email">Email</label><input id="email" className="input" type="email" value={f.email} onChange={set("email")} required autoComplete="email" /></div>
           <div><label className="label" htmlFor="pw">Password</label>
             <input id="pw" className="input" type="password" value={f.password} onChange={set("password")} required minLength={mode === "register" ? 8 : 1} autoComplete={mode === "login" ? "current-password" : "new-password"} />
-            {mode === "register" && <p className="mt-1 text-xs text-slate-400">At least 8 characters.</p>}
+            {mode === "register" && <p className="mt-1 text-xs text-zinc-400">At least 8 characters.</p>}
           </div>
           <ErrorAlert err={err} />
           <button className="btn-primary w-full py-2.5" disabled={busy}>{busy && <Spinner />} {mode === "login" ? "Sign In" : "Create account"}</button>
-          {mode === "register" && portal === "recruiter" && <p className="text-xs text-amber-700">Recruiter accounts can sign in immediately but see student data only after admin approval.</p>}
-          <div className="flex justify-between text-sm">
+          {mode === "register" && portal === "recruiter" && <p className="text-xs text-amber-600">Recruiter accounts can sign in immediately but see student data only after admin approval.</p>}
+          <div className="flex justify-between text-[13px]">
             {info.canRegister
               ? mode === "login"
-                ? <Link href={`/${portal}/register`} className="text-blue-700 hover:underline">Create a {info.name.toLowerCase()} account</Link>
-                : <Link href={`/${portal}/login`} className="text-blue-700 hover:underline">Already registered? Sign in</Link>
+                ? <Link href={`/${portal}/register`} className="text-zinc-900 font-medium hover:underline">Create an account</Link>
+                : <Link href={`/${portal}/login`} className="text-zinc-900 font-medium hover:underline">Already registered? Sign in</Link>
               : <span />}
-            <Link href="/welcome" className="text-slate-500 hover:underline">All portals</Link>
+            <Link href="/welcome" className="text-zinc-400 hover:text-zinc-600 transition-colors">All portals</Link>
           </div>
         </form>
       </div>

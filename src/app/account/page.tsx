@@ -24,7 +24,7 @@ export default function AccountPage() {
     } catch (e) { setErr(toErr(e)); } finally { setBusy(false); }
   }
 
-  if (!me) return err ? <ErrorAlert err={err} /> : <div className="text-sm text-slate-500"><Spinner /> Loading…</div>;
+  if (!me) return err ? <ErrorAlert err={err} /> : <div className="text-sm text-zinc-500"><Spinner /> Loading…</div>;
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <PageHeader title="Account Settings" subtitle="Your sign-in details, stored in GURUKOOL's database." />
@@ -33,12 +33,12 @@ export default function AccountPage() {
       <form className="card space-y-3" onSubmit={(e) => { e.preventDefault(); save({ name }, "Name updated everywhere on GURUKOOL."); }}>
         <h2 className="h2">Profile</h2>
         <div><label className="label" htmlFor="n">Full name</label><input id="n" className="input" value={name} onChange={(e) => setName(e.target.value)} required minLength={2} /></div>
-        <div><label className="label">Email</label><input className="input bg-slate-50" value={me.email} readOnly /></div>
+        <div><label className="label">Email</label><input className="input bg-zinc-50" value={me.email} readOnly /></div>
         <div className="flex flex-wrap gap-2 text-sm">
-          <span className="chip bg-blue-50 text-blue-700">{ROLE[me.role] ?? me.role}</span>
+          <span className="chip bg-zinc-50 text-zinc-700">{ROLE[me.role] ?? me.role}</span>
           <span className={`chip ${me.active ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}>{me.active ? "Active" : "Suspended"}</span>
-          {me.role === "recruiter" && <span className={`chip ${me.approved ? "bg-blue-100 text-blue-700" : "bg-amber-100 text-amber-800"}`}>{me.approved ? "Approved" : "Pending admin approval"}</span>}
-          <span className="text-slate-500">Member since {new Date(me.createdAt).toLocaleDateString("en-IN")}</span>
+          {me.role === "recruiter" && <span className={`chip ${me.approved ? "bg-blue-100 text-zinc-700" : "bg-amber-100 text-amber-800"}`}>{me.approved ? "Approved" : "Pending admin approval"}</span>}
+          <span className="text-zinc-500">Member since {new Date(me.createdAt).toLocaleDateString("en-IN")}</span>
         </div>
         <button className="btn-primary" disabled={busy || name.trim() === me.name}>{busy && <Spinner />} Save name</button>
       </form>

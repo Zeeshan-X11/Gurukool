@@ -77,10 +77,10 @@ const PUBLIC = /^\/(welcome|(student|recruiter|expert|admin)\/(login|register))\
 const isActive = (path: string, href: string) =>
   href === "/" ? path === "/" : path === href || (path.startsWith(href + "/") && !NAV.some((n) => n.href !== href && n.href.startsWith(href) && path.startsWith(n.href)));
 
-function NavLinks({ role, onClose }: { role: string | undefined; onClose?: () => void }) {
+function NavLinks({ role, onClose, dark }: { role: string | undefined; onClose?: () => void; dark?: boolean }) {
   const path = usePathname();
   return (
-    <nav className="flex flex-col gap-0.5 px-2">
+    <nav className="flex flex-col gap-0.5 px-3">
       {NAV.filter((n) => role && n.roles.includes(role as R)).map((n) => {
         const active = isActive(path, n.href);
         return (
@@ -88,21 +88,25 @@ function NavLinks({ role, onClose }: { role: string | undefined; onClose?: () =>
             key={n.href}
             href={n.href}
             onClick={onClose}
-            className={`group flex items-center gap-2.5 rounded-lg transition-all duration-150
-              ${n.sub ? "ml-5 py-1.5 text-xs" : "py-2 text-sm font-medium"}
-              ${active
-                ? "bg-blue-50 text-blue-700"
-                : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+            className={`group flex items-center gap-2.5 rounded-xl transition-all duration-200
+              ${n.sub ? "ml-5 py-1.5 px-2.5 text-xs" : "py-2 px-3 text-[13px] font-medium"}
+              ${dark
+                ? active
+                  ? "bg-white/[0.12] text-white"
+                  : "text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-200"
+                : active
+                  ? "bg-zinc-900 text-white shadow-sm"
+                  : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
               }`}
-            style={{ paddingLeft: n.sub ? undefined : "10px", paddingRight: "10px" }}
           >
-            <span className={`flex-shrink-0 ${active ? "text-white" : "text-slate-400 group-hover:text-slate-600"}`}>
+            <span className={`flex-shrink-0 ${
+              dark
+                ? active ? "text-white" : "text-zinc-500 group-hover:text-zinc-300"
+                : active ? "text-white" : "text-zinc-400 group-hover:text-zinc-600"
+            }`}>
               {ICONS[n.iconKey]}
             </span>
             <span>{n.label}</span>
-            {active && !n.sub && (
-              <span className="ml-auto h-1.5 w-1.5 rounded-full bg-white/60" />
-            )}
           </Link>
         );
       })}
@@ -116,49 +120,49 @@ export default function Sidebar() {
   const { role } = usePersona();
   if (PUBLIC.test(path)) return null;
 
-  const brand = (
-    <div className="px-3 py-3">
-      <img src="/udaan-logo.png" alt="UDAAN" style={{width:"145px",height:"50px"}} className="object-contain" />
-    </div>
-  );
-
   return (
     <>
       {/* Mobile top bar */}
-      <header className="no-print sticky top-0 z-30 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 md:hidden">
-        <img src="/udaan-logo.png" alt="UDAAN" style={{width:"120px",height:"40px"}} className="object-contain" />
+      <header className="no-print sticky top-0 z-30 flex items-center justify-between bg-zinc-900 px-4 py-3 md:hidden">
+        <img src="/udaan-logo.png" alt="UDAAN" style={{width:"110px",height:"36px"}} className="object-contain brightness-0 invert" />
         <button
-          className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100"
+          className="rounded-lg p-1.5 text-zinc-400 hover:bg-white/10 hover:text-white transition-colors"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
           <svg viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
-            <path fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75zm.75-5.25h14.5a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5z" clipRule="evenodd" />
+            {open
+              ? <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              : <path fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75zm.75-5.25h14.5a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5z" clipRule="evenodd" />
+            }
           </svg>
         </button>
       </header>
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="no-print z-20 border-b border-gray-200 bg-white pb-4 md:hidden">
-          {brand}
-          <NavLinks role={role} onClose={() => setOpen(false)} />
-          <div className="mt-4 border-t border-gray-100 px-3 pt-4">
-            <PersonaSwitcher />
+        <div className="no-print z-20 bg-zinc-900 pb-4 md:hidden">
+          <div className="py-2">
+            <NavLinks role={role} onClose={() => setOpen(false)} dark />
+          </div>
+          <div className="mt-2 border-t border-white/10 px-3 pt-4">
+            <PersonaSwitcher dark />
           </div>
         </div>
       )}
 
       {/* Desktop sidebar */}
-      <aside className="no-print sticky top-0 hidden h-screen w-[220px] shrink-0 flex-col overflow-y-auto border-r border-gray-200 bg-white md:flex">
-        {brand}
-
-        <div className="flex-1 overflow-y-auto py-1">
-          <NavLinks role={role} />
+      <aside className="no-print sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col overflow-y-auto bg-zinc-900 md:flex">
+        <div className="px-5 py-5">
+          <img src="/udaan-logo.png" alt="UDAAN" style={{width:"140px",height:"46px"}} className="object-contain brightness-0 invert" />
         </div>
 
-        <div className="border-t border-gray-100 p-3">
-          <PersonaSwitcher />
+        <div className="mt-1 flex-1 overflow-y-auto py-1">
+          <NavLinks role={role} dark />
+        </div>
+
+        <div className="border-t border-white/10 p-3">
+          <PersonaSwitcher dark />
         </div>
       </aside>
     </>

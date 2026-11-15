@@ -11,6 +11,14 @@ const EMPTY_FORM = {
   name: "", email: "", college: "", branch: "", semester: 1, skills: "", careerGoal: "Full Stack Developer", interests: "",
 };
 
+const MODULE_ITEMS = [
+  { href: "/learn", title: "Learn", desc: "Skill gaps, quiz, roadmap", icon: "📚" },
+  { href: "/build", title: "CodeLab", desc: "Code + AI mentor", icon: "💻" },
+  { href: "/connect", title: "Connect", desc: "Join the community", icon: "🤝" },
+  { href: "/compete", title: "Compete", desc: "Hackathons", icon: "🏆" },
+  { href: "/grow", title: "Grow", desc: "Resume builder", icon: "📈" },
+];
+
 export default function Dashboard() {
   const { student, setStudent, loading, error } = useStudent();
   const [status, setStatus] = useState<Status | null>(null);
@@ -40,7 +48,7 @@ export default function Dashboard() {
     try {
       const d = await api<{ student: typeof student }>("/api/student", { method: "PUT", body: JSON.stringify(form) });
       setStudent(d.student);
-      setMsg("Profile saved to MongoDB.");
+      setMsg("Profile saved.");
       window.dispatchEvent(new Event("gk-account-updated"));
     } catch (e) {
       setSaveErr(toErr(e));
@@ -51,28 +59,28 @@ export default function Dashboard() {
 
   const Dot = ({ ok, label, detail }: { ok: boolean; label: string; detail: string }) => (
     <div className="flex items-start gap-3">
-      <span className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${ok ? "bg-emerald-500" : "bg-amber-400"}`} />
-      <div><div className="text-sm font-medium">{label}</div><div className="text-xs text-slate-500 break-all">{detail}</div></div>
+      <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${ok ? "bg-emerald-500" : "bg-amber-400"}`} />
+      <div><div className="text-sm font-medium text-zinc-700">{label}</div><div className="text-xs text-zinc-400 break-all">{detail}</div></div>
     </div>
   );
 
   return (
     <div className="mx-auto max-w-6xl">
       <PageHeader
-        title={student || account ? `Welcome back, ${(student?.name ?? account?.name ?? "").split(" ")[0]}` : "Welcome to GURUKOOL"}
-        subtitle="Your AI-powered engineering learning journey: profile → skill gaps → assessment → roadmap → build."
+        title={student || account ? `Welcome back, ${(student?.name ?? account?.name ?? "").split(" ")[0]}` : "Welcome to UDAAN"}
+        subtitle="Your AI-powered engineering learning journey."
         right={<Link href="/learn" className="btn-primary">Start learning →</Link>}
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <form onSubmit={save} className="card lg:col-span-2 space-y-4">
+        <form onSubmit={save} className="card lg:col-span-2 space-y-5">
           <div className="flex items-center justify-between">
             <h2 className="h2">Student profile</h2>
           </div>
-          {loading ? <div className="text-sm text-slate-500"><Spinner /> Loading profile…</div> : <ErrorAlert err={error} />}
+          {loading ? <div className="text-sm text-zinc-400"><Spinner /> Loading profile…</div> : <ErrorAlert err={error} />}
           <div className="grid gap-4 sm:grid-cols-2">
             <div><label className="label">Name</label><input className="input" value={form.name} onChange={set("name")} required /></div>
-            <div><label className="label">Email (account)</label><input className="input bg-slate-50" type="email" value={form.email} readOnly title="Your sign-in email. Change it in Account settings." /></div>
+            <div><label className="label">Email (account)</label><input className="input bg-zinc-50" type="email" value={form.email} readOnly title="Your sign-in email. Change it in Account settings." /></div>
             <div className="sm:col-span-2"><label className="label">College</label><input className="input" value={form.college} onChange={set("college")} required /></div>
             <div><label className="label">Engineering branch</label><input className="input" value={form.branch} onChange={set("branch")} required /></div>
             <div><label className="label">Semester</label>
@@ -90,7 +98,7 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-3">
             <button className="btn-primary" disabled={saving}>{saving && <Spinner />} Save profile</button>
-            {msg && <span className="text-sm text-emerald-600">✓ {msg}</span>}
+            {msg && <span className="text-sm font-medium text-emerald-600">✓ {msg}</span>}
           </div>
           <ErrorAlert err={saveErr} />
         </form>
@@ -98,7 +106,7 @@ export default function Dashboard() {
         <div className="space-y-6">
           <div className="card space-y-3">
             <h2 className="h2">System status</h2>
-            {!status ? <div className="text-sm text-slate-500"><Spinner /> Checking…</div> : (
+            {!status ? <div className="text-sm text-zinc-400"><Spinner /> Checking…</div> : (
               <>
                 <Dot ok={status.db.connected} label="MongoDB"
                   detail={status.db.connected ? "Connected" : status.db.configured ? `Configured but not reachable: ${status.db.error ?? ""}` : "Set MONGODB_URI"} />
@@ -110,11 +118,13 @@ export default function Dashboard() {
             )}
           </div>
           <div className="card">
-            <h2 className="h2 mb-3">Modules</h2>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              {[["/learn","Learn","Skill gaps, quiz, roadmap"],["/build","CodeLab","Code + AI mentor"],["/connect","Connect","Join the community"],["/compete","Compete","Hackathons"],["/grow","Grow","Resume builder"]].map(([h,t,d]) => (
-                <Link key={h} href={h} className="rounded-lg border border-slate-200 p-3 hover:border-blue-300 hover:bg-blue-50">
-                  <div className="font-semibold text-slate-800">{t}</div><div className="text-xs text-slate-500">{d}</div>
+            <h2 className="h2 mb-4">Modules</h2>
+            <div className="grid grid-cols-2 gap-2">
+              {MODULE_ITEMS.map(({ href, title, desc, icon }) => (
+                <Link key={href} href={href} className="group rounded-xl border border-zinc-200/60 p-3 transition-all duration-200 hover:border-zinc-300 hover:bg-zinc-50">
+                  <div className="text-lg mb-1">{icon}</div>
+                  <div className="font-semibold text-sm text-zinc-800">{title}</div>
+                  <div className="text-[11px] text-zinc-400 mt-0.5">{desc}</div>
                 </Link>
               ))}
             </div>

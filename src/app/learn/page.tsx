@@ -16,7 +16,7 @@ type Result = { score: number; total: number; weakTopics: string[]; results: { q
 type Stage = { _id: string; topic: string; description: string; duration: string; youtubeUrl: string; completed: boolean; reason?: string; prerequisites?: string[] };
 type RoadmapT = { _id: string; careerGoal: string; source: string; basedOn: { missingSkills: string[]; weakTopics: string[] }; stages: Stage[] };
 
-const LEVEL_CLS: Record<string, string> = { High: "bg-red-100 text-red-700", Medium: "bg-amber-100 text-amber-700", Low: "bg-slate-100 text-slate-600" };
+const LEVEL_CLS: Record<string, string> = { High: "bg-red-100 text-red-700", Medium: "bg-amber-100 text-amber-700", Low: "bg-slate-100 text-zinc-600" };
 
 function Step({ n, title, children, right }: { n: number; title: string; children: React.ReactNode; right?: React.ReactNode }) {
   return (
@@ -97,7 +97,7 @@ export default function LearnPage() {
   }
   const done = roadmap?.stages.filter((s) => s.completed).length ?? 0;
 
-  if (loading) return <div className="text-sm text-slate-500"><Spinner /> Loading…</div>;
+  if (loading) return <div className="text-sm text-zinc-500"><Spinner /> Loading…</div>;
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -106,7 +106,7 @@ export default function LearnPage() {
         subtitle="Find your skill gaps, test yourself, and get a personalized roadmap with learning resources."
         right={
           <div className="flex items-center gap-2">
-            <label className="text-sm text-slate-500">Career goal</label>
+            <label className="text-sm text-zinc-500">Career goal</label>
             <select className="input w-56" value={goal} onChange={(e) => { setGoal(e.target.value); setGap(null); setQuiz(null); setResult(null); }}>
               {CAREER_GOALS.map((g) => <option key={g}>{g}</option>)}
             </select>
@@ -121,15 +121,15 @@ export default function LearnPage() {
       {/* 1 — SKILL GAP */}
       <Step n={1} title="AI Skill Gap Analyzer" right={<button className="btn-primary" onClick={runGap} disabled={gapBusy || !student}>{gapBusy && <Spinner />} Analyze my skills</button>}>
         <ErrorAlert err={gapErr} />
-        {!gap ? <p className="text-sm text-slate-500">Compares your profile skills with what a {goal} needs.</p> : (
+        {!gap ? <p className="text-sm text-zinc-500">Compares your profile skills with what a {goal} needs.</p> : (
           <div className="space-y-4">
             <div>
-              <div className="mb-1 flex justify-between text-sm"><span className="font-medium">Job readiness for {gap.analysis.goal}</span><span className="font-semibold text-blue-700">{gap.analysis.readiness}%</span></div>
+              <div className="mb-1 flex justify-between text-sm"><span className="font-medium">Job readiness for {gap.analysis.goal}</span><span className="font-semibold text-zinc-700">{gap.analysis.readiness}%</span></div>
               <div className="h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-blue-600" style={{ width: `${gap.analysis.readiness}%` }} /></div>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
               <div><div className="label">Existing skills</div>
-                <div className="flex flex-wrap gap-1.5">{gap.analysis.existing.length ? gap.analysis.existing.map((s) => <span key={s} className="chip bg-emerald-100 text-emerald-700">✓ {s}</span>) : <span className="text-sm text-slate-400">None yet</span>}</div>
+                <div className="flex flex-wrap gap-1.5">{gap.analysis.existing.length ? gap.analysis.existing.map((s) => <span key={s} className="chip bg-emerald-100 text-emerald-700">✓ {s}</span>) : <span className="text-sm text-zinc-400">None yet</span>}</div>
               </div>
               <div><div className="label">Missing skills</div>
                 <div className="flex flex-wrap gap-1.5">{gap.analysis.missing.length ? gap.analysis.missing.map((s) => <span key={s} className="chip bg-red-50 text-red-700">✗ {s}</span>) : <span className="text-sm text-emerald-600">No gaps 🎉</span>}</div>
@@ -141,7 +141,7 @@ export default function LearnPage() {
             {gap.explanation ? (
               <div className="rounded-lg border border-violet-200 bg-violet-50 p-4">
                 <div className="mb-2"><SourceBadge source="ai" /></div>
-                <p className="whitespace-pre-wrap text-sm text-slate-700">{gap.explanation}</p>
+                <p className="whitespace-pre-wrap text-sm text-zinc-700">{gap.explanation}</p>
               </div>
             ) : gap.aiError ? <Alert kind="error">AI explanation failed: {gap.aiError}</Alert>
               : !gap.aiConfigured && <Alert kind="warn">AI explanation unavailable: set <code>AI_API_KEY</code>, <code>AI_MODEL</code>, <code>AI_BASE_URL</code>. The gap analysis above is computed from GURUKOOL&apos;s career skill map.</Alert>}
@@ -154,17 +154,17 @@ export default function LearnPage() {
       {/* 2 — ASSESSMENT */}
       <Step n={2} title="AI Assessment" right={<button className="btn-primary" onClick={genQuiz} disabled={quizBusy || !student}>{quizBusy && !quiz && <Spinner />} {quiz ? "New questions" : "Generate 5 questions"}</button>}>
         <ErrorAlert err={quizErr} />
-        {!quiz ? <p className="text-sm text-slate-500">Five technical MCQs for {goal}. Answers are checked on the server and saved to MongoDB.</p> : (
+        {!quiz ? <p className="text-sm text-zinc-500">Five technical MCQs for {goal}. Answers are checked on the server and saved to MongoDB.</p> : (
           <div className="space-y-4">
             <div className="flex items-center gap-2"><SourceBadge source={quiz.source} /></div>
             {quizNote && <Alert kind="warn">{quizNote}</Alert>}
             {quiz.questions.map((q, qi) => {
               const r = result?.results[qi];
               return (
-                <div key={qi} className={`rounded-lg border p-4 ${r ? (r.correct ? "border-emerald-200 bg-emerald-50/50" : "border-red-200 bg-red-50/50") : "border-slate-200"}`}>
+                <div key={qi} className={`rounded-lg border p-4 ${r ? (r.correct ? "border-emerald-200 bg-emerald-50/50" : "border-red-200 bg-red-50/50") : "border-zinc-200"}`}>
                   <div className="mb-2 flex items-start justify-between gap-3">
                     <p className="text-sm font-medium">{qi + 1}. {q.question}</p>
-                    <span className="chip shrink-0 bg-slate-100 text-slate-600">{q.topic}</span>
+                    <span className="chip shrink-0 bg-slate-100 text-zinc-600">{q.topic}</span>
                   </div>
                   <div className="grid gap-2 sm:grid-cols-2">
                     {q.options.map((o, oi) => {
@@ -173,25 +173,25 @@ export default function LearnPage() {
                       const isWrongPick = r && picked && !r.correct;
                       return (
                         <label key={oi} className={`flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm ${
-                          isRight ? "border-emerald-400 bg-emerald-50" : isWrongPick ? "border-red-400 bg-red-50" : picked ? "border-blue-500 bg-blue-50" : "border-slate-200 hover:bg-slate-50"}`}>
+                          isRight ? "border-emerald-400 bg-emerald-50" : isWrongPick ? "border-red-400 bg-red-50" : picked ? "border-blue-500 bg-zinc-50" : "border-zinc-200 hover:bg-zinc-50"}`}>
                           <input type="radio" name={`q${qi}`} disabled={!!result} checked={picked} onChange={() => setAnswers(answers.map((a, i) => (i === qi ? oi : a)))} />
                           {o}
                         </label>
                       );
                     })}
                   </div>
-                  {r && <p className="mt-2 text-sm text-slate-600"><b>{r.correct ? "Correct." : "Incorrect."}</b> {r.explanation}</p>}
+                  {r && <p className="mt-2 text-sm text-zinc-600"><b>{r.correct ? "Correct." : "Incorrect."}</b> {r.explanation}</p>}
                 </div>
               );
             })}
             {!result ? (
               <button className="btn-primary" onClick={submitQuiz} disabled={quizBusy || answers.some((a) => a === null)}>{quizBusy && <Spinner />} Submit answers</button>
             ) : (
-              <div className="flex flex-wrap items-center gap-4 rounded-lg bg-blue-50 p-4">
-                <div className="text-3xl font-bold text-slate-900">{result.score}/{result.total}</div>
+              <div className="flex flex-wrap items-center gap-4 rounded-lg bg-zinc-50 p-4">
+                <div className="text-3xl font-bold text-zinc-900">{result.score}/{result.total}</div>
                 <div className="text-sm">
                   <div className="font-medium">Saved to MongoDB ✓</div>
-                  <div className="text-slate-600">Weak topics: {result.weakTopics.length ? result.weakTopics.join(", ") : "none — great job!"}</div>
+                  <div className="text-zinc-600">Weak topics: {result.weakTopics.length ? result.weakTopics.join(", ") : "none — great job!"}</div>
                 </div>
               </div>
             )}
@@ -203,34 +203,34 @@ export default function LearnPage() {
       <Step n={3} title="Personalized Roadmap + YouTube Resources" right={<button className="btn-primary" onClick={genRoadmap} disabled={rmBusy || !student}>{rmBusy && <Spinner />} {roadmap ? "Regenerate roadmap" : "Generate roadmap"}</button>}>
         <ErrorAlert err={rmErr} />
         {rmNote && <div className="mb-3"><Alert kind="warn">{rmNote}</Alert></div>}
-        {!roadmap ? <p className="text-sm text-slate-500">Built from your career goal, missing skills and latest assessment weak topics. Take the assessment first for a sharper roadmap.</p> : (
+        {!roadmap ? <p className="text-sm text-zinc-500">Built from your career goal, missing skills and latest assessment weak topics. Take the assessment first for a sharper roadmap.</p> : (
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-3 text-sm">
               <SourceBadge source={roadmap.source} />
-              <span className="text-slate-500">{roadmap.careerGoal} · {done}/{roadmap.stages.length} completed</span>
-              {roadmap.basedOn?.weakTopics?.length > 0 && <span className="text-slate-500">· prioritizes weak topics: {roadmap.basedOn.weakTopics.join(", ")}</span>}
+              <span className="text-zinc-500">{roadmap.careerGoal} · {done}/{roadmap.stages.length} completed</span>
+              {roadmap.basedOn?.weakTopics?.length > 0 && <span className="text-zinc-500">· prioritizes weak topics: {roadmap.basedOn.weakTopics.join(", ")}</span>}
             </div>
             <div className="h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-emerald-500 transition-all" style={{ width: `${(done / Math.max(roadmap.stages.length, 1)) * 100}%` }} /></div>
             <ol className="relative space-y-3 border-l-2 border-blue-100 pl-6">
               {roadmap.stages.map((s, i) => (
                 <li key={s._id} className="relative">
                   <span className={`absolute -left-[33px] top-3 flex h-4 w-4 items-center justify-center rounded-full border-2 ${s.completed ? "border-emerald-500 bg-emerald-500" : "border-blue-400 bg-white"}`} />
-                  <div className={`rounded-lg border p-4 ${s.completed ? "border-emerald-200 bg-emerald-50/40" : "border-slate-200"}`}>
+                  <div className={`rounded-lg border p-4 ${s.completed ? "border-emerald-200 bg-emerald-50/40" : "border-zinc-200"}`}>
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <label className="flex cursor-pointer items-start gap-3">
                         <input type="checkbox" className="mt-1 h-4 w-4 accent-emerald-600" checked={s.completed} onChange={() => toggleStage(s)} />
                         <div>
-                          <div className={`font-semibold ${s.completed ? "text-slate-400 line-through" : ""}`}>Stage {i + 1}: {s.topic}</div>
-                          <p className="mt-1 text-sm text-slate-600">{s.description}</p>
+                          <div className={`font-semibold ${s.completed ? "text-zinc-400 line-through" : ""}`}>Stage {i + 1}: {s.topic}</div>
+                          <p className="mt-1 text-sm text-zinc-600">{s.description}</p>
                           {(s.reason || (s.prerequisites?.length ?? 0) > 0) && (
-                            <p className="mt-1 text-xs text-slate-500">
+                            <p className="mt-1 text-xs text-zinc-500">
                               {s.reason}{s.reason && s.prerequisites?.length ? " · " : ""}{s.prerequisites?.length ? `After: ${s.prerequisites.join(", ")}` : ""}
                             </p>
                           )}
                         </div>
                       </label>
                       <div className="flex items-center gap-2">
-                        <span className="chip bg-blue-50 text-blue-700">⏱ {s.duration}</span>
+                        <span className="chip bg-zinc-50 text-zinc-700">⏱ {s.duration}</span>
                         <a href={s.youtubeUrl} target="_blank" rel="noopener noreferrer" className="btn bg-red-600 px-3 py-1.5 text-white hover:bg-red-700">▶ Learn on YouTube</a>
                       </div>
                     </div>

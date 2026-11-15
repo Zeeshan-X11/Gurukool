@@ -91,8 +91,8 @@ function ResumeStudio() {
     <div className="space-y-6">
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Resume Studio</h2>
-          <p className="mt-0.5 text-sm text-gray-500">Build an ATS-friendly resume pre-filled from your profile. Use AI to polish your project descriptions.</p>
+          <h2 className="text-xl font-bold text-zinc-900">Resume Studio</h2>
+          <p className="mt-0.5 text-sm text-zinc-500">Build an ATS-friendly resume pre-filled from your profile. Use AI to polish your project descriptions.</p>
         </div>
         <button className="btn-primary" onClick={() => window.print()}>⤓ Export PDF</button>
       </div>
@@ -100,7 +100,7 @@ function ResumeStudio() {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Form */}
         <div className="card no-print space-y-3">
-          <h3 className="font-semibold text-gray-900">Your details</h3>
+          <h3 className="font-semibold text-zinc-900">Your details</h3>
           <div className="grid gap-3 sm:grid-cols-2">
             <div><label className="label">Name</label><input className="input" value={r.name} onChange={set("name")} /></div>
             <div><label className="label">Email</label><input className="input" value={r.email} onChange={set("email")} /></div>
@@ -126,9 +126,9 @@ function ResumeStudio() {
               onChange={set("projects")}
             />
             {polishErr && <p className="text-xs text-red-600 mt-1">{polishErr}</p>}
-            <p className="text-xs text-gray-400 mt-1">Tip: write rough notes, then hit AI Polish to get strong action-verb bullets.</p>
+            <p className="text-xs text-zinc-400 mt-1">Tip: write rough notes, then hit AI Polish to get strong action-verb bullets.</p>
           </div>
-          <p className="text-xs text-gray-400">In the print dialog choose &ldquo;Save as PDF&rdquo; and turn off headers/footers.</p>
+          <p className="text-xs text-zinc-400">In the print dialog choose &ldquo;Save as PDF&rdquo; and turn off headers/footers.</p>
         </div>
 
         {/* Live preview */}
@@ -155,12 +155,12 @@ function ResumeStudio() {
       <section className="card no-print space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h3 className="font-semibold text-gray-900">ATS Check</h3>
-            <p className="text-xs text-gray-500">Score your resume against a role or paste a real job description.</p>
+            <h3 className="font-semibold text-zinc-900">ATS Check</h3>
+            <p className="text-xs text-zinc-500">Score your resume against a role or paste a real job description.</p>
           </div>
-          <div className="flex rounded-lg border border-gray-200 overflow-hidden text-sm">
-            <button onClick={() => setAtsTab("role")} className={`px-3 py-1.5 ${atsTab === "role" ? "bg-slate-900 text-white" : "text-gray-600 hover:bg-gray-50"}`}>By Role</button>
-            <button onClick={() => setAtsTab("jd")} className={`px-3 py-1.5 ${atsTab === "jd" ? "bg-slate-900 text-white" : "text-gray-600 hover:bg-gray-50"}`}>Paste JD</button>
+          <div className="flex rounded-lg border border-zinc-200 overflow-hidden text-sm">
+            <button onClick={() => setAtsTab("role")} className={`px-3 py-1.5 ${atsTab === "role" ? "bg-zinc-900 text-white" : "text-gray-600 hover:bg-zinc-50"}`}>By Role</button>
+            <button onClick={() => setAtsTab("jd")} className={`px-3 py-1.5 ${atsTab === "jd" ? "bg-zinc-900 text-white" : "text-gray-600 hover:bg-zinc-50"}`}>Paste JD</button>
           </div>
         </div>
 
@@ -170,24 +170,24 @@ function ResumeStudio() {
               <select className="input w-auto" value={target} onChange={(e) => setTarget(e.target.value as CareerGoal)} aria-label="Target role">
                 {CAREER_GOALS.map((g) => <option key={g}>{g}</option>)}
               </select>
-              <span className={`text-4xl font-bold ${ats.score >= 75 ? "text-emerald-600" : ats.score >= 50 ? "text-amber-600" : "text-red-600"}`}>{ats.score}<span className="text-base font-normal text-gray-400">/100</span></span>
+              <span className={`text-4xl font-bold ${ats.score >= 75 ? "text-emerald-600" : ats.score >= 50 ? "text-amber-600" : "text-red-600"}`}>{ats.score}<span className="text-base font-normal text-zinc-400">/100</span></span>
             </div>
             <div className="grid gap-4 md:grid-cols-4">
               {(Object.keys(ATS_WEIGHTS) as (keyof typeof ATS_WEIGHTS)[]).map((k) => (
                 <div key={k} className="text-sm">
-                  <div className="mb-1 flex justify-between"><span className="capitalize text-gray-600">{k}</span><span className="text-gray-400">{Math.round(ATS_WEIGHTS[k] * 100)}%</span></div>
-                  <div className="h-2 rounded-full bg-gray-100"><div className="h-2 rounded-full bg-blue-500 transition-all" style={{ width: `${ats.components[k] * 100}%` }} /></div>
+                  <div className="mb-1 flex justify-between"><span className="capitalize text-gray-600">{k}</span><span className="text-zinc-400">{Math.round(ATS_WEIGHTS[k] * 100)}%</span></div>
+                  <div className="h-2 rounded-full bg-zinc-100"><div className="h-2 rounded-full bg-zinc-500 transition-all" style={{ width: `${ats.components[k] * 100}%` }} /></div>
                 </div>
               ))}
             </div>
             <div className="flex flex-wrap gap-1.5">
               {ats.keywords.map((k) => (
-                <span key={k.skill} className={`rounded-full px-2 py-0.5 text-xs font-medium ${k.status === "demonstrated" ? "bg-emerald-100 text-emerald-700" : k.status === "listed" ? "bg-amber-100 text-amber-800" : "bg-gray-100 text-gray-400 line-through"}`}>
+                <span key={k.skill} className={`rounded-full px-2 py-0.5 text-xs font-medium ${k.status === "demonstrated" ? "bg-emerald-100 text-emerald-700" : k.status === "listed" ? "bg-amber-100 text-amber-800" : "bg-zinc-100 text-zinc-400 line-through"}`}>
                   {k.skill}
                 </span>
               ))}
             </div>
-            <p className="text-xs text-gray-400">🟢 Used in project · 🟡 Only listed · Strikethrough: missing</p>
+            <p className="text-xs text-zinc-400">🟢 Used in project · 🟡 Only listed · Strikethrough: missing</p>
             {ats.suggestions.length > 0 && (
               <ul className="list-disc space-y-1 pl-5 text-sm text-gray-700">{ats.suggestions.map((x) => <li key={x}>{x}</li>)}</ul>
             )}
@@ -207,12 +207,12 @@ function ResumeStudio() {
               </button>
               {jdScore !== null && (
                 <div className="flex items-center gap-2">
-                  <span className={`text-3xl font-bold ${jdScore >= 60 ? "text-emerald-600" : jdScore >= 40 ? "text-amber-600" : "text-red-600"}`}>{jdScore}<span className="text-sm font-normal text-gray-400">/100</span></span>
-                  <span className="text-sm text-gray-500">{jdScore >= 60 ? "Good match" : jdScore >= 40 ? "Partial match — add more keywords" : "Low match — update skills & projects"}</span>
+                  <span className={`text-3xl font-bold ${jdScore >= 60 ? "text-emerald-600" : jdScore >= 40 ? "text-amber-600" : "text-red-600"}`}>{jdScore}<span className="text-sm font-normal text-zinc-400">/100</span></span>
+                  <span className="text-sm text-zinc-500">{jdScore >= 60 ? "Good match" : jdScore >= 40 ? "Partial match — add more keywords" : "Low match — update skills & projects"}</span>
                 </div>
               )}
             </div>
-            <p className="text-xs text-gray-400">Scores keyword overlap between your resume and the JD. Add missing skills to your Skills field and rebuild.</p>
+            <p className="text-xs text-zinc-400">Scores keyword overlap between your resume and the JD. Add missing skills to your Skills field and rebuild.</p>
           </div>
         )}
       </section>
@@ -274,8 +274,8 @@ function JobBoard() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Job Board</h2>
-        <p className="mt-0.5 text-sm text-gray-500">Real job listings filtered for your profile. Click to apply directly on the company site.</p>
+        <h2 className="text-xl font-bold text-zinc-900">Job Board</h2>
+        <p className="mt-0.5 text-sm text-zinc-500">Real job listings filtered for your profile. Click to apply directly on the company site.</p>
       </div>
 
       {/* Search */}
@@ -293,7 +293,7 @@ function JobBoard() {
           onChange={(e) => setLocation(e.target.value)}
         />
         <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-          <input type="checkbox" checked={remote} onChange={(e) => setRemote(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-blue-600" />
+          <input type="checkbox" checked={remote} onChange={(e) => setRemote(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-zinc-600" />
           Remote only
         </label>
         <button type="submit" className="btn-primary">Search</button>
@@ -302,34 +302,34 @@ function JobBoard() {
       <ErrorAlert err={err} />
 
       {jobs === null || loading ? (
-        <div className="text-sm text-gray-500"><Spinner /> {loading ? "Searching jobs…" : "Loading…"}</div>
+        <div className="text-sm text-zinc-500"><Spinner /> {loading ? "Searching jobs…" : "Loading…"}</div>
       ) : jobs.length === 0 ? (
         <Alert kind="info">No jobs found. Try a different search term or uncheck &ldquo;Remote only&rdquo;.</Alert>
       ) : (
         <>
-          <p className="text-sm text-gray-500">{jobs.length} jobs found</p>
-          <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 bg-white">
+          <p className="text-sm text-zinc-500">{jobs.length} jobs found</p>
+          <div className="divide-y divide-gray-100 rounded-xl border border-zinc-200 bg-white">
             {jobs.map((j) => (
-              <div key={j.id} className="flex flex-wrap items-start gap-4 p-4 hover:bg-gray-50 transition-colors">
+              <div key={j.id} className="flex flex-wrap items-start gap-4 p-4 hover:bg-zinc-50 transition-colors">
                 {/* Company avatar */}
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-xs font-bold text-blue-700">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-zinc-50 text-xs font-bold text-zinc-700">
                   {j.company.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-semibold text-gray-900">{j.title}</span>
+                    <span className="font-semibold text-zinc-900">{j.title}</span>
                     {j.remote && <span className="rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-semibold text-green-700">Remote</span>}
-                    {j.salary && <span className="text-xs text-gray-500">{j.salary}</span>}
+                    {j.salary && <span className="text-xs text-zinc-500">{j.salary}</span>}
                   </div>
-                  <p className="text-sm text-gray-500">{j.company} · {j.location}</p>
+                  <p className="text-sm text-zinc-500">{j.company} · {j.location}</p>
                   {j.tags.length > 0 && (
                     <div className="mt-1.5 flex flex-wrap gap-1">
-                      {j.tags.map((t) => <span key={t} className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] text-gray-600">{t}</span>)}
+                      {j.tags.map((t) => <span key={t} className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-gray-600">{t}</span>)}
                     </div>
                   )}
                 </div>
                 <div className="flex flex-col items-end gap-1.5">
-                  {j.postedAt && <span className="text-xs text-gray-400">{formatDate(j.postedAt)}</span>}
+                  {j.postedAt && <span className="text-xs text-zinc-400">{formatDate(j.postedAt)}</span>}
                   <a
                     href={j.url}
                     target="_blank"
@@ -340,7 +340,7 @@ function JobBoard() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-gray-400">Jobs sourced from Remotive and Adzuna. Clicking Apply opens the company&apos;s own site.</p>
+          <p className="text-xs text-zinc-400">Jobs sourced from Remotive and Adzuna. Clicking Apply opens the company&apos;s own site.</p>
         </>
       )}
     </div>
@@ -359,12 +359,12 @@ function GrowInner() {
         <PageHeader title="Grow" subtitle="Build your resume, check your ATS score, and find real jobs — all in one place." />
       </div>
 
-      <div role="tablist" className="no-print mb-6 flex gap-1 overflow-x-auto border-b border-gray-200">
+      <div role="tablist" className="no-print mb-6 flex gap-1 overflow-x-auto border-b border-zinc-200">
         {TABS.map((t) => (
           <button
             key={t.id} role="tab" aria-selected={tab === t.id}
             onClick={() => router.replace(`/grow?tab=${t.id}`, { scroll: false })}
-            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-slate-900 text-slate-900" : "border-transparent text-gray-500 hover:text-gray-800"}`}
+            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-slate-900 text-zinc-900" : "border-transparent text-zinc-500 hover:text-gray-800"}`}
           >{t.label}</button>
         ))}
       </div>
@@ -377,7 +377,7 @@ function GrowInner() {
 
 export default function GrowPage() {
   return (
-    <Suspense fallback={<div className="text-sm text-gray-500"><Spinner /> Loading…</div>}>
+    <Suspense fallback={<div className="text-sm text-zinc-500"><Spinner /> Loading…</div>}>
       <GrowInner />
     </Suspense>
   );
