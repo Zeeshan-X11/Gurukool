@@ -1,12 +1,16 @@
 // Server-side gate for every page and API: valid signed session + correct role.
 import { NextResponse, type NextRequest } from "next/server";
 import { HOME, SESSION_COOKIE, allowedRoles, decodeSession, portalFor } from "@/lib/session-token";
+import { isSameOrigin } from "@/lib/security/origin";
 
 export function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
   const session = decodeSession(req.cookies.get(SESSION_COOKIE)?.value);
 
   if (pathname.startsWith("/api/")) {
+    // CSRF: state-changing API calls must originate from this site.
+    if (!isSameOrigin(req.method, req.headers.get("origin"), req.headers.get("referer"), req.headers.get("x-forwarded-host") ?? req.headers.get("host")))
+      return NextResponse.json({ error: "Cross-origin request blocked.", code: "CSRF" }, { status: 403 });
     if (pathname.startsWith("/api/auth/") || pathname === "/api/status") return NextResponse.next();
     if (!session) return NextResponse.json({ error: "Please sign in.", code: "UNAUTHORIZED" }, { status: 401 });
     return NextResponse.next(); // role + ownership are enforced inside each API route

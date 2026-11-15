@@ -7,6 +7,8 @@ import { hashPassword } from "@/lib/password";
 import { HOME } from "@/lib/session-token";
 import { User } from "@/models/user";
 import { Mentor, Recruiter } from "@/models/connect";
+import { POLICIES, hit, tooMany } from "@/lib/security/rate-limit";
+import { clientIp } from "@/lib/security/origin";
 
 export const dynamic = "force-dynamic";
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -29,6 +31,8 @@ export async function POST(req: Request) {
     const designation = String(b.designation ?? "").trim().slice(0, 100);
     if (portal === "recruiter" && (!organization || !designation)) return badRequest("Enter your organization and designation");
     await connectDB();
+    const limit = await hit(`register:ip:${clientIp(req.headers)}`, POLICIES.register);
+    if (!limit.allowed) return tooMany(limit, "registrations from this network");
     if (await User.exists({ email })) return conflict("An account with this email already exists. Please sign in.");
 
     const uid = new mongoose.Types.ObjectId();

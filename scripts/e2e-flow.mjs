@@ -34,6 +34,10 @@ async function main() {
   check("duplicate email rejected", (await client()("POST", "/api/auth/register", { portal: "student", name: "Dup", email: E("student"), password: pw })).status === 409);
   check("student can't sign in via Recruiter portal", (await client()("POST", "/api/auth/login", { portal: "recruiter", email: E("student"), password: pw })).status === 403);
   check("wrong password rejected", (await client()("POST", "/api/auth/login", { portal: "student", email: E("student"), password: "nope12345" })).status === 401);
+  {
+    const r = await fetch(BASE + "/api/auth/logout", { method: "POST", headers: { Origin: "https://evil.example" } });
+    check("cross-origin POST blocked (CSRF)", r.status === 403);
+  }
   check("student blocked from admin API", (await stu("GET", "/api/admin/users")).status === 403);
 
   console.log("\nProfiles & approval");

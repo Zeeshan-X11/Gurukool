@@ -5,6 +5,8 @@ import { setPersona } from "@/lib/persona";
 import { verifyPassword } from "@/lib/password";
 import { HOME, PORTALS, type Portal } from "@/lib/session-token";
 import { User, type UserT } from "@/models/user";
+import { POLICIES, hit, reset, tooMany } from "@/lib/security/rate-limit";
+import { clientIp } from "@/lib/security/origin";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +22,10 @@ export async function POST(req: Request) {
     const password = String(b.password ?? "");
     if (!email || !password) return badRequest("Enter your email and password");
     await connectDB();
+    // Two independent limits: per source IP (stuffing) and per account (targeted guessing).
+    const ipKey = `login:ip:${clientIp(req.headers)}`, emailKey = `login:email:${email}`;
+    const [byIp, byEmail] = await Promise.all([hit(ipKey, POLICIES.loginByIp), hit(emailKey, POLICIES.loginByEmail)]);
+    if (!byIp.allowed || !byEmail.allowed) return tooMany(byIp.allowed ? byEmail : byIp, "sign-in attempts");
     const u = await User.findOne({ email }).lean<UserT>();
     // Same message for unknown email and wrong password (no account enumeration).
     if (!u || !verifyPassword(password, u.passwordHash))
@@ -29,6 +35,7 @@ export async function POST(req: Request) {
     const role = PORTALS[portal];
     if (u.role !== role)
       return NextResponse.json({ error: `This is a ${LABEL[u.role]} account. Please use the ${LABEL[u.role]} sign-in.`, code: "WRONG_PORTAL" }, { status: 403 });
+    await reset(emailKey);
     await setPersona({ role: u.role, id: u.role === "admin" ? String(u._id) : u.profileId, uid: String(u._id) });
     return NextResponse.json({ redirect: HOME[u.role], approved: u.approved });
   } catch (e) {
