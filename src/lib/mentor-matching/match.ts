@@ -18,7 +18,10 @@ export function matchTerm(target: string, mentorTerms: string[]): string | null 
     }) ?? null;
   // Direct matches beat synonym matches (e.g. "Node.js Fundamentals" → "Node.js", not "Express.js"),
   // which beat shared-keyword matches (e.g. "Backend APIs" → "Backend Development").
-  return hits([t]) ?? hits(Object.entries(SYNONYMS).filter(([k]) => t.includes(k)).flatMap(([, v]) => v)) ?? keywordHit(t, mentorTerms);
+  // Synonyms are applied in both directions: "Node.js" → "express" and "dsa" → "data structures & algorithms".
+  const forward = Object.entries(SYNONYMS).filter(([k]) => t.includes(k)).flatMap(([, v]) => v);
+  const reverse = Object.entries(SYNONYMS).filter(([, v]) => v.includes(t)).map(([k]) => k);
+  return hits([t]) ?? hits(reverse) ?? hits(forward) ?? keywordHit(t, mentorTerms);
 }
 
 const GENERIC = new Set(["development", "developer", "fundamentals", "basics", "introduction", "intro", "advanced", "learning",
