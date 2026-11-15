@@ -99,7 +99,7 @@ export default function AdminPage() {
                     <td>{ROLE[u.role] ?? u.role}</td>
                     <td className="space-x-1">
                       <span className={`chip ${u.active ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}>{u.active ? "Active" : "Suspended"}</span>
-                      {(u.role === "recruiter" || u.role === "mentor") && <span className={`chip ${u.approved ? "bg-blue-100 text-zinc-700" : "bg-amber-100 text-amber-800"}`}>{u.approved ? "Approved" : "Pending approval"}</span>}
+                      {(u.role === "recruiter" || u.role === "mentor") && <span className={`chip ${u.approved ? "bg-zinc-100 text-zinc-600" : "bg-amber-100 text-amber-800"}`}>{u.approved ? "Approved" : "Pending approval"}</span>}
                     </td>
                     <td className="text-zinc-500">{new Date(u.createdAt).toLocaleDateString("en-IN")}</td>
                     <td className="space-x-2 whitespace-nowrap text-right">

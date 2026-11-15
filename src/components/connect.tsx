@@ -53,7 +53,7 @@ export function ProfileBadge({ isDemo, verified }: { isDemo: boolean; verified?:
 
 const STATUS_CLS: Record<string, string> = {
   PENDING: "bg-amber-100 text-amber-800", ACCEPTED: "bg-emerald-100 text-emerald-700", REJECTED: "bg-red-100 text-red-700",
-  CANCELLED: "bg-slate-100 text-slate-600", COMPLETED: "bg-blue-100 text-blue-700", DECLINED: "bg-red-100 text-red-700", WITHDRAWN: "bg-slate-100 text-slate-600",
+  CANCELLED: "bg-slate-100 text-slate-600", COMPLETED: "bg-zinc-100 text-zinc-600", DECLINED: "bg-red-100 text-red-700", WITHDRAWN: "bg-slate-100 text-slate-600",
 };
 export function StatusBadge({ status }: { status: string }) {
   return <span className={`chip font-semibold ${STATUS_CLS[status] ?? "bg-slate-100"}`}>{status}</span>;
@@ -89,7 +89,7 @@ export function MentorCard({ m, reason, extra }: { m: Mentor; reason?: string[];
       <p className="mt-2 text-sm text-slate-500">{m.designation} · {m.organization} · {m.yearsOfExperience} yrs experience</p>
       {m.bio && <p className="mt-2 line-clamp-3 text-sm text-slate-600">{m.bio}</p>}
       {reason && reason.length > 0 && (
-        <div className="mt-3 space-y-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-sm text-blue-900">
+        <div className="mt-3 space-y-2 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
           {reason.map((r) => <p key={r}>{r}</p>)}
           {extra}
         </div>

@@ -39,14 +39,14 @@ export default function RecommendedTraining({ refreshKey }: { refreshKey: string
                 <div className="min-w-0 flex-1 space-y-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <b>{r.course.title}</b>{r.course.isDemo && <DemoContentBadge />}
-                    <span className={`chip ${r.basis === "evidence" ? "bg-violet-100 text-violet-700" : "bg-slate-100 text-slate-600"}`}>{r.basis === "evidence" ? "Evidence-based" : "Interest-based"}</span>
+                    <span className={`chip ${r.basis === "evidence" ? "bg-zinc-100 text-zinc-600" : "bg-slate-100 text-slate-600"}`}>{r.basis === "evidence" ? "Evidence-based" : "Interest-based"}</span>
                   </div>
                   <p className="text-xs text-slate-500">{r.course.difficulty} · {r.course.moduleCount} modules · {r.course.durationWeeks} weeks</p>
                   <p className="text-sm text-slate-700">{r.explanation}</p>
-                  <div className="flex flex-wrap gap-1.5">{[...new Set(r.relevantSkills.map((s) => s.courseTerm))].slice(0, 5).map((s) => <span key={s} className="chip bg-blue-50 text-blue-700">{s}</span>)}</div>
+                  <div className="flex flex-wrap gap-1.5">{[...new Set(r.relevantSkills.map((s) => s.courseTerm))].slice(0, 5).map((s) => <span key={s} className="chip bg-zinc-100 text-zinc-600">{s}</span>)}</div>
                 </div>
                 <div className="flex flex-col items-end gap-2">
-                  <span className="text-lg font-bold text-blue-700">{r.matchScore}% match</span>
+                  <span className="text-lg font-semibold text-zinc-900 tabular-nums">{r.matchScore}% match</span>
                   <Link href={r.enrollUrl} className="btn-primary">{r.enrolled ? "Continue training" : "View & enroll"}</Link>
                 </div>
               </div>

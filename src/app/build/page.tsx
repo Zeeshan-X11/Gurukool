@@ -269,7 +269,7 @@ export default function BuildPage() {
             <div className="flex items-center justify-between border-b border-slate-700/60 px-4 py-1.5">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-400"></span>
-                <span className="text-xs font-medium text-slate-400 tracking-widest">OUTPUT</span>
+                <span className="text-xs font-medium text-zinc-400">OUTPUT</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-xs text-slate-600">{lang === "python" ? "Pyodide · 60s" : "sandbox · 5s"}</span>

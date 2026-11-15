@@ -254,7 +254,7 @@ function TrainerDashboard() {
             <h2 className="h2">Enrolled students</h2>
             {d.students.length === 0 ? <p className="text-sm text-zinc-500">No enrollments yet.</p> : (
               <div className="overflow-x-auto"><table className="w-full text-sm">
-                <thead><tr className="text-left text-xs uppercase text-zinc-500"><th className="py-2">Student</th><th>Course</th><th className="w-48">Lesson progress</th></tr></thead>
+                <thead><tr className="text-left text-xs text-zinc-400"><th className="py-2">Student</th><th>Course</th><th className="w-48">Lesson progress</th></tr></thead>
                 <tbody>{d.students.map((s, i) => <tr key={i} className="border-t border-zinc-100"><td className="py-2">{s.name}</td><td>{s.courseTitle}</td><td><ProgressBar pct={s.engagementPct} /></td></tr>)}</tbody>
               </table></div>
             )}
@@ -348,12 +348,12 @@ function FreeResources() {
         if (!items.length) return null;
         return (
           <div key={dom} className="space-y-4">
-            <h2 className="text-[15px] font-semibold text-zinc-900 tracking-tight">{dom}</h2>
+            <h2 className="text-sm font-semibold text-zinc-900">{dom}</h2>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {items.map((r) => {
                 const isEnrolled = enrolled.has(r.id);
                 return (
-                  <div key={r.id} className="card-hover flex flex-col gap-3 p-5">
+                  <div key={r.id} className="card flex flex-col gap-3 p-5">
                     <div className="flex-1">
                       <p className="font-semibold text-zinc-900 leading-snug">{r.title}</p>
                       <p className="text-xs text-zinc-400 mt-1">{r.creator}</p>
@@ -397,7 +397,7 @@ function TrainInner() {
       <div role="tablist" className="mb-8 flex gap-1 rounded-xl bg-zinc-100 p-1 max-w-fit">
         {tabs.map((t) => (
           <button key={t.id} role="tab" aria-selected={tab === t.id} onClick={() => router.replace(`/train?tab=${t.id}`, { scroll: false })}
-            className={`whitespace-nowrap rounded-lg px-4 py-2 text-[13px] font-medium transition-all duration-200 ${
+            className={`whitespace-nowrap rounded-lg px-4 py-2 text-[13px] font-medium transition-colors duration-150 ${
               tab === t.id
                 ? "bg-white text-zinc-900 shadow-sm"
                 : "text-zinc-400 hover:text-zinc-600"

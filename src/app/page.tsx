@@ -12,11 +12,11 @@ const EMPTY_FORM = {
 };
 
 const MODULE_ITEMS = [
-  { href: "/learn", title: "Learn", desc: "Skill gaps, quiz, roadmap", icon: "📚" },
-  { href: "/build", title: "CodeLab", desc: "Code + AI mentor", icon: "💻" },
-  { href: "/connect", title: "Connect", desc: "Join the community", icon: "🤝" },
-  { href: "/compete", title: "Compete", desc: "Hackathons", icon: "🏆" },
-  { href: "/grow", title: "Grow", desc: "Resume builder", icon: "📈" },
+  { href: "/learn",   title: "Learn",    desc: "Skill gaps, quiz, roadmap" },
+  { href: "/build",   title: "CodeLab",  desc: "Code + AI mentor" },
+  { href: "/connect", title: "Connect",  desc: "Peer community" },
+  { href: "/compete", title: "Compete",  desc: "Hackathons" },
+  { href: "/grow",    title: "Grow",     desc: "Resume builder" },
 ];
 
 export default function Dashboard() {
@@ -67,8 +67,8 @@ export default function Dashboard() {
   return (
     <div className="mx-auto max-w-6xl">
       <PageHeader
-        title={student || account ? `Welcome back, ${(student?.name ?? account?.name ?? "").split(" ")[0]}` : "Welcome to UDAAN"}
-        subtitle="Your AI-powered engineering learning journey."
+        title={student?.name || account?.name ? `${new Date().toLocaleDateString("en-IN", { month: "long", year: "numeric"})} · Dashboard` : "Dashboard"}
+        subtitle="Track your progress across learning, practice and career readiness."
         right={<Link href="/learn" className="btn-primary">Start learning →</Link>}
       />
 
@@ -120,10 +120,9 @@ export default function Dashboard() {
           <div className="card">
             <h2 className="h2 mb-4">Modules</h2>
             <div className="grid grid-cols-2 gap-2">
-              {MODULE_ITEMS.map(({ href, title, desc, icon }) => (
-                <Link key={href} href={href} className="group rounded-xl border border-zinc-200/60 p-3 transition-all duration-200 hover:border-zinc-300 hover:bg-zinc-50">
-                  <div className="text-lg mb-1">{icon}</div>
-                  <div className="font-semibold text-sm text-zinc-800">{title}</div>
+              {MODULE_ITEMS.map(({ href, title, desc }) => (
+                <Link key={href} href={href} className="group rounded-lg border border-zinc-200 p-3 transition-colors duration-150 hover:border-zinc-300 hover:bg-zinc-50">
+                  <div className="mb-1 text-sm font-medium text-zinc-800">{title}</div>
                   <div className="text-[11px] text-zinc-400 mt-0.5">{desc}</div>
                 </Link>
               ))}

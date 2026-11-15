@@ -370,14 +370,14 @@ export default function VideoMeet({ roomCode, displayName, onLeave }: Props) {
               <p className="text-xs text-center text-gray-400 mt-8">No messages yet</p>
             ) : messages.map((m, i) => (
               <div key={i} className="text-sm">
-                <span className="font-semibold text-blue-700">{m.sender}</span>
+                <span className="font-semibold text-zinc-900">{m.sender}</span>
                 <p className="text-gray-800 mt-0.5">{m.data}</p>
               </div>
             ))}
           </div>
           <div className="flex gap-2 border-t p-3">
             <input
-              className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-100"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
@@ -469,7 +469,7 @@ export default function VideoMeet({ roomCode, displayName, onLeave }: Props) {
         {screenAvailable && (
           <button
             onClick={() => setScreen((s) => !s)}
-            className={`flex h-11 w-11 items-center justify-center rounded-full text-white transition ${screen ? "bg-blue-600 hover:bg-blue-700" : "bg-white/20 hover:bg-white/30"}`}
+            className={`flex h-11 w-11 items-center justify-center rounded-full text-white transition ${screen ? "bg-zinc-700 hover:bg-zinc-600" : "bg-white/20 hover:bg-white/30"}`}
             title={screen ? "Stop sharing" : "Share screen"}
           >
             <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>

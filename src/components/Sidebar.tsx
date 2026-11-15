@@ -88,22 +88,18 @@ function NavLinks({ role, onClose, dark }: { role: string | undefined; onClose?:
             key={n.href}
             href={n.href}
             onClick={onClose}
-            className={`group flex items-center gap-2.5 rounded-xl transition-all duration-200
+            className={`group flex items-center gap-2.5 rounded-lg transition-colors duration-150
               ${n.sub ? "ml-5 py-1.5 px-2.5 text-xs" : "py-2 px-3 text-[13px] font-medium"}
               ${dark
                 ? active
-                  ? "bg-white/[0.12] text-white"
-                  : "text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-200"
+                  ? "text-white border-l-2 border-white/60 pl-[10px]"
+                  : "text-zinc-400 hover:text-zinc-200 border-l-2 border-transparent pl-[10px]"
                 : active
-                  ? "bg-zinc-900 text-white shadow-sm"
-                  : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
+                  ? "text-zinc-900 border-l-2 border-zinc-900 pl-[10px]"
+                  : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 border-l-2 border-transparent pl-[10px]"
               }`}
           >
-            <span className={`flex-shrink-0 ${
-              dark
-                ? active ? "text-white" : "text-zinc-500 group-hover:text-zinc-300"
-                : active ? "text-white" : "text-zinc-400 group-hover:text-zinc-600"
-            }`}>
+            <span className="flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity duration-150">
               {ICONS[n.iconKey]}
             </span>
             <span>{n.label}</span>

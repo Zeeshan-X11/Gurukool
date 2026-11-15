@@ -44,7 +44,7 @@ export default function MentorProfilePage({ params }: { params: Promise<{ id: st
     } catch (e) { setSubmitErr(toErr(e)); } finally { setBusy(false); }
   }
 
-  if (err) return <div className="mx-auto max-w-4xl"><ErrorAlert err={err} /><Link href="/connect" className="mt-4 inline-block text-sm text-blue-700">← Back to Connect</Link></div>;
+  if (err) return <div className="mx-auto max-w-4xl"><ErrorAlert err={err} /><Link href="/connect" className="mt-4 inline-block text-sm text-zinc-700">← Back to Connect</Link></div>;
   if (!d) return <div className="text-sm text-slate-500"><Spinner /> Loading profile…</div>;
   const m = d.mentor;
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
@@ -52,7 +52,7 @@ export default function MentorProfilePage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <Link href="/connect" className="text-sm text-blue-700 hover:underline">← Back to Connect</Link>
+      <Link href="/connect" className="text-sm text-zinc-700 hover:underline">← Back to Connect</Link>
       {m.isDemo && <Alert kind="warn">This is a <b>fictional demonstration profile</b>. It does not represent a real person, employer or employment history.</Alert>}
 
       <div className="grid gap-6 lg:grid-cols-5">
@@ -68,8 +68,8 @@ export default function MentorProfilePage({ params }: { params: Promise<{ id: st
           <div><div className="label">Professional background</div><p className="text-sm text-slate-700">{m.bio || "—"}</p>
             {(m.links?.linkedin || m.links?.portfolio) && (
               <div className="mt-1 flex gap-3 text-sm">
-                {m.links.linkedin && <a className="text-blue-700 hover:underline" href={m.links.linkedin} target="_blank" rel="noopener noreferrer nofollow">LinkedIn ↗</a>}
-                {m.links.portfolio && <a className="text-blue-700 hover:underline" href={m.links.portfolio} target="_blank" rel="noopener noreferrer nofollow">Portfolio ↗</a>}
+                {m.links.linkedin && <a className="text-zinc-700 hover:underline" href={m.links.linkedin} target="_blank" rel="noopener noreferrer nofollow">LinkedIn ↗</a>}
+                {m.links.portfolio && <a className="text-zinc-700 hover:underline" href={m.links.portfolio} target="_blank" rel="noopener noreferrer nofollow">Portfolio ↗</a>}
               </div>
             )}
           </div>

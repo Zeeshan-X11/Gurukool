@@ -20,12 +20,12 @@ export function MatchBreakdown({ r }: { r: MatchRec }) {
     <div className="space-y-1.5">
       <div className="flex items-center justify-between text-xs">
         <span className="font-semibold text-slate-700">Mentor Match Engine</span>
-        <span className="font-bold text-blue-700">{r.matchScore}% match</span>
+        <span className="font-semibold text-zinc-900 tabular-nums">{r.matchScore}% match</span>
       </div>
       {PARTS.map(([k, label, w]) => (
         <div key={k} className="flex items-center gap-2 text-[11px] text-slate-500">
           <span className="w-24 shrink-0">{label} ({w}%)</span>
-          <div className="h-1.5 flex-1 rounded-full bg-slate-100"><div className="h-1.5 rounded-full bg-blue-500" style={{ width: `${Math.round(r.components[k] * 100)}%` }} /></div>
+          <div className="h-1.5 flex-1 rounded-full bg-slate-100"><div className="h-1.5 rounded-full bg-zinc-700" style={{ width: `${Math.round(r.components[k] * 100)}%` }} /></div>
           <span className="w-8 text-right">{Math.round(r.components[k] * 100)}%</span>
         </div>
       ))}
@@ -73,10 +73,10 @@ export default function MentorRecommendations({ refreshKey }: { refreshKey: stri
                     <ProfileBadge isDemo={m.isDemo} verified={m.verified} />
                   </div>
                   <div className="mt-2 flex flex-wrap gap-1.5">
-                    <span className={`chip ${r.basis === "evidence" ? "bg-violet-100 text-violet-700" : "bg-slate-100 text-slate-600"}`}>
+                    <span className={`chip ${r.basis === "evidence" ? "bg-zinc-100 text-zinc-600" : "bg-zinc-100 text-zinc-500"}`}>
                       {r.basis === "evidence" ? "Evidence-based (assessment)" : "Interest-based"}
                     </span>
-                    {expertise.slice(0, 4).map((e) => <span key={e} className="chip bg-blue-50 text-blue-700">{e}</span>)}
+                    {expertise.slice(0, 4).map((e) => <span key={e} className="chip bg-zinc-100 text-zinc-600">{e}</span>)}
                   </div>
                   <p className="mt-2 text-sm text-slate-700">{r.explanation}</p>
                   <div className="mt-3"><MatchBreakdown r={r} /></div>

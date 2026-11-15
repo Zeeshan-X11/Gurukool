@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { PORTAL_INFO, type PortalKey } from "@/lib/portals";
 
-const ICON: Record<PortalKey, string> = { student: "✦", recruiter: "◎", expert: "▤", admin: "⚙" };
-
 export default function Welcome() {
   return (
     <div className="mx-auto max-w-4xl py-16 px-6">
@@ -14,7 +12,7 @@ export default function Welcome() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {(Object.keys(PORTAL_INFO) as PortalKey[]).map((p) => (
           <Link key={p} href={`/${p}/login`} className="card-hover group flex flex-col p-6">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-100 text-lg text-zinc-600 group-hover:bg-zinc-900 group-hover:text-white transition-colors duration-300">{ICON[p]}</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-100 text-sm font-semibold text-zinc-500 group-hover:bg-zinc-900 group-hover:text-white transition-colors duration-150">{PORTAL_INFO[p].name.slice(0,1)}</span>
             <h2 className="mt-5 font-semibold text-zinc-900">{PORTAL_INFO[p].name}</h2>
             <p className="mt-1.5 flex-1 text-[13px] text-zinc-400 leading-relaxed">{PORTAL_INFO[p].blurb}</p>
             <span className="mt-5 text-[13px] font-semibold text-zinc-900 group-hover:translate-x-0.5 transition-transform duration-200">Sign in →</span>

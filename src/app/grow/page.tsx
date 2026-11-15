@@ -116,7 +116,7 @@ function ResumeStudio() {
                 onClick={polishProjects}
                 disabled={polishing || !r.projects.trim()}
                 className="btn-ghost text-xs py-1 px-2"
-              >{polishing ? <><Spinner /> Polishing…</> : "✨ AI Polish"}</button>
+              >{polishing ? <><Spinner /> Polishing…</> : "AI Polish"}</button>
             </div>
             <textarea
               className="input"
@@ -144,7 +144,7 @@ function ResumeStudio() {
             ))}</ul>],
           ].map(([h, body]) => body && (
             <section key={h as string} className="mt-4">
-              <h2 className="border-b border-black text-sm font-bold tracking-wider">{h}</h2>
+              <h2 className="border-b border-black text-sm font-bold">{h}</h2>
               <div className="mt-1">{body}</div>
             </section>
           ))}

@@ -52,7 +52,7 @@ export default function SkillMastery({ goal, refreshKey }: { goal: string; refre
               })}
             </div>
             {p.nextTopics.length > 0 && (
-              <p className="mt-4 rounded-lg bg-blue-50 px-3 py-2 text-sm text-blue-900">
+              <p className="mt-4 rounded-lg bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
                 <b>Next assessment will focus on:</b> {p.nextTopics.join(", ")}. These are the skills we are least certain about (uncertainty sampling).
               </p>
             )}
