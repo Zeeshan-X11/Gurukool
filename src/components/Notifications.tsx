@@ -24,7 +24,7 @@ export default function Notifications() {
     <div className="mt-3">
       <button onClick={toggle} className="btn-ghost w-full justify-between py-1.5 text-xs" aria-expanded={open}>
         <span className="flex items-center gap-1.5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4"><path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg> Notifications</span>
-        {d.unread > 0 && <span className="rounded-full bg-indigo-600 px-1.5 text-[10px] font-medium text-white">{d.unread}</span>}
+        {d.unread > 0 && <span className="rounded-full bg-[#2563EB] px-1.5 text-[10px] font-medium text-white">{d.unread}</span>}
       </button>
       {open && (
         <div className="mt-2 max-h-72 space-y-1.5 overflow-y-auto">

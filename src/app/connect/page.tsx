@@ -475,7 +475,7 @@ function ConnectInner() {
           <button
             key={t.id} role="tab" aria-selected={tab === t.id}
             onClick={() => router.replace(`/connect?tab=${t.id}`, { scroll: false })}
-            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-zinc-900 text-zinc-900" : "border-transparent text-zinc-500 hover:text-zinc-800"}`}
+            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-[#2563EB] text-[#2563EB]" : "border-transparent text-zinc-500 hover:text-zinc-800"}`}
           >{t.label}</button>
         ))}
       </div>

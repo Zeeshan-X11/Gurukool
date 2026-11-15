@@ -91,7 +91,7 @@ function NavLinks({ role, onClose }: { role: string | undefined; onClose?: () =>
             className={`group flex items-center gap-2.5 rounded-lg transition-colors duration-150
               ${n.sub ? "ml-5 py-1.5 px-2.5 text-xs" : "py-2 px-3 text-[13px] font-medium"}
               ${active
-                ? "bg-indigo-50 text-indigo-700 border-l-2 border-indigo-600 pl-[10px]"
+                ? "bg-blue-50 text-[#2563EB] border-l-2 border-[#2563EB] pl-[10px] font-semibold"
                 : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800 border-l-2 border-transparent pl-[10px]"
               }`}
           >
@@ -116,7 +116,7 @@ export default function Sidebar() {
     <>
       {/* Mobile top bar */}
       <header className="no-print sticky top-0 z-30 flex items-center justify-between border-b border-zinc-200 bg-white px-4 py-2 md:hidden">
-        <img src="/udaan-logo.png" alt="UDAAN" style={{width:"165px",height:"60px"}} className="object-contain" />
+        <img src="/udaan-logo.png" alt="UDAAN" style={{width:"120px",height:"36px"}} className="object-contain" />
         <button
           className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 transition-colors"
           onClick={() => setOpen(!open)}
@@ -145,11 +145,11 @@ export default function Sidebar() {
 
       {/* Desktop sidebar */}
       <aside className="no-print sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col overflow-y-auto border-r border-zinc-200 bg-white md:flex">
-        <div className="flex justify-center px-4 py-6">
-          <img src="/udaan-logo.png" alt="UDAAN" style={{width:"210px",height:"75px"}} className="object-contain" />
+        <div className="flex items-center justify-center px-5 py-4 border-b border-zinc-100">
+          <img src="/udaan-logo.png" alt="UDAAN" style={{width:"140px",height:"42px"}} className="object-contain" />
         </div>
 
-        <div className="mt-1 flex-1 overflow-y-auto py-1">
+        <div className="flex-1 overflow-y-auto py-3">
           <NavLinks role={role} />
         </div>
 

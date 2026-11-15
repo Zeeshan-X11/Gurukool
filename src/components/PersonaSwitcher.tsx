@@ -11,7 +11,7 @@ const ROLE_LABEL: Record<string, string> = {
   admin: "Admin",
 };
 
-export default function PersonaSwitcher({ dark }: { dark?: boolean }) {
+export default function PersonaSwitcher({ dark: _dark }: { dark?: boolean }) {
   const { info } = usePersona();
   if (!info) return null;
 
@@ -26,7 +26,7 @@ export default function PersonaSwitcher({ dark }: { dark?: boolean }) {
     <div className="space-y-1">
       {/* Avatar + name */}
       <div className="flex items-center gap-2.5 rounded-xl px-2 py-2">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-xs font-bold text-white">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white" style={{background:"#2563EB"}}>
           {initials}
         </div>
         <div className="min-w-0">

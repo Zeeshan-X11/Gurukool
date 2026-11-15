@@ -37,12 +37,12 @@ export function useStudent() {
 
 export function PageHeader({ title, subtitle, right }: { title: string; subtitle?: string; right?: React.ReactNode }) {
   return (
-    <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+    <div className="mb-6 flex flex-wrap items-start justify-between gap-4 border-b border-zinc-200 pb-5">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">{title}</h1>
-        {subtitle && <p className="mt-1 text-sm text-zinc-400 leading-relaxed max-w-xl">{subtitle}</p>}
+        <h1 className="text-xl font-bold tracking-tight" style={{ color: "#0B0F19" }}>{title}</h1>
+        {subtitle && <p className="mt-1 text-[13px] text-zinc-400 leading-relaxed max-w-xl">{subtitle}</p>}
       </div>
-      {right && <div className="flex items-center gap-2">{right}</div>}
+      {right && <div className="flex items-center gap-2 pt-0.5">{right}</div>}
     </div>
   );
 }

@@ -199,7 +199,7 @@ export default function BuildPage() {
         <div className="flex items-center gap-1 overflow-x-auto">
           {(Object.keys(LANGS) as Lang[]).map((l) => (
             <button key={l} onClick={() => setLang(l)}
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${lang === l ? "bg-indigo-600 text-white" : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"}`}>
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${lang === l ? "bg-[#2563EB] text-white" : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"}`}>
               <span className={`rounded px-1 py-0.5 text-[10px] font-semibold ${lang === l ? "opacity-90" : ""} ${LANG_COLOR[l]}`}>{LANGS[l].icon}</span>
               <span className="hidden sm:inline">{LANGS[l].label}</span>
               {!LANGS[l].runnable && <span className="hidden text-[9px] opacity-50 sm:inline">edit</span>}
@@ -211,7 +211,7 @@ export default function BuildPage() {
           <button onClick={() => { setCodes((c) => ({ ...c, [lang]: STARTERS[lang] })); setLogs([]); }}
             className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs text-zinc-500 hover:border-zinc-300 hover:text-zinc-800 transition-colors">Reset</button>
           <button onClick={run} disabled={running}
-            className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500 disabled:opacity-50 transition-colors">
+            className="flex items-center gap-1.5 rounded-lg bg-[#2563EB] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50 transition-colors">
             {running ? <Spinner /> : <span>▶</span>}
             {running ? "Running…" : "Run"}
           </button>
@@ -291,7 +291,7 @@ export default function BuildPage() {
           {/* Chat header */}
           <div className="flex items-center justify-between border-b border-zinc-100 px-4 py-3">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-semibold text-white">U</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563EB] text-sm font-semibold text-white">U</div>
               <div>
                 <p className="text-sm font-semibold text-zinc-900">URBro</p>
                 <p className="text-[10px] text-zinc-400">code assistant</p>
@@ -308,7 +308,7 @@ export default function BuildPage() {
             {messages.length === 0 ? (
               <div className="space-y-3">
                 <div className="flex items-start gap-2 px-1">
-                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-indigo-600 text-xs font-semibold text-white">U</div>
+                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#2563EB] text-xs font-semibold text-white">U</div>
                   <div className="rounded-lg rounded-tl-sm bg-zinc-100 px-3 py-2.5 text-xs leading-relaxed text-zinc-700">
                     I can see your code and output. Ask me anything about it.
                   </div>
@@ -330,11 +330,11 @@ export default function BuildPage() {
             ) : messages.map((m, i) => (
               <div key={i} className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 {m.role === "assistant" && (
-                  <div className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-indigo-600 text-xs font-semibold text-white">U</div>
+                  <div className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#2563EB] text-xs font-semibold text-white">U</div>
                 )}
                 <div className={`max-w-[80%] rounded-lg px-3 py-2.5 text-xs leading-relaxed ${
                   m.role === "user"
-                    ? "bg-indigo-600 text-white rounded-br-sm"
+                    ? "bg-[#2563EB] text-white rounded-br-sm"
                     : "bg-zinc-100 text-zinc-800 rounded-bl-sm"
                 }`}>
                   <div className="whitespace-pre-wrap break-words">{m.content}</div>
@@ -343,7 +343,7 @@ export default function BuildPage() {
             ))}
             {busy && (
               <div className="flex items-end gap-2 justify-start">
-                <div className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-indigo-600 text-xs font-semibold text-white">U</div>
+                <div className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#2563EB] text-xs font-semibold text-white">U</div>
                 <div className="bg-zinc-100 rounded-lg rounded-bl-sm px-4 py-3">
                   <div className="flex gap-1.5 items-center">
                     <span className="h-1.5 w-1.5 rounded-full bg-zinc-400 animate-pulse"></span>
@@ -363,13 +363,13 @@ export default function BuildPage() {
           <div className="border-t border-zinc-100 p-3 bg-white">
             <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); ask(q); }}>
               <input
-                className="flex-1 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-xs text-zinc-800 placeholder-zinc-400 outline-none focus:border-indigo-300 focus:bg-white focus:ring-2 focus:ring-indigo-50 transition-colors"
+                className="flex-1 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-xs text-zinc-800 placeholder-zinc-400 outline-none focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-50 transition-colors"
                 placeholder="Ask URBro anything…"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
               />
               <button
-                className="rounded-lg bg-indigo-600 px-3 py-2.5 text-xs font-semibold text-white hover:bg-indigo-500 disabled:opacity-30 transition-colors"
+                className="rounded-lg bg-[#2563EB] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-30 transition-colors"
                 disabled={busy || !q.trim()}>
                 {busy ? <Spinner /> : "↑"}
               </button>
