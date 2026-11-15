@@ -15,7 +15,7 @@ export function ProgressBar({ pct, color = "bg-zinc-900", label }: { pct: number
   return (
     <div>
       {label && <div className="mb-1 flex justify-between text-xs text-zinc-500"><span>{label}</span><span>{pct}%</span></div>}
-      <div className="h-2 rounded-full bg-slate-100"><div className={`h-2 rounded-full ${color} transition-all`} style={{ width: `${Math.min(100, Math.max(0, pct))}%` }} /></div>
+      <div className="h-2 rounded-full bg-zinc-100"><div className={`h-2 rounded-full ${color} transition-colors`} style={{ width: `${Math.min(100, Math.max(0, pct))}%` }} /></div>
     </div>
   );
 }
@@ -25,16 +25,16 @@ export function CourseCardView({ c, onEnroll, busy }: { c: CourseCard; onEnroll?
     <div className="card flex flex-col">
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold text-zinc-900">{c.title}</h3>
-        <div className="flex shrink-0 gap-1">{c.isDemo && <DemoContentBadge />}{!c.published && <span className="chip bg-slate-100 text-zinc-600">Draft</span>}</div>
+        <div className="flex shrink-0 gap-1">{c.isDemo && <DemoContentBadge />}{!c.published && <span className="chip bg-zinc-100 text-zinc-600">Draft</span>}</div>
       </div>
       <p className="mt-1 line-clamp-3 text-sm text-zinc-600">{c.description}</p>
       <p className="mt-2 text-sm text-zinc-500">
         Trainer: <b className="font-medium text-zinc-700">{c.trainer.name}</b>{c.trainer.isDemo && <span className="text-amber-700"> (fictional demo profile)</span>}
       </p>
       <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
-        <div className="rounded-lg bg-zinc-50 p-2"><div className="font-semibold text-slate-800">{c.difficulty}</div><div className="text-zinc-500">Level</div></div>
-        <div className="rounded-lg bg-zinc-50 p-2"><div className="font-semibold text-slate-800">{c.moduleCount}</div><div className="text-zinc-500">Modules</div></div>
-        <div className="rounded-lg bg-zinc-50 p-2"><div className="font-semibold text-slate-800">{c.durationWeeks} wk</div><div className="text-zinc-500">Duration</div></div>
+        <div className="rounded-lg bg-zinc-50 p-2"><div className="font-semibold text-zinc-800">{c.difficulty}</div><div className="text-zinc-500">Level</div></div>
+        <div className="rounded-lg bg-zinc-50 p-2"><div className="font-semibold text-zinc-800">{c.moduleCount}</div><div className="text-zinc-500">Modules</div></div>
+        <div className="rounded-lg bg-zinc-50 p-2"><div className="font-semibold text-zinc-800">{c.durationWeeks} wk</div><div className="text-zinc-500">Duration</div></div>
       </div>
       <div className="mt-3 text-xs text-zinc-500">{c.category}</div>
       <div className="mt-1 flex flex-wrap gap-1.5">{c.skillTags.map((s) => <span key={s} className="chip bg-zinc-50 text-zinc-700">{s}</span>)}</div>

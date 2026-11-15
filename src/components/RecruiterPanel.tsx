@@ -49,17 +49,17 @@ export default function RecruiterPanel({ resume }: { resume: { github: string; l
     <div className="no-print mt-6 grid gap-6 lg:grid-cols-2">
       <div className="card space-y-4">
         <div className="flex items-start justify-between gap-3">
-          <div><h2 className="h2">Recruiter Connect</h2><p className="text-sm text-slate-500">Let recruiters discover your portfolio. Private by default.</p></div>
-          {v && <span className={`chip ${v.recruiterDiscoverable ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{v.recruiterDiscoverable ? "Discoverable" : "Private"}</span>}
+          <div><h2 className="h2">Recruiter Connect</h2><p className="text-sm text-zinc-500">Let recruiters discover your portfolio. Private by default.</p></div>
+          {v && <span className={`chip ${v.recruiterDiscoverable ? "bg-emerald-100 text-emerald-700" : "bg-zinc-100 text-zinc-600"}`}>{v.recruiterDiscoverable ? "Discoverable" : "Private"}</span>}
         </div>
         {!v ? (err ? <ErrorAlert err={err} /> : <Spinner />) : (
           <>
-            <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 p-3">
-              <input type="checkbox" className="mt-1 h-4 w-4 accent-blue-600" checked={v.recruiterDiscoverable} disabled={busy}
+            <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-zinc-200 p-3">
+              <input type="checkbox" className="mt-1 h-4 w-4 accent-zinc-900" checked={v.recruiterDiscoverable} disabled={busy}
                 onChange={(e) => save({ recruiterDiscoverable: e.target.checked }, e.target.checked ? "You're now visible to recruiters." : "Your profile is private again.")} />
               <span className="text-sm">
                 <b>Allow recruiters to discover my profile</b><br />
-                <span className="text-slate-500">Recruiters will see your name, college, branch, semester, career goal, skills, projects and the links below. Never your email, assessment scores or other personal details.</span>
+                <span className="text-zinc-500">Recruiters will see your name, college, branch, semester, career goal, skills, projects and the links below. Never your email, assessment scores or other personal details.</span>
               </span>
             </label>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -85,18 +85,18 @@ export default function RecruiterPanel({ resume }: { resume: { github: string; l
 
       <div className="card space-y-3">
         <h2 className="h2">Recruiter requests</h2>
-        <p className="text-xs text-slate-500">Interest from a recruiter is not a job or internship offer.</p>
+        <p className="text-xs text-zinc-500">Interest from a recruiter is not a job or internship offer.</p>
         {!interests ? <Spinner /> : interests.length === 0 ? (
           <Alert kind="info">No requests yet.{v && !v.recruiterDiscoverable && " Turn on recruiter discovery so recruiters can find you."}</Alert>
         ) : interests.map((i) => (
-          <div key={i.id} className="rounded-lg border border-slate-200 p-4">
+          <div key={i.id} className="rounded-lg border border-zinc-200 p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-2"><StatusBadge status={i.status} /><span className="chip bg-slate-100 text-slate-600">{i.type === "INVITE" ? "Invitation to apply" : "Interest"}</span></div>
+              <div className="flex items-center gap-2"><StatusBadge status={i.status} /><span className="chip bg-zinc-100 text-zinc-600">{i.type === "INVITE" ? "Invitation to apply" : "Interest"}</span></div>
               {i.recruiterIsDemo && <span className="chip bg-amber-100 text-amber-800">Demo recruiter · fictional</span>}
             </div>
             <p className="mt-2 text-sm"><b>{i.recruiterName}</b> · {i.designation}, {i.organization}</p>
-            {i.opportunityTitle && <p className="text-sm text-slate-600">Opportunity: {i.opportunityTitle}</p>}
-            <p className="mt-1 text-sm text-slate-500">“{i.message}”</p>
+            {i.opportunityTitle && <p className="text-sm text-zinc-600">Opportunity: {i.opportunityTitle}</p>}
+            <p className="mt-1 text-sm text-zinc-500">“{i.message}”</p>
             {i.status === "PENDING" && (
               <div className="mt-3 flex gap-2">
                 <button className="btn-primary px-3 py-1.5" onClick={() => respond(i.id, "ACCEPTED")}>Accept connection</button>

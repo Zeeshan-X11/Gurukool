@@ -339,10 +339,10 @@ export default function VideoMeet({ roomCode, displayName, onLeave }: Props) {
   if (video === undefined) {
     return (
       <div className="flex flex-col items-center gap-6 p-8">
-        <video ref={localVideoRef} autoPlay muted className="w-80 rounded-xl bg-gray-900" />
+        <video ref={localVideoRef} autoPlay muted className="w-80 rounded-xl bg-zinc-900" />
         <div className="text-center">
-          <p className="text-sm text-gray-500 mb-1">Joining as <b>{displayName}</b></p>
-          <p className="text-xs text-gray-400">Room: <code className="bg-gray-100 px-1.5 py-0.5 rounded">{roomCode}</code></p>
+          <p className="text-sm text-zinc-500 mb-1">Joining as <b>{displayName}</b></p>
+          <p className="text-xs text-zinc-400">Room: <code className="bg-zinc-100 px-1.5 py-0.5 rounded">{roomCode}</code></p>
         </div>
         <button
           onClick={getMedia}
@@ -360,24 +360,24 @@ export default function VideoMeet({ roomCode, displayName, onLeave }: Props) {
 
       {/* Chat panel */}
       {showChat && (
-        <div className="absolute right-0 top-0 z-20 flex h-[90vh] w-72 flex-col rounded-l-2xl border-l border-white/10 bg-white shadow-2xl">
+        <div className="absolute right-0 top-0 z-20 flex h-[90vh] w-72 flex-col rounded-l-lg border-l border-white/10 bg-white shadow-lg">
           <div className="flex items-center justify-between border-b p-4">
-            <h3 className="font-semibold text-gray-900">In-call Chat</h3>
-            <button onClick={() => setShowChat(false)} className="text-gray-400 hover:text-gray-600">✕</button>
+            <h3 className="font-semibold text-zinc-900">In-call Chat</h3>
+            <button onClick={() => setShowChat(false)} className="text-zinc-400 hover:text-zinc-600">✕</button>
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {messages.length === 0 ? (
-              <p className="text-xs text-center text-gray-400 mt-8">No messages yet</p>
+              <p className="text-xs text-center text-zinc-400 mt-8">No messages yet</p>
             ) : messages.map((m, i) => (
               <div key={i} className="text-sm">
                 <span className="font-semibold text-zinc-900">{m.sender}</span>
-                <p className="text-gray-800 mt-0.5">{m.data}</p>
+                <p className="text-zinc-800 mt-0.5">{m.data}</p>
               </div>
             ))}
           </div>
           <div className="flex gap-2 border-t p-3">
             <input
-              className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-100"
+              className="flex-1 rounded-lg border border-zinc-200 px-3 py-2 text-sm focus:border-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-100"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
@@ -398,7 +398,7 @@ export default function VideoMeet({ roomCode, displayName, onLeave }: Props) {
                 autoPlay playsInline
                 className="w-full h-full object-contain bg-[#080b14]"
               />
-              <span className="absolute left-3.5 top-3.5 rounded-full border border-white/10 bg-gray-900/85 px-3 py-1.5 text-xs text-white">
+              <span className="absolute left-3.5 top-3.5 rounded-full border border-white/10 bg-zinc-900/85 px-3 py-1.5 text-xs text-white">
                 Screen shared by participant
               </span>
             </div>
@@ -414,7 +414,7 @@ export default function VideoMeet({ roomCode, displayName, onLeave }: Props) {
               <video
                 ref={(ref) => { if (ref) ref.srcObject = v.stream; }}
                 autoPlay playsInline
-                className="h-[20vh] w-[40vw] min-w-[220px] rounded-xl object-cover bg-gray-900"
+                className="h-[20vh] w-[40vw] min-w-[220px] rounded-xl object-cover bg-zinc-900"
               />
             </div>
           ))}
@@ -425,7 +425,7 @@ export default function VideoMeet({ roomCode, displayName, onLeave }: Props) {
       <video
         ref={localVideoRef}
         autoPlay muted
-        className="absolute bottom-20 left-5 z-30 h-[20vh] w-[min(24vw,240px)] rounded-xl border border-white/25 bg-gray-900 object-cover"
+        className="absolute bottom-20 left-5 z-30 h-[20vh] w-[min(24vw,240px)] rounded-xl border border-white/25 bg-zinc-900 object-cover"
       />
 
       {/* Controls bar */}

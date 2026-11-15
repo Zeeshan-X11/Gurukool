@@ -37,7 +37,7 @@ export default function AccountPage() {
         <div className="flex flex-wrap gap-2 text-sm">
           <span className="chip bg-zinc-50 text-zinc-700">{ROLE[me.role] ?? me.role}</span>
           <span className={`chip ${me.active ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}>{me.active ? "Active" : "Suspended"}</span>
-          {me.role === "recruiter" && <span className={`chip ${me.approved ? "bg-blue-100 text-zinc-700" : "bg-amber-100 text-amber-800"}`}>{me.approved ? "Approved" : "Pending admin approval"}</span>}
+          {me.role === "recruiter" && <span className={`chip ${me.approved ? "bg-zinc-100 text-zinc-700" : "bg-amber-100 text-amber-800"}`}>{me.approved ? "Approved" : "Pending admin approval"}</span>}
           <span className="text-zinc-500">Member since {new Date(me.createdAt).toLocaleDateString("en-IN")}</span>
         </div>
         <button className="btn-primary" disabled={busy || name.trim() === me.name}>{busy && <Spinner />} Save name</button>

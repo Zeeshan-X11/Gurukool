@@ -45,7 +45,7 @@ export default function MentorProfilePage({ params }: { params: Promise<{ id: st
   }
 
   if (err) return <div className="mx-auto max-w-4xl"><ErrorAlert err={err} /><Link href="/connect" className="mt-4 inline-block text-sm text-zinc-700">← Back to Connect</Link></div>;
-  if (!d) return <div className="text-sm text-slate-500"><Spinner /> Loading profile…</div>;
+  if (!d) return <div className="text-sm text-zinc-500"><Spinner /> Loading profile…</div>;
   const m = d.mentor;
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm({ ...form, [k]: k === "durationMinutes" ? Number(e.target.value) : e.target.value });
@@ -59,13 +59,13 @@ export default function MentorProfilePage({ params }: { params: Promise<{ id: st
         <div className="card space-y-4 lg:col-span-3">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">{m.name}</h1>
-              <p className="text-slate-600">{m.headline}</p>
-              <p className="mt-1 text-sm text-slate-500">{m.designation} · {m.organization} · {m.yearsOfExperience} years of experience</p>
+              <h1 className="text-2xl font-semibold text-zinc-900">{m.name}</h1>
+              <p className="text-zinc-600">{m.headline}</p>
+              <p className="mt-1 text-sm text-zinc-500">{m.designation} · {m.organization} · {m.yearsOfExperience} years of experience</p>
             </div>
             <ProfileBadge isDemo={m.isDemo} verified={m.verified} />
           </div>
-          <div><div className="label">Professional background</div><p className="text-sm text-slate-700">{m.bio || "—"}</p>
+          <div><div className="label">Professional background</div><p className="text-sm text-zinc-700">{m.bio || "—"}</p>
             {(m.links?.linkedin || m.links?.portfolio) && (
               <div className="mt-1 flex gap-3 text-sm">
                 {m.links.linkedin && <a className="text-zinc-700 hover:underline" href={m.links.linkedin} target="_blank" rel="noopener noreferrer nofollow">LinkedIn ↗</a>}
@@ -74,13 +74,13 @@ export default function MentorProfilePage({ params }: { params: Promise<{ id: st
             )}
           </div>
           <div><div className="label">Technical skills</div>
-            <div className="flex flex-wrap gap-1.5">{m.expertise.map((x) => <span key={x} className="chip bg-slate-100 text-slate-700">{x}</span>)}</div></div>
+            <div className="flex flex-wrap gap-1.5">{m.expertise.map((x) => <span key={x} className="chip bg-zinc-100 text-zinc-700">{x}</span>)}</div></div>
           <div><div className="label">Topics offered</div>
-            <div className="flex flex-wrap gap-1.5">{m.teachingTopics.map((x) => <span key={x} className="chip bg-blue-50 text-blue-700">{x}</span>)}</div></div>
-          <div><div className="label">Session description</div><p className="text-sm text-slate-700">{m.sessionDescription || "—"}</p>
-            <p className="mt-1 text-xs text-slate-500">Formats: {m.sessionFormats.join(", ")}</p></div>
+            <div className="flex flex-wrap gap-1.5">{m.teachingTopics.map((x) => <span key={x} className="chip bg-zinc-100 text-zinc-700">{x}</span>)}</div></div>
+          <div><div className="label">Session description</div><p className="text-sm text-zinc-700">{m.sessionDescription || "—"}</p>
+            <p className="mt-1 text-xs text-zinc-500">Formats: {m.sessionFormats.join(", ")}</p></div>
           <div><div className="label">Weekly availability (IST)</div>
-            <div className="flex flex-wrap gap-1.5">{m.availability.length ? m.availability.map((s, i) => <span key={i} className="chip bg-emerald-50 text-emerald-700">{slotText(s)}</span>) : <span className="text-sm text-slate-400">No slots published</span>}</div></div>
+            <div className="flex flex-wrap gap-1.5">{m.availability.length ? m.availability.map((s, i) => <span key={i} className="chip bg-emerald-50 text-emerald-700">{slotText(s)}</span>) : <span className="text-sm text-zinc-400">No slots published</span>}</div></div>
           {d.isOwner && <Alert kind="info">This is your profile. Manage it from the <Link href="/connect/mentor" className="font-semibold underline">Mentor Dashboard</Link>.</Alert>}
         </div>
 
@@ -91,7 +91,7 @@ export default function MentorProfilePage({ params }: { params: Promise<{ id: st
               {done ? (
                 <div className="space-y-3">
                   <Alert kind="success">Your mentorship request has been sent successfully. You&apos;ll receive confirmation when the mentor accepts.</Alert>
-                  <p className="text-xs text-slate-500">Status updates appear in My Sessions. No email or notification has been sent.</p>
+                  <p className="text-xs text-zinc-500">Status updates appear in My Sessions. No email or notification has been sent.</p>
                   <div className="flex gap-2">
                     <Link href="/connect?tab=sessions" className="btn-primary flex-1">View My Sessions</Link>
                     <button type="button" className="btn-ghost" onClick={() => { setDone(false); setForm((f) => ({ ...f, startAt: "", message: "" })); }}>New request</button>
@@ -102,10 +102,10 @@ export default function MentorProfilePage({ params }: { params: Promise<{ id: st
               ) : (
                 <>
                   <div className="grid grid-cols-2 gap-3">
-                    <div><label className="label">Your name</label><input className="input bg-slate-50" value={form.studentName} readOnly /></div>
-                    <div><label className="label">Your email</label><input className="input bg-slate-50" type="email" value={form.studentEmail} readOnly /></div>
+                    <div><label className="label">Your name</label><input className="input bg-zinc-50" value={form.studentName} readOnly /></div>
+                    <div><label className="label">Your email</label><input className="input bg-zinc-50" type="email" value={form.studentEmail} readOnly /></div>
                   </div>
-                  <div><label className="label">Mentor</label><input className="input bg-slate-50" value={m.name} readOnly /></div>
+                  <div><label className="label">Mentor</label><input className="input bg-zinc-50" value={m.name} readOnly /></div>
                   <div><label className="label">Topic</label>
                     <select className="input" value={form.topic} onChange={set("topic")} required>
                       {m.teachingTopics.map((t) => <option key={t}>{t}</option>)}
@@ -128,7 +128,7 @@ export default function MentorProfilePage({ params }: { params: Promise<{ id: st
                       placeholder="e.g. I'm weak in Node.js async patterns and want help structuring a REST API for my project." /></div>
                   <ErrorAlert err={submitErr} />
                   <button className="btn-primary w-full" disabled={busy || !form.startAt}>{busy && <Spinner />} Request Session</button>
-                  <p className="text-xs text-slate-500">Only this mentor&apos;s published slots are offered. The mentor must accept before the session is confirmed.</p>
+                  <p className="text-xs text-zinc-500">Only this mentor&apos;s published slots are offered. The mentor must accept before the session is confirmed.</p>
                 </>
               )}
             </form>

@@ -55,37 +55,36 @@ function BecomeMentorModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-lg rounded-2xl bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
-          <h2 className="text-lg font-bold text-zinc-900">Apply to become a mentor</h2>
-          <button onClick={onClose} className="text-zinc-400 hover:text-gray-600">✕</button>
+      <div className="w-full max-w-lg rounded-lg bg-white shadow-lg">
+        <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4">
+          <h2 className="text-lg font-semibold text-zinc-900">Apply to become a mentor</h2>
+          <button onClick={onClose} className="text-zinc-400 hover:text-zinc-600">✕</button>
         </div>
         {done ? (
           <div className="px-6 py-8 text-center space-y-3">
-            <div className="text-4xl">🎉</div>
-            <p className="font-semibold text-zinc-900">Application submitted!</p>
+            <p className="font-semibold text-zinc-900">Application submitted.</p>
             <p className="text-sm text-zinc-500">Our admin will review and get back to you soon.</p>
             <button onClick={onClose} className="btn-primary mt-2">Done</button>
           </div>
         ) : (
           <form onSubmit={submit} className="space-y-4 px-6 py-5">
             <div className="grid gap-3 sm:grid-cols-2">
-              <div><label className="block text-xs font-medium text-gray-700 mb-1">Full name *</label>
+              <div><label className="block text-xs font-medium text-zinc-700 mb-1">Full name *</label>
                 <input className="input" value={form.name} onChange={set("name")} required /></div>
-              <div><label className="block text-xs font-medium text-gray-700 mb-1">Email *</label>
+              <div><label className="block text-xs font-medium text-zinc-700 mb-1">Email *</label>
                 <input className="input" type="email" value={form.email} onChange={set("email")} required /></div>
-              <div><label className="block text-xs font-medium text-gray-700 mb-1">Job title *</label>
+              <div><label className="block text-xs font-medium text-zinc-700 mb-1">Job title *</label>
                 <input className="input" placeholder="e.g. Senior Engineer" value={form.designation} onChange={set("designation")} required /></div>
-              <div><label className="block text-xs font-medium text-gray-700 mb-1">Company *</label>
+              <div><label className="block text-xs font-medium text-zinc-700 mb-1">Company *</label>
                 <input className="input" placeholder="e.g. Google" value={form.organization} onChange={set("organization")} required /></div>
-              <div><label className="block text-xs font-medium text-gray-700 mb-1">Years of experience *</label>
+              <div><label className="block text-xs font-medium text-zinc-700 mb-1">Years of experience *</label>
                 <input className="input" type="number" min={0} max={50} value={form.yearsOfExperience} onChange={set("yearsOfExperience")} required /></div>
-              <div><label className="block text-xs font-medium text-gray-700 mb-1">LinkedIn URL</label>
+              <div><label className="block text-xs font-medium text-zinc-700 mb-1">LinkedIn URL</label>
                 <input className="input" placeholder="https://linkedin.com/in/..." value={form.linkedin} onChange={set("linkedin")} /></div>
             </div>
-            <div><label className="block text-xs font-medium text-gray-700 mb-1">Expertise (comma separated) *</label>
+            <div><label className="block text-xs font-medium text-zinc-700 mb-1">Expertise (comma separated) *</label>
               <input className="input" placeholder="React, Node.js, System Design" value={form.expertise} onChange={set("expertise")} required /></div>
-            <div><label className="block text-xs font-medium text-gray-700 mb-1">Short bio</label>
+            <div><label className="block text-xs font-medium text-zinc-700 mb-1">Short bio</label>
               <textarea className="input" rows={3} placeholder="Tell students about yourself and what you can help with…" value={form.bio} onChange={set("bio")} /></div>
             {err && <p className="text-sm text-red-600">{err}</p>}
             <div className="flex gap-3 pt-1">
@@ -158,11 +157,11 @@ function FindMentor() {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-zinc-900">Find Your Mentor</h2>
+          <h2 className="text-lg font-semibold text-zinc-900">Find Your Mentor</h2>
           <p className="mt-0.5 text-sm text-zinc-500">Connect with verified professionals. Once accepted, book a video call in their available hours.</p>
         </div>
         <button onClick={() => setShowApply(true)} className="btn-ghost text-sm">
-          🎓 Become a mentor
+          Become a mentor
         </button>
       </div>
 
@@ -205,19 +204,19 @@ function FindMentor() {
                 </div>
 
                 {/* Bio */}
-                {m.bio && <p className="text-sm text-gray-600 line-clamp-2">{m.bio}</p>}
+                {m.bio && <p className="text-sm text-zinc-600 line-clamp-2">{m.bio}</p>}
 
                 {/* Expertise chips */}
                 <div className="flex flex-wrap gap-1.5">
                   {m.expertise.slice(0, 5).map((e) => (
-                    <span key={e} className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs text-gray-700">{e}</span>
+                    <span key={e} className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs text-zinc-700">{e}</span>
                   ))}
                 </div>
 
                 {/* Available slots */}
                 {m.availability.length > 0 && (
                   <div className="text-xs text-zinc-500">
-                    🕐 {m.availability.map((s) => `${s.day} ${s.start}–${s.end}`).join(", ")}
+                    {m.availability.map((s) => `${s.day} ${s.start}–${s.end}`).join(", ")}
                   </div>
                 )}
 
@@ -232,7 +231,7 @@ function FindMentor() {
                         href={`/connect/meeting?room=mentor-${m.id.slice(-6)}-${info?.current?.label?.replace(/\s/g, "") ?? "student"}`}
                         className="btn-primary block w-full text-center text-sm"
                       >
-                        📹 Start video call
+                        Start video call
                       </a>
                     </div>
                   )}
@@ -305,12 +304,12 @@ function MyConnections() {
 
   const statusColor = (s: string) =>
     s === "accepted" ? "text-green-700 bg-green-50" : s === "rejected" ? "text-red-600 bg-red-50" : "text-amber-700 bg-amber-50";
-  const statusLabel = (s: string) => s === "accepted" ? "✓ Connected" : s === "rejected" ? "✗ Declined" : "⏳ Pending";
+  const statusLabel = (s: string) => s === "accepted" ? "✓ Connected" : s === "rejected" ? "✗ Declined" : "Pending";
 
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-zinc-900">My Connections</h2>
+        <h2 className="text-lg font-semibold text-zinc-900">My Connections</h2>
         <p className="mt-0.5 text-sm text-zinc-500">Track your mentor connection requests. Once accepted you can book a video call.</p>
       </div>
       <ErrorAlert err={err} />
@@ -319,7 +318,7 @@ function MyConnections() {
       ) : connections.length === 0 ? (
         <Alert kind="info">No connection requests yet. Go to <b>Find Mentor</b> and send your first request.</Alert>
       ) : (
-        <div className="divide-y divide-gray-100 rounded-xl border border-zinc-200 bg-white">
+        <div className="divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white">
           {connections.map((c) => {
             const m = c.mentorId;
             return (
@@ -340,7 +339,7 @@ function MyConnections() {
                     <button
                       onClick={() => router.push(`/connect/meeting?room=mentor-${String(m?._id).slice(-6)}-${info?.current?.label?.replace(/\s/g, "") ?? "student"}`)}
                       className="btn-primary text-xs"
-                    >📹 Video call</button>
+                    >Video call</button>
                   )}
                   {c.status === "pending" && (
                     <button onClick={() => withdraw(c._id)} className="text-xs text-red-500 hover:underline">Withdraw</button>
@@ -394,7 +393,7 @@ function Meetings() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-bold text-zinc-900">Video Meetings</h2>
+        <h2 className="text-lg font-semibold text-zinc-900">Video Meetings</h2>
         <p className="mt-0.5 text-sm text-zinc-500">Start or join a meeting. Powered by WebRTC — no downloads needed.</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
@@ -421,10 +420,9 @@ function Meetings() {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 text-center text-sm">
-        {[["🎥", "Video & Audio"], ["🖥", "Screen Share"], ["💬", "In-call Chat"], ["🔗", "Share by Code"]].map(([icon, label]) => (
+        {[["Video & Audio"], ["Screen Share"], ["In-call Chat"], ["Share by Code"]].map(([label]) => (
           <div key={label} className="card py-4">
-            <div className="text-2xl mb-1">{icon}</div>
-            <div className="text-xs font-medium text-gray-700">{label}</div>
+            <div className="text-xs font-medium text-zinc-700">{label}</div>
           </div>
         ))}
       </div>
@@ -436,7 +434,7 @@ function Meetings() {
         ) : history.length === 0 ? (
           <Alert kind="info">Your past meetings will appear here once you join one.</Alert>
         ) : (
-          <div className="divide-y divide-gray-100 rounded-xl border border-zinc-200 bg-white">
+          <div className="divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white">
             {history.map((m, i) => (
               <div key={`${m._id}-${i}`} className="flex items-center justify-between gap-4 px-4 py-3">
                 <div className="flex items-center gap-3">
@@ -477,7 +475,7 @@ function ConnectInner() {
           <button
             key={t.id} role="tab" aria-selected={tab === t.id}
             onClick={() => router.replace(`/connect?tab=${t.id}`, { scroll: false })}
-            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-slate-900 text-zinc-900" : "border-transparent text-zinc-500 hover:text-gray-800"}`}
+            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-zinc-900 text-zinc-900" : "border-transparent text-zinc-500 hover:text-zinc-800"}`}
           >{t.label}</button>
         ))}
       </div>

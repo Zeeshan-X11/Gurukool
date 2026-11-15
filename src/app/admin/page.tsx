@@ -39,7 +39,7 @@ function OverviewPanel() {
           {o.recentBookings.length === 0 ? <p className="text-sm text-zinc-500">No sessions requested yet.</p> : o.recentBookings.map((b) => (
             <div key={b.id} className="flex justify-between gap-2 border-t border-zinc-100 pt-2 text-sm">
               <span><b>{b.student}</b> → {b.mentor}<span className="block text-xs text-zinc-500">{b.topic} · {b.when}</span></span>
-              <span className="chip h-fit bg-slate-100 text-zinc-700">{b.status}</span>
+              <span className="chip h-fit bg-zinc-100 text-zinc-700">{b.status}</span>
             </div>
           ))}
         </div>

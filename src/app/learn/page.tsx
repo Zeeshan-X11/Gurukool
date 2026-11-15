@@ -16,14 +16,14 @@ type Result = { score: number; total: number; weakTopics: string[]; results: { q
 type Stage = { _id: string; topic: string; description: string; duration: string; youtubeUrl: string; completed: boolean; reason?: string; prerequisites?: string[] };
 type RoadmapT = { _id: string; careerGoal: string; source: string; basedOn: { missingSkills: string[]; weakTopics: string[] }; stages: Stage[] };
 
-const LEVEL_CLS: Record<string, string> = { High: "bg-red-100 text-red-700", Medium: "bg-amber-100 text-amber-700", Low: "bg-slate-100 text-zinc-600" };
+const LEVEL_CLS: Record<string, string> = { High: "bg-red-100 text-red-700", Medium: "bg-amber-100 text-amber-700", Low: "bg-zinc-100 text-zinc-600" };
 
 function Step({ n, title, children, right }: { n: number; title: string; children: React.ReactNode; right?: React.ReactNode }) {
   return (
     <section className="card">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">{n}</span>
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900 text-sm font-semibold text-white">{n}</span>
           <h2 className="h2">{title}</h2>
         </div>
         {right}
@@ -125,21 +125,21 @@ export default function LearnPage() {
           <div className="space-y-4">
             <div>
               <div className="mb-1 flex justify-between text-sm"><span className="font-medium">Job readiness for {gap.analysis.goal}</span><span className="font-semibold text-zinc-700">{gap.analysis.readiness}%</span></div>
-              <div className="h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-blue-600" style={{ width: `${gap.analysis.readiness}%` }} /></div>
+              <div className="h-2 rounded-full bg-zinc-100"><div className="h-2 rounded-full bg-zinc-800" style={{ width: `${gap.analysis.readiness}%` }} /></div>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
               <div><div className="label">Existing skills</div>
                 <div className="flex flex-wrap gap-1.5">{gap.analysis.existing.length ? gap.analysis.existing.map((s) => <span key={s} className="chip bg-emerald-100 text-emerald-700">✓ {s}</span>) : <span className="text-sm text-zinc-400">None yet</span>}</div>
               </div>
               <div><div className="label">Missing skills</div>
-                <div className="flex flex-wrap gap-1.5">{gap.analysis.missing.length ? gap.analysis.missing.map((s) => <span key={s} className="chip bg-red-50 text-red-700">✗ {s}</span>) : <span className="text-sm text-emerald-600">No gaps 🎉</span>}</div>
+                <div className="flex flex-wrap gap-1.5">{gap.analysis.missing.length ? gap.analysis.missing.map((s) => <span key={s} className="chip bg-red-50 text-red-700">✗ {s}</span>) : <span className="text-sm text-emerald-600">No gaps</span>}</div>
               </div>
               <div><div className="label">Recommended priorities</div>
                 <ol className="space-y-1 text-sm">{gap.analysis.priorities.map((p, i) => <li key={p.skill} className="flex items-center justify-between gap-2"><span>{i + 1}. {p.skill}</span><span className={`chip ${LEVEL_CLS[p.level]}`}>{p.level}</span></li>)}</ol>
               </div>
             </div>
             {gap.explanation ? (
-              <div className="rounded-lg border border-violet-200 bg-violet-50 p-4">
+              <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
                 <div className="mb-2"><SourceBadge source="ai" /></div>
                 <p className="whitespace-pre-wrap text-sm text-zinc-700">{gap.explanation}</p>
               </div>
@@ -164,7 +164,7 @@ export default function LearnPage() {
                 <div key={qi} className={`rounded-lg border p-4 ${r ? (r.correct ? "border-emerald-200 bg-emerald-50/50" : "border-red-200 bg-red-50/50") : "border-zinc-200"}`}>
                   <div className="mb-2 flex items-start justify-between gap-3">
                     <p className="text-sm font-medium">{qi + 1}. {q.question}</p>
-                    <span className="chip shrink-0 bg-slate-100 text-zinc-600">{q.topic}</span>
+                    <span className="chip shrink-0 bg-zinc-100 text-zinc-600">{q.topic}</span>
                   </div>
                   <div className="grid gap-2 sm:grid-cols-2">
                     {q.options.map((o, oi) => {
@@ -173,7 +173,7 @@ export default function LearnPage() {
                       const isWrongPick = r && picked && !r.correct;
                       return (
                         <label key={oi} className={`flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm ${
-                          isRight ? "border-emerald-400 bg-emerald-50" : isWrongPick ? "border-red-400 bg-red-50" : picked ? "border-blue-500 bg-zinc-50" : "border-zinc-200 hover:bg-zinc-50"}`}>
+                          isRight ? "border-emerald-400 bg-emerald-50" : isWrongPick ? "border-red-400 bg-red-50" : picked ? "border-zinc-900 bg-zinc-50" : "border-zinc-200 hover:bg-zinc-50"}`}>
                           <input type="radio" name={`q${qi}`} disabled={!!result} checked={picked} onChange={() => setAnswers(answers.map((a, i) => (i === qi ? oi : a)))} />
                           {o}
                         </label>
@@ -188,7 +188,7 @@ export default function LearnPage() {
               <button className="btn-primary" onClick={submitQuiz} disabled={quizBusy || answers.some((a) => a === null)}>{quizBusy && <Spinner />} Submit answers</button>
             ) : (
               <div className="flex flex-wrap items-center gap-4 rounded-lg bg-zinc-50 p-4">
-                <div className="text-3xl font-bold text-zinc-900">{result.score}/{result.total}</div>
+                <div className="text-3xl font-semibold text-zinc-900">{result.score}/{result.total}</div>
                 <div className="text-sm">
                   <div className="font-medium">Saved to MongoDB ✓</div>
                   <div className="text-zinc-600">Weak topics: {result.weakTopics.length ? result.weakTopics.join(", ") : "none — great job!"}</div>
@@ -210,11 +210,11 @@ export default function LearnPage() {
               <span className="text-zinc-500">{roadmap.careerGoal} · {done}/{roadmap.stages.length} completed</span>
               {roadmap.basedOn?.weakTopics?.length > 0 && <span className="text-zinc-500">· prioritizes weak topics: {roadmap.basedOn.weakTopics.join(", ")}</span>}
             </div>
-            <div className="h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-emerald-500 transition-all" style={{ width: `${(done / Math.max(roadmap.stages.length, 1)) * 100}%` }} /></div>
-            <ol className="relative space-y-3 border-l-2 border-blue-100 pl-6">
+            <div className="h-2 rounded-full bg-zinc-100"><div className="h-2 rounded-full bg-emerald-500 transition-colors" style={{ width: `${(done / Math.max(roadmap.stages.length, 1)) * 100}%` }} /></div>
+            <ol className="relative space-y-3 border-l-2 border-zinc-200 pl-6">
               {roadmap.stages.map((s, i) => (
                 <li key={s._id} className="relative">
-                  <span className={`absolute -left-[33px] top-3 flex h-4 w-4 items-center justify-center rounded-full border-2 ${s.completed ? "border-emerald-500 bg-emerald-500" : "border-blue-400 bg-white"}`} />
+                  <span className={`absolute -left-[33px] top-3 flex h-4 w-4 items-center justify-center rounded-full border-2 ${s.completed ? "border-emerald-500 bg-emerald-500" : "border-zinc-400 bg-white"}`} />
                   <div className={`rounded-lg border p-4 ${s.completed ? "border-emerald-200 bg-emerald-50/40" : "border-zinc-200"}`}>
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <label className="flex cursor-pointer items-start gap-3">
@@ -230,7 +230,7 @@ export default function LearnPage() {
                         </div>
                       </label>
                       <div className="flex items-center gap-2">
-                        <span className="chip bg-zinc-50 text-zinc-700">⏱ {s.duration}</span>
+                        <span className="chip bg-zinc-50 text-zinc-700">{s.duration}</span>
                         <a href={s.youtubeUrl} target="_blank" rel="noopener noreferrer" className="btn bg-red-600 px-3 py-1.5 text-white hover:bg-red-700">▶ Learn on YouTube</a>
                       </div>
                     </div>

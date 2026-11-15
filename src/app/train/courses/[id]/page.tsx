@@ -66,7 +66,7 @@ function OwnerTools({ d, reload }: { d: Detail; reload: () => void }) {
     </select>
   );
   return (
-    <section className="card space-y-4 border-blue-200">
+    <section className="card space-y-4 border-zinc-200">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="h2">Trainer tools</h2>
         <button className={c.published ? "btn-ghost" : "btn-primary"} onClick={() => publish(!c.published)}>{c.published ? "Unpublish" : "Publish course"}</button>
@@ -165,11 +165,11 @@ export default function CoursePage({ params }: { params: Promise<{ id: string }>
       <div className="card space-y-3">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-zinc-900">{c.title}</h1>
+            <h1 className="text-2xl font-semibold text-zinc-900">{c.title}</h1>
             <p className="mt-1 text-sm text-zinc-500">{c.category} · {c.difficulty} · {c.durationWeeks} weeks · {c.modules.length} modules · {c.lessonCount} lessons</p>
             <p className="text-sm text-zinc-500">Trainer: <Link className="text-zinc-700 hover:underline" href={`/connect/mentors/${c.trainer.id}`}>{c.trainer.name}</Link>{c.trainer.isDemo && <span className="text-amber-700"> (fictional demo profile)</span>}</p>
           </div>
-          <div className="flex gap-1">{c.isDemo && <DemoContentBadge />}{!c.published && <span className="chip bg-slate-100 text-zinc-600">Draft</span>}</div>
+          <div className="flex gap-1">{c.isDemo && <DemoContentBadge />}{!c.published && <span className="chip bg-zinc-100 text-zinc-600">Draft</span>}</div>
         </div>
         <p className="text-sm text-zinc-700">{c.description}</p>
         <div className="flex flex-wrap gap-1.5">{c.skillTags.map((s) => <span key={s} className="chip bg-zinc-50 text-zinc-700">{s}</span>)}</div>
@@ -211,7 +211,7 @@ export default function CoursePage({ params }: { params: Promise<{ id: string }>
                   {m.lessons.map((l) => (
                     <li key={l.id}>
                       <button onClick={() => setLessonId(l.id)} className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm ${lessonId === l.id ? "bg-zinc-50 text-zinc-700" : "hover:bg-zinc-50"}`}>
-                        <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] ${done.has(l.id) ? "border-emerald-500 bg-emerald-500 text-white" : "border-slate-300"}`}>{done.has(l.id) && "✓"}</span>
+                        <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] ${done.has(l.id) ? "border-emerald-500 bg-emerald-500 text-white" : "border-zinc-300"}`}>{done.has(l.id) && "✓"}</span>
                         <span className="flex-1">{l.title}</span><span className="text-xs text-zinc-400">{l.durationMinutes}m</span>
                       </button>
                     </li>
@@ -219,7 +219,7 @@ export default function CoursePage({ params }: { params: Promise<{ id: string }>
                 </ul>
                 {d.assignments.filter((a) => a.moduleId === m.id).map((a) => (
                   <button key={a.id} onClick={() => setLessonId(`a:${a.id}`)} className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm ${lessonId === `a:${a.id}` ? "bg-amber-50 text-amber-800" : "hover:bg-zinc-50"}`}>
-                    <span className="text-xs">📝</span><span className="flex-1">{a.title}</span>
+                    <span className="text-xs text-zinc-400">Assignment:</span><span className="flex-1">{a.title}</span>
                     {a.mySubmission && <span className={`chip ${a.mySubmission.status === "REVIEWED" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-800"}`}>{a.mySubmission.status === "REVIEWED" ? `${a.mySubmission.score}/${a.maxMarks}` : "Submitted"}</span>}
                   </button>
                 ))}
@@ -236,7 +236,7 @@ export default function CoursePage({ params }: { params: Promise<{ id: string }>
               const s = a.mySubmission;
               return (
                 <div className="space-y-3">
-                  <div className="flex flex-wrap items-start justify-between gap-2"><h2 className="h2">{a.title}</h2><span className="chip bg-slate-100 text-zinc-600">Max {a.maxMarks} marks</span></div>
+                  <div className="flex flex-wrap items-start justify-between gap-2"><h2 className="h2">{a.title}</h2><span className="chip bg-zinc-100 text-zinc-600">Max {a.maxMarks} marks</span></div>
                   <p className="text-sm text-zinc-700">{a.description}</p>
                   {a.instructions && <div><div className="label">Instructions</div><p className="whitespace-pre-wrap text-sm text-zinc-700">{a.instructions}</p></div>}
                   <p className="text-sm text-zinc-500">Due: {a.due}</p>
@@ -253,7 +253,7 @@ export default function CoursePage({ params }: { params: Promise<{ id: string }>
               );
             })() : lesson ? (
               <div className="space-y-3">
-                <div className="flex flex-wrap items-start justify-between gap-2"><h2 className="h2">{lesson.title}</h2><span className="chip bg-slate-100 text-zinc-600">⏱ {lesson.durationMinutes} min</span></div>
+                <div className="flex flex-wrap items-start justify-between gap-2"><h2 className="h2">{lesson.title}</h2><span className="chip bg-zinc-100 text-zinc-600">{lesson.durationMinutes} min</span></div>
                 {lesson.objectives.length > 0 && <div><div className="label">Learning objectives</div><ul className="list-disc space-y-0.5 pl-5 text-sm text-zinc-700">{lesson.objectives.map((o) => <li key={o}>{o}</li>)}</ul></div>}
                 {lesson.videoUrl && getYouTubeId(lesson.videoUrl) && (
                   <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">

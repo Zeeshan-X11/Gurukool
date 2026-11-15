@@ -104,7 +104,7 @@ export default function RecruiterDashboard() {
                       {s.myRequestStatus && <StatusBadge status={s.myRequestStatus} />}
                     </div>
                   </div>
-                  <div className="mt-2 flex flex-wrap gap-1.5">{s.skills.map((k) => <span key={k} className="chip bg-slate-100 text-zinc-700">{k}</span>)}</div>
+                  <div className="mt-2 flex flex-wrap gap-1.5">{s.skills.map((k) => <span key={k} className="chip bg-zinc-100 text-zinc-700">{k}</span>)}</div>
                   {s.projects.length > 0 && <ul className="mt-2 list-disc pl-5 text-sm text-zinc-600">{s.projects.map((p) => <li key={p}>{p}</li>)}</ul>}
                   <div className="mt-2 flex flex-wrap gap-3 text-sm">
                     {(["github", "linkedin", "portfolio"] as const).map((k) => s.links[k] && (

@@ -14,6 +14,7 @@ const TABS = [
 ] as const;
 type Facets = { categories: string[]; difficulties: string[] };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Catalog() {
   const [q, setQ] = useState(""), [category, setCategory] = useState(""), [difficulty, setDifficulty] = useState("");
   const [courses, setCourses] = useState<CourseCard[] | null>(null);
@@ -193,9 +194,9 @@ function TrainerDashboard() {
       {!d ? (!err && <div className="text-sm text-zinc-500"><Spinner /> Loading…</div>) : (
         <div className="space-y-6">
           <div className="grid gap-4 sm:grid-cols-3">
-            <div className="card"><div className="label">My courses</div><div className="text-3xl font-bold text-zinc-900">{d.courses.length}</div></div>
-            <div className="card"><div className="label">Enrolled students</div><div className="text-3xl font-bold text-zinc-900">{d.students.length}</div></div>
-            <div className="card"><div className="label">Awaiting review</div><div className="text-3xl font-bold text-zinc-900">{d.pendingReviews}</div></div>
+            <div className="card"><div className="label">My courses</div><div className="text-3xl font-semibold text-zinc-900">{d.courses.length}</div></div>
+            <div className="card"><div className="label">Enrolled students</div><div className="text-3xl font-semibold text-zinc-900">{d.students.length}</div></div>
+            <div className="card"><div className="label">Awaiting review</div><div className="text-3xl font-semibold text-zinc-900">{d.pendingReviews}</div></div>
           </div>
 
           <section className="card space-y-3">
@@ -286,8 +287,8 @@ function TrainerDashboard() {
 
 const LEVEL_COLOR: Record<string, string> = {
   "Beginner": "bg-emerald-50 text-emerald-600",
-  "Intermediate": "bg-zinc-50 text-blue-600",
-  "Advanced": "bg-violet-50 text-violet-600",
+  "Intermediate": "bg-zinc-50 text-zinc-600",
+  "Advanced": "bg-zinc-100 text-zinc-700",
 };
 const LANG_COLOR: Record<string, string> = {
   "English": "bg-zinc-100 text-zinc-500",
@@ -368,7 +369,7 @@ function FreeResources() {
                       <a href={r.url} target="_blank" rel="noopener noreferrer" className="btn-ghost btn-sm flex-1 text-center">Watch ↗</a>
                       {info?.persona.role === "student" && (
                         isEnrolled
-                          ? <span className="flex-1 text-center rounded-lg py-1.5 text-[11px] font-semibold bg-emerald-50 text-emerald-600">✓ Saved</span>
+                          ? <span className="flex-1 text-center rounded-lg py-1.5 text-[11px] font-semibold bg-emerald-50 text-emerald-600">Saved</span>
                           : <button className="btn-primary btn-sm flex-1" disabled={enrolling === r.id} onClick={() => enroll(r)}>{enrolling === r.id ? <Spinner /> : "Save course"}</button>
                       )}
                     </div>
