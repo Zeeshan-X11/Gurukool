@@ -5,8 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Alert, ErrorAlert, PageHeader, Spinner, api, toErr, type ApiErr } from "@/components/ui";
 import { JoinSessionButton, PersonaGate, usePersona } from "@/components/connect";
 import { CourseCardView, ProgressBar, type CourseCard } from "@/components/train";
+import { RESOURCES, RESOURCE_DOMAINS } from "@/lib/train/resources";
 
 const TABS = [
+  { id: "resources", label: "🎓 Free Resources" },
   { id: "catalog", label: "Training Catalog" },
   { id: "my", label: "My Training" },
   { id: "trainer", label: "Trainer Dashboard" },
@@ -266,12 +268,91 @@ function TrainerDashboard() {
   );
 }
 
+const LEVEL_COLOR: Record<string, string> = {
+  Beginner: "bg-emerald-100 text-emerald-700",
+  Intermediate: "bg-blue-100 text-blue-700",
+  Advanced: "bg-purple-100 text-purple-700",
+};
+const LANG_COLOR: Record<string, string> = {
+  English: "bg-slate-100 text-slate-600",
+  "Hindi+English": "bg-orange-100 text-orange-700",
+  Hindi: "bg-orange-100 text-orange-700",
+};
+
+function FreeResources() {
+  const [domain, setDomain] = useState("All");
+  const [level, setLevel] = useState("All");
+  const [q, setQ] = useState("");
+
+  const filtered = RESOURCES.filter((r) => {
+    if (domain !== "All" && r.domain !== domain) return false;
+    if (level !== "All" && r.level !== level) return false;
+    if (q && !`${r.title} ${r.creator} ${r.description}`.toLowerCase().includes(q.toLowerCase())) return false;
+    return true;
+  });
+
+  return (
+    <div className="space-y-5">
+      <div className="rounded-xl border border-blue-100 bg-blue-50 px-5 py-4">
+        <p className="text-sm font-medium text-blue-900">Hand-picked free YouTube courses — zero cost, zero signup. Click any card to open the playlist on YouTube.</p>
+      </div>
+
+      {/* Filters */}
+      <div className="card grid gap-3 sm:grid-cols-3">
+        <input className="input sm:col-span-1" placeholder="Search courses, creators…" value={q} onChange={(e) => setQ(e.target.value)} />
+        <select className="input" value={domain} onChange={(e) => setDomain(e.target.value)}>
+          {RESOURCE_DOMAINS.map((d) => <option key={d}>{d}</option>)}
+        </select>
+        <select className="input" value={level} onChange={(e) => setLevel(e.target.value)}>
+          {["All", "Beginner", "Intermediate", "Advanced"].map((l) => <option key={l}>{l}</option>)}
+        </select>
+      </div>
+
+      {filtered.length === 0 && <Alert kind="info">No resources match these filters.</Alert>}
+
+      {/* Domain sections */}
+      {(domain === "All" ? RESOURCE_DOMAINS.filter((d) => d !== "All") : [domain]).map((dom) => {
+        const items = filtered.filter((r) => r.domain === dom);
+        if (!items.length) return null;
+        return (
+          <div key={dom} className="space-y-3">
+            <h2 className="text-base font-semibold text-slate-800">{dom}</h2>
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {items.map((r) => (
+                <a key={r.id} href={r.url} target="_blank" rel="noopener noreferrer"
+                  className="card flex flex-col gap-3 p-4 transition-shadow hover:shadow-md hover:border-blue-200 cursor-pointer">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1">
+                      <p className="font-semibold text-slate-900 leading-tight">{r.title}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{r.creator}</p>
+                    </div>
+                    <span className="text-lg">▶</span>
+                  </div>
+                  <p className="text-sm text-slate-600 leading-relaxed flex-1">{r.description}</p>
+                  <div className="flex flex-wrap gap-1.5 mt-auto">
+                    <span className={`chip text-xs ${LEVEL_COLOR[r.level]}`}>{r.level}</span>
+                    <span className={`chip text-xs ${LANG_COLOR[r.language]}`}>{r.language}</span>
+                    {r.lessons && <span className="chip text-xs bg-slate-100 text-slate-500">{r.lessons}+ videos</span>}
+                    <span className="chip text-xs bg-red-50 text-red-600">YouTube Free</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      <p className="text-xs text-slate-400 pt-2">All resources link to free publicly available YouTube content. GURUKOOL does not host any of this content.</p>
+    </div>
+  );
+}
+
 function TrainInner() {
   const sp = useSearchParams();
   const router = useRouter();
   const { role } = usePersona();
   const tabs = TABS.filter((t) => (t.id === "trainer" ? role === "mentor" : t.id === "my" ? role === "student" : true));
-  const tab = (tabs.find((t) => t.id === sp.get("tab"))?.id ?? "catalog") as (typeof TABS)[number]["id"];
+  const tab = (tabs.find((t) => t.id === sp.get("tab"))?.id ?? "resources") as (typeof TABS)[number]["id"];
   return (
     <div className="mx-auto max-w-6xl">
       <PageHeader title="GURUKOOL TRAIN" subtitle="Structured learning. Industry-led training. Measurable progress." />
@@ -281,6 +362,7 @@ function TrainInner() {
             className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium ${tab === t.id ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-800"}`}>{t.label}</button>
         ))}
       </div>
+      {tab === "resources" && <FreeResources />}
       {tab === "catalog" && <Catalog />}
       {tab === "my" && <MyTraining />}
       {tab === "trainer" && <TrainerDashboard />}
