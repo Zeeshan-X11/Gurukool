@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Alert, PageHeader, Spinner, api, toErr, useStudent, type ApiErr } from "@/components/ui";
+import { rankHackathons } from "@/lib/compete-ranking";
 
 type Hackathon = {
   id: string; title: string; url: string; organization: string; location: string; state: string;
@@ -31,6 +32,7 @@ export default function CompetePage() {
   const [selected, setSelected] = useState<string[]>([]);
   const [q, setQ] = useState("");
   const [onlineOnly, setOnlineOnly] = useState(false);
+  const [sort, setSort] = useState<"match" | "deadline">("match");
 
   const load = useCallback(async (search = "") => {
     setLoading(true); setErr(null);
@@ -51,12 +53,20 @@ export default function CompetePage() {
     setSelected(preferredThemes([...student.interests, student.careerGoal].join(" "), allThemes));
   }, [student, allThemes]);
 
+  // TF-IDF cosine relevance of each hackathon to the student's interests, goal and skills.
+  const ranking = useMemo(
+    () => (live && student ? rankHackathons(live.hackathons, student) : null),
+    [live, student]
+  );
+
   const shown = useMemo(() => {
     let list = live?.hackathons ?? [];
     if (onlineOnly) list = list.filter((h) => /online/i.test(h.location));
     if (selected.length) list = list.filter((h) => h.themes.some((t) => selected.includes(t)));
+    // Devpost already returns deadline order; a stable sort keeps it as the tie-breaker.
+    if (sort === "match" && ranking) list = [...list].sort((a, b) => (ranking.get(b.id)?.relevance ?? 0) - (ranking.get(a.id)?.relevance ?? 0));
     return list;
-  }, [live, selected, onlineOnly]);
+  }, [live, selected, onlineOnly, sort, ranking]);
 
   const toggle = (t: string) => setSelected((s) => (s.includes(t) ? s.filter((x) => x !== t) : [...s, t]));
 
@@ -72,7 +82,11 @@ export default function CompetePage() {
         <form className="flex flex-wrap gap-2" onSubmit={(e) => { e.preventDefault(); load(q.trim()); }}>
           <input className="input max-w-md" placeholder="Search hackathons (e.g. AI, education, fintech)…" value={q} onChange={(e) => setQ(e.target.value)} />
           <button className="btn-primary" disabled={loading}>{loading && <Spinner />} Search</button>
-          <label className="ml-auto flex items-center gap-2 text-sm text-slate-600">
+          <select className="input ml-auto w-auto" value={sort} onChange={(e) => setSort(e.target.value as "match" | "deadline")} aria-label="Sort hackathons">
+            <option value="match">Sort: best match for you</option>
+            <option value="deadline">Sort: deadline</option>
+          </select>
+          <label className="flex items-center gap-2 text-sm text-slate-600">
             <input type="checkbox" checked={onlineOnly} onChange={(e) => setOnlineOnly(e.target.checked)} /> Online only
           </label>
         </form>
@@ -94,7 +108,10 @@ export default function CompetePage() {
 
       {live && (
         <>
-          <p className="mb-3 text-sm text-slate-500">Showing {shown.length} of {live.hackathons.length} loaded ({live.total} open/upcoming on Devpost).</p>
+          <p className="mb-3 text-sm text-slate-500">
+            Showing {shown.length} of {live.hackathons.length} loaded ({live.total} open/upcoming on Devpost).
+            {sort === "match" && ranking && " Ranked by TF-IDF similarity between each event's themes and your interests, goal and skills."}
+          </p>
           {shown.length === 0 && <Alert kind="info">No hackathons match these filters. Try clearing themes or a different search.</Alert>}
           <div className="grid gap-4 md:grid-cols-2">
             {shown.map((h) => (
@@ -106,6 +123,11 @@ export default function CompetePage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="font-semibold text-slate-900">{h.title}</h3>
+                    {ranking && (ranking.get(h.id)?.relevance ?? 0) > 0 && (
+                      <span className="chip shrink-0 bg-violet-100 text-violet-700" title={`Matched on: ${ranking.get(h.id)!.matchedTerms.join(", ")}`}>
+                        {ranking.get(h.id)!.relevance}% match
+                      </span>
+                    )}
                     {h.state && <span className={`chip shrink-0 ${h.state === "open" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"}`}>{h.state}</span>}
                   </div>
                   <div className="mt-1 text-sm text-slate-500">
@@ -116,6 +138,9 @@ export default function CompetePage() {
                     {h.timeLeft && <span className="ml-2 text-amber-700">⏱ {h.timeLeft}</span>}
                     {h.registrations > 0 && <span className="ml-2 text-slate-500">👥 {h.registrations.toLocaleString()}</span>}
                   </div>
+                  {ranking && (ranking.get(h.id)?.matchedTerms.length ?? 0) > 0 && (
+                    <div className="mt-1 text-xs text-violet-700">Why: matches your {ranking.get(h.id)!.matchedTerms.join(", ")}</div>
+                  )}
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {h.themes.map((t) => <span key={t} className={`chip ${selected.includes(t) ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"}`}>{t}</span>)}
                   </div>
