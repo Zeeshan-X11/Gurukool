@@ -37,10 +37,10 @@ export function useStudent() {
 
 export function PageHeader({ title, subtitle, right }: { title: string; subtitle?: string; right?: React.ReactNode }) {
   return (
-    <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+    <div className="mb-7 flex flex-wrap items-start justify-between gap-4">
       <div>
-        <h1 className="text-[26px] font-bold tracking-tight text-slate-900">{title}</h1>
-        {subtitle && <p className="mt-1.5 text-sm text-slate-500 leading-relaxed max-w-xl">{subtitle}</p>}
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">{title}</h1>
+        {subtitle && <p className="mt-1 text-sm text-gray-500 leading-relaxed max-w-xl">{subtitle}</p>}
       </div>
       {right && <div className="flex items-center gap-2">{right}</div>}
     </div>
@@ -49,7 +49,7 @@ export function PageHeader({ title, subtitle, right }: { title: string; subtitle
 
 export function Alert({ kind = "info", children }: { kind?: "info" | "warn" | "error" | "success"; children: React.ReactNode }) {
   const cls = {
-    info:    "border-brand-200 bg-brand-50 text-brand-800",
+    info:    "border-blue-200 bg-blue-50 text-blue-800",
     warn:    "border-amber-200 bg-amber-50 text-amber-800",
     error:   "border-red-200   bg-red-50   text-red-700",
     success: "border-emerald-200 bg-emerald-50 text-emerald-800",
@@ -83,7 +83,7 @@ export function ErrorAlert({ err }: { err: ApiErr | null }) {
 export function SourceBadge({ source }: { source: string }) {
   const ai = source === "ai";
   return (
-    <span className={`chip text-[11px] font-semibold tracking-wide ${ai ? "bg-violet-100 text-violet-700" : "bg-slate-100 text-slate-500"}`}>
+    <span className={`chip text-[11px] font-semibold tracking-wide ${ai ? "bg-violet-100 text-violet-700" : "bg-gray-100 text-gray-500"}`}>
       {ai ? "✦ AI" : source === "rules" ? "⚙ Skill Engine" : "⚙ Question Bank"}
     </span>
   );
@@ -95,7 +95,7 @@ export function Spinner() {
 
 export function StatCard({ label, value, sub, color = "blue" }: { label: string; value: string | number; sub?: string; color?: "blue" | "green" | "amber" | "violet" }) {
   const colors = {
-    blue:   "bg-brand-50 text-brand-700 border-brand-100",
+    blue:   "bg-blue-50 text-blue-700 border-blue-100",
     green:  "bg-emerald-50 text-emerald-700 border-emerald-100",
     amber:  "bg-amber-50 text-amber-700 border-amber-100",
     violet: "bg-violet-50 text-violet-700 border-violet-100",
