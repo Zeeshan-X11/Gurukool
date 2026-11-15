@@ -119,8 +119,8 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile top bar */}
-      <header className="no-print sticky top-0 z-30 flex items-center justify-between bg-zinc-900 px-4 py-3 md:hidden">
-        <img src="/udaan-logo.png" alt="UDAAN" style={{width:"110px",height:"36px"}} className="object-contain brightness-0 invert" />
+      <header className="no-print sticky top-0 z-30 flex items-center justify-between bg-zinc-900 px-4 py-2 md:hidden">
+        <img src="/udaan-logo-dark.png" alt="UDAAN" style={{width:"165px",height:"60px"}} className="object-contain" />
         <button
           className="rounded-lg p-1.5 text-zinc-400 hover:bg-white/10 hover:text-white transition-colors"
           onClick={() => setOpen(!open)}
@@ -149,8 +149,8 @@ export default function Sidebar() {
 
       {/* Desktop sidebar */}
       <aside className="no-print sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col overflow-y-auto bg-zinc-900 md:flex">
-        <div className="px-5 py-5">
-          <img src="/udaan-logo.png" alt="UDAAN" style={{width:"140px",height:"46px"}} className="object-contain brightness-0 invert" />
+        <div className="flex justify-center px-4 py-6">
+          <img src="/udaan-logo-dark.png" alt="UDAAN" style={{width:"210px",height:"75px"}} className="object-contain" />
         </div>
 
         <div className="mt-1 flex-1 overflow-y-auto py-1">
