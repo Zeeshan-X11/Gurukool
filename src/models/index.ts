@@ -60,6 +60,8 @@ const StageSchema = new Schema(
     description: String,
     duration: String,
     youtubeUrl: String,
+    reason: { type: String, default: "" },
+    prerequisites: { type: [String], default: [] },
     completed: { type: Boolean, default: false },
   },
   { _id: true }
@@ -70,7 +72,7 @@ const RoadmapSchema = new Schema(
     studentKey: { type: String, default: DEMO_KEY, index: true },
     careerGoal: String,
     source: { type: String, enum: ["ai", "rules"], required: true },
-    basedOn: { missingSkills: [String], weakTopics: [String] },
+    basedOn: { missingSkills: [String], weakTopics: [String], mastery: [{ _id: false, skill: String, mean: Number, status: String }] },
     stages: [StageSchema],
   },
   { timestamps: true }

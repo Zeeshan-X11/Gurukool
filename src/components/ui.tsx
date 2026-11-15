@@ -78,7 +78,7 @@ export function SourceBadge({ source }: { source: string }) {
   const ai = source === "ai";
   return (
     <span className={`chip ${ai ? "bg-violet-100 text-violet-700" : "bg-slate-100 text-slate-600"}`}>
-      {ai ? "AI-generated" : source === "rules" ? "Rule-based (AI not used)" : "Question bank (AI not used)"}
+      {ai ? "AI-generated" : source === "rules" ? "Skill Engine plan (AI not used)" : "Question bank (AI not used)"}
     </span>
   );
 }

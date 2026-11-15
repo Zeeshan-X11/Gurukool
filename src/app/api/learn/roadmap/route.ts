@@ -3,41 +3,18 @@ import { connectDB } from "@/lib/db";
 import { Assessment, Roadmap, Student } from "@/models";
 import { requireRole } from "@/lib/persona";
 import { apiError, badRequest } from "@/lib/api";
-import { analyzeSkillGap, isCareerGoal, youtubeSearchUrl } from "@/lib/careers";
+import { CAREER_REQUIREMENTS, analyzeSkillGap, isCareerGoal, youtubeSearchUrl } from "@/lib/careers";
 import { chatJSON, isAiConfigured } from "@/lib/ai";
+import { masteryProfile } from "@/lib/skill-engine/evidence";
+import { buildPlan } from "@/lib/skill-engine";
+import { RoadmapSchema, parseOr } from "@/lib/ai-schemas";
+import { POLICIES, hit } from "@/lib/security/rate-limit";
 
 export const dynamic = "force-dynamic";
 
-type Stage = { topic: string; description: string; duration: string };
+type Stage = { topic: string; description: string; duration: string; reason?: string; prerequisites?: string[] };
 
-function rulesRoadmap(goal: string, missing: string[], weak: string[], existing: string[]): Stage[] {
-  // Weak assessment topics are revised first, then missing skills in priority order, then a capstone.
-  const ordered = [...new Set([...weak, ...missing])];
-  const stages: Stage[] = ordered.map((topic) => ({
-    topic,
-    description: weak.includes(topic)
-      ? `Revise ${topic}: you missed questions on it in your assessment. Re-learn the fundamentals and solve 15–20 practice problems.`
-      : `Learn ${topic} from scratch: core concepts, then build a small exercise that uses it.`,
-    duration: weak.includes(topic) && existing.includes(topic) ? "1 week" : "2 weeks",
-  }));
-  stages.push({
-    topic: `${goal} Capstone Project`,
-    description: `Build and deploy a portfolio project that combines ${[...existing, ...missing].slice(0, 4).join(", ")}. Push it to GitHub with a README.`,
-    duration: "3 weeks",
-  });
-  return stages.slice(0, 10);
-}
-
-function validStages(x: unknown): Stage[] | null {
-  const arr = (x as { stages?: unknown })?.stages;
-  if (!Array.isArray(arr) || arr.length < 3) return null;
-  const out = arr.slice(0, 10).map((s) => ({
-    topic: String(s?.topic ?? "").slice(0, 120),
-    description: String(s?.description ?? "").slice(0, 600),
-    duration: String(s?.duration ?? "").slice(0, 40),
-  }));
-  return out.every((s) => s.topic && s.description) ? out : null;
-}
+const validStages = (x: unknown): Stage[] | null => parseOr(RoadmapSchema, x)?.stages ?? null;
 
 export async function POST(req: Request) {
   try {
@@ -53,12 +30,17 @@ export async function POST(req: Request) {
       .sort({ submittedAt: -1 })
       .lean<{ score: number; total: number; weakTopics: string[] }>();
     const weak = lastAssessment?.weakTopics ?? [];
+    // Skill Intelligence Engine: Bayesian mastery → prerequisite-aware, urgency-ordered plan.
+    const { mastery } = await masteryProfile(KEY, goal);
+    const plan = buildPlan(goal, mastery);
 
     let stages: Stage[] | null = null;
     let source: "ai" | "rules" = "rules";
     let aiError: string | null = null;
 
-    if (isAiConfigured()) {
+    const quota = isAiConfigured() ? await hit(`ai:${KEY}`, POLICIES.ai) : null;
+    if (quota && !quota.allowed) aiError = `Hourly AI limit reached; using the Skill Engine plan instead.`;
+    if (quota?.allowed) {
       try {
         const data = await chatJSON<unknown>([
           { role: "system", content: "You are an expert engineering learning-path designer. Respond with JSON only." },
@@ -68,25 +50,29 @@ export async function POST(req: Request) {
 Already knows: ${gap.existing.join(", ") || "nothing relevant yet"}.
 Missing skills (priority order): ${gap.missing.join(", ") || "none"}.
 Assessment: ${lastAssessment ? `${lastAssessment.score}/${lastAssessment.total}, weak topics: ${weak.join(", ") || "none"}` : "not taken yet"}.
-Address weak topics early, then missing skills, finish with a portfolio project.
+Our skill engine computed this prerequisite-respecting order (keep it, you may merge or rename stages): ${plan.map((p) => p.topic).join(" → ") || "all required skills mastered"}.
+Finish with a portfolio project.
 Each stage "topic" must be a short searchable topic name (2-6 words).
 Return JSON: {"stages":[{"topic":string,"description":string (1-2 sentences, concrete),"duration":string like "2 weeks"}]}`,
           },
         ]);
         stages = validStages(data);
         if (stages) source = "ai";
-        else aiError = "AI returned a malformed roadmap; generated a rule-based roadmap instead.";
+        else aiError = "AI returned a malformed roadmap; planned it with the Skill Intelligence Engine instead.";
       } catch (e) {
-        aiError = `AI generation failed (${e instanceof Error ? e.message : e}); generated a rule-based roadmap instead.`;
+        aiError = `AI generation failed (${e instanceof Error ? e.message : e}); planned it with the Skill Intelligence Engine instead.`;
       }
     }
-    if (!stages) stages = rulesRoadmap(goal, gap.missing, weak, gap.existing);
+    if (!stages) {
+      stages = plan.map(({ topic, description, duration, reason, prerequisites }) => ({ topic, description, duration, reason, prerequisites }));
+      stages.push({ topic: `${goal} Capstone Project`, description: `Build and deploy a portfolio project combining ${CAREER_REQUIREMENTS[goal].slice(0, 4).map((r) => r.skill).join(", ")}. Push it to GitHub with a README.`, duration: "3 weeks", reason: "Demonstrates the skills end-to-end" });
+    }
 
     const roadmap = await Roadmap.create({
       studentKey: KEY,
       careerGoal: goal,
       source,
-      basedOn: { missingSkills: gap.missing, weakTopics: weak },
+      basedOn: { missingSkills: gap.missing, weakTopics: weak, mastery: mastery.map((m) => ({ skill: m.skill, mean: m.mean, status: m.status })) },
       stages: stages.map((s) => ({ ...s, youtubeUrl: youtubeSearchUrl(s.topic), completed: false })),
     });
     return NextResponse.json({ roadmap: roadmap.toObject(), aiConfigured: isAiConfigured(), aiError });

@@ -11,7 +11,7 @@ type Req = { skill: string; priority: 1 | 2 | 3; aliases?: string[] }; // 1 = mu
 export const CAREER_REQUIREMENTS: Record<CareerGoal, Req[]> = {
   "Backend Developer": [
     { skill: "JavaScript", priority: 1, aliases: ["js"] },
-    { skill: "Node.js", priority: 1, aliases: ["node", "nodejs"] },
+    { skill: "Node.js", priority: 1, aliases: ["node", "nodejs", "express", "express.js"] },
     { skill: "SQL", priority: 1, aliases: ["mysql", "postgresql", "postgres"] },
     { skill: "Data Structures & Algorithms", priority: 1, aliases: ["dsa", "data structures", "algorithms"] },
     { skill: "REST APIs", priority: 1, aliases: ["rest", "api", "apis"] },
