@@ -117,8 +117,8 @@ export default function Sidebar() {
   if (PUBLIC.test(path)) return null;
 
   const brand = (
-    <div className="px-4 py-4">
-      <img src="/udaan-logo.png" alt="UDAAN" className="h-10 w-auto object-contain" />
+    <div className="px-3 py-3">
+      <img src="/udaan-logo.png" alt="UDAAN" style={{width:"145px",height:"50px"}} className="object-contain" />
     </div>
   );
 
@@ -126,7 +126,7 @@ export default function Sidebar() {
     <>
       {/* Mobile top bar */}
       <header className="no-print sticky top-0 z-30 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 md:hidden">
-        <img src="/udaan-logo.png" alt="UDAAN" className="h-8 w-auto object-contain" />
+        <img src="/udaan-logo.png" alt="UDAAN" style={{width:"120px",height:"40px"}} className="object-contain" />
         <button
           className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100"
           onClick={() => setOpen(!open)}
