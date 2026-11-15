@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { notifyProfile, showDemoData } from "@/lib/notify";
+import { notifyProfile } from "@/lib/notify";
 import { connectDB } from "@/lib/db";
 import { loadCourse } from "@/lib/train/core";
 import { apiError, badRequest, conflict, isDupKey, notFound } from "@/lib/api";

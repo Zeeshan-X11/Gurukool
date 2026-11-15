@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { connectDB } from "@/lib/db";
 import { Mentor, MentorSession, type MentorT } from "@/models/connect";
-import { apiError, badRequest, conflict, isDupKey, notFound } from "@/lib/api";
+import { apiError, conflict, isDupKey, notFound } from "@/lib/api";
 import { ForbiddenError, getPersona } from "@/lib/persona";
 import { fmtDateTimeIST, toMinutes } from "@/lib/slots";
 import { notifyProfile } from "@/lib/notify";

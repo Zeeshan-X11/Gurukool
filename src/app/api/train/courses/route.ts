@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { notifyProfile, showDemoData } from "@/lib/notify";
+import { showDemoData } from "@/lib/notify";
 import { connectDB } from "@/lib/db";
 import { ensureTrainSeed } from "@/lib/train/seed";
 import { courseSummary } from "@/lib/train/core";
