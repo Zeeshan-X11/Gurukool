@@ -77,7 +77,7 @@ const PUBLIC = /^\/(welcome|(student|recruiter|expert|admin)\/(login|register))\
 const isActive = (path: string, href: string) =>
   href === "/" ? path === "/" : path === href || (path.startsWith(href + "/") && !NAV.some((n) => n.href !== href && n.href.startsWith(href) && path.startsWith(n.href)));
 
-function NavLinks({ role, onClose, dark }: { role: string | undefined; onClose?: () => void; dark?: boolean }) {
+function NavLinks({ role, onClose }: { role: string | undefined; onClose?: () => void }) {
   const path = usePathname();
   return (
     <nav className="flex flex-col gap-0.5 px-3">
@@ -90,16 +90,12 @@ function NavLinks({ role, onClose, dark }: { role: string | undefined; onClose?:
             onClick={onClose}
             className={`group flex items-center gap-2.5 rounded-lg transition-colors duration-150
               ${n.sub ? "ml-5 py-1.5 px-2.5 text-xs" : "py-2 px-3 text-[13px] font-medium"}
-              ${dark
-                ? active
-                  ? "text-white border-l-2 border-white/60 pl-[10px]"
-                  : "text-zinc-400 hover:text-zinc-200 border-l-2 border-transparent pl-[10px]"
-                : active
-                  ? "text-zinc-900 border-l-2 border-zinc-900 pl-[10px]"
-                  : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 border-l-2 border-transparent pl-[10px]"
+              ${active
+                ? "bg-indigo-50 text-indigo-700 border-l-2 border-indigo-600 pl-[10px]"
+                : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800 border-l-2 border-transparent pl-[10px]"
               }`}
           >
-            <span className="flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity duration-150">
+            <span className={`flex-shrink-0 transition-opacity duration-150 ${active ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`}>
               {ICONS[n.iconKey]}
             </span>
             <span>{n.label}</span>
@@ -119,10 +115,10 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile top bar */}
-      <header className="no-print sticky top-0 z-30 flex items-center justify-between bg-zinc-900 px-4 py-2 md:hidden">
-        <img src="/udaan-logo-dark.png" alt="UDAAN" style={{width:"165px",height:"60px"}} className="object-contain" />
+      <header className="no-print sticky top-0 z-30 flex items-center justify-between border-b border-zinc-200 bg-white px-4 py-2 md:hidden">
+        <img src="/udaan-logo.png" alt="UDAAN" style={{width:"165px",height:"60px"}} className="object-contain" />
         <button
-          className="rounded-lg p-1.5 text-zinc-400 hover:bg-white/10 hover:text-white transition-colors"
+          className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 transition-colors"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
@@ -137,28 +133,28 @@ export default function Sidebar() {
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="no-print z-20 bg-zinc-900 pb-4 md:hidden">
+        <div className="no-print z-20 border-b border-zinc-200 bg-white pb-4 md:hidden">
           <div className="py-2">
-            <NavLinks role={role} onClose={() => setOpen(false)} dark />
+            <NavLinks role={role} onClose={() => setOpen(false)} />
           </div>
-          <div className="mt-2 border-t border-white/10 px-3 pt-4">
-            <PersonaSwitcher dark />
+          <div className="mt-2 border-t border-zinc-100 px-3 pt-4">
+            <PersonaSwitcher />
           </div>
         </div>
       )}
 
       {/* Desktop sidebar */}
-      <aside className="no-print sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col overflow-y-auto bg-zinc-900 border-r border-zinc-800 md:flex" style={{boxShadow: '2px 0 8px rgba(0,0,0,0.08)'}}>
+      <aside className="no-print sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col overflow-y-auto border-r border-zinc-200 bg-white md:flex">
         <div className="flex justify-center px-4 py-6">
-          <img src="/udaan-logo-dark.png" alt="UDAAN" style={{width:"210px",height:"75px"}} className="object-contain" />
+          <img src="/udaan-logo.png" alt="UDAAN" style={{width:"210px",height:"75px"}} className="object-contain" />
         </div>
 
         <div className="mt-1 flex-1 overflow-y-auto py-1">
-          <NavLinks role={role} dark />
+          <NavLinks role={role} />
         </div>
 
-        <div className="border-t border-white/10 p-3">
-          <PersonaSwitcher dark />
+        <div className="border-t border-zinc-100 p-3">
+          <PersonaSwitcher />
         </div>
       </aside>
     </>

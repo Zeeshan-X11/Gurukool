@@ -57,8 +57,8 @@ export default function AuthForm({ portal, mode, next }: { portal: PortalKey; mo
           <div className="flex justify-between text-[13px]">
             {info.canRegister
               ? mode === "login"
-                ? <Link href={`/${portal}/register`} className="text-zinc-900 font-medium hover:underline">Create an account</Link>
-                : <Link href={`/${portal}/login`} className="text-zinc-900 font-medium hover:underline">Already registered? Sign in</Link>
+                ? <Link href={`/${portal}/register`} className="text-indigo-600 font-medium hover:underline">Create an account</Link>
+                : <Link href={`/${portal}/login`} className="text-indigo-600 font-medium hover:underline">Already registered? Sign in</Link>
               : <span />}
             <Link href="/welcome" className="text-zinc-400 hover:text-zinc-600 transition-colors">All portals</Link>
           </div>
