@@ -159,8 +159,8 @@ function ResumeStudio() {
             <p className="text-xs text-gray-500">Score your resume against a role or paste a real job description.</p>
           </div>
           <div className="flex rounded-lg border border-gray-200 overflow-hidden text-sm">
-            <button onClick={() => setAtsTab("role")} className={`px-3 py-1.5 ${atsTab === "role" ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-50"}`}>By Role</button>
-            <button onClick={() => setAtsTab("jd")} className={`px-3 py-1.5 ${atsTab === "jd" ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-50"}`}>Paste JD</button>
+            <button onClick={() => setAtsTab("role")} className={`px-3 py-1.5 ${atsTab === "role" ? "bg-slate-900 text-white" : "text-gray-600 hover:bg-gray-50"}`}>By Role</button>
+            <button onClick={() => setAtsTab("jd")} className={`px-3 py-1.5 ${atsTab === "jd" ? "bg-slate-900 text-white" : "text-gray-600 hover:bg-gray-50"}`}>Paste JD</button>
           </div>
         </div>
 
@@ -364,7 +364,7 @@ function GrowInner() {
           <button
             key={t.id} role="tab" aria-selected={tab === t.id}
             onClick={() => router.replace(`/grow?tab=${t.id}`, { scroll: false })}
-            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-blue-600 text-blue-700" : "border-transparent text-gray-500 hover:text-gray-800"}`}
+            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === t.id ? "border-slate-900 text-slate-900" : "border-transparent text-gray-500 hover:text-gray-800"}`}
           >{t.label}</button>
         ))}
       </div>

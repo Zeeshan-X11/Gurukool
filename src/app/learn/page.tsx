@@ -188,7 +188,7 @@ export default function LearnPage() {
               <button className="btn-primary" onClick={submitQuiz} disabled={quizBusy || answers.some((a) => a === null)}>{quizBusy && <Spinner />} Submit answers</button>
             ) : (
               <div className="flex flex-wrap items-center gap-4 rounded-lg bg-blue-50 p-4">
-                <div className="text-3xl font-bold text-blue-700">{result.score}/{result.total}</div>
+                <div className="text-3xl font-bold text-slate-900">{result.score}/{result.total}</div>
                 <div className="text-sm">
                   <div className="font-medium">Saved to MongoDB ✓</div>
                   <div className="text-slate-600">Weak topics: {result.weakTopics.length ? result.weakTopics.join(", ") : "none — great job!"}</div>

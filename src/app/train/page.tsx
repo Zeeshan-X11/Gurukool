@@ -81,7 +81,7 @@ function MyTraining() {
                 <div key={e.id} className="card space-y-3">
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div><h3 className="font-semibold">{e.title}</h3><p className="text-sm text-slate-500">Trainer: {e.trainer}</p></div>
-                    {e.completed && <span className="chip bg-emerald-100 text-emerald-700">Completed</span>}
+                    {e.completed && <span className="chip bg-emerald-50 text-emerald-700 border border-emerald-200">Completed</span>}
                   </div>
                   <ProgressBar pct={e.engagementPct} label={`Lessons completed: ${e.completedLessons}/${e.totalLessons} (engagement)`} />
                   <div className="text-sm text-slate-600">
@@ -193,9 +193,9 @@ function TrainerDashboard() {
       {!d ? (!err && <div className="text-sm text-slate-500"><Spinner /> Loading…</div>) : (
         <div className="space-y-6">
           <div className="grid gap-4 sm:grid-cols-3">
-            <div className="card"><div className="label">My courses</div><div className="text-3xl font-bold text-blue-700">{d.courses.length}</div></div>
-            <div className="card"><div className="label">Enrolled students</div><div className="text-3xl font-bold text-emerald-700">{d.students.length}</div></div>
-            <div className="card"><div className="label">Awaiting review</div><div className="text-3xl font-bold text-amber-700">{d.pendingReviews}</div></div>
+            <div className="card"><div className="label">My courses</div><div className="text-3xl font-bold text-slate-900">{d.courses.length}</div></div>
+            <div className="card"><div className="label">Enrolled students</div><div className="text-3xl font-bold text-slate-900">{d.students.length}</div></div>
+            <div className="card"><div className="label">Awaiting review</div><div className="text-3xl font-bold text-slate-900">{d.pendingReviews}</div></div>
           </div>
 
           <section className="card space-y-3">
@@ -285,14 +285,14 @@ function TrainerDashboard() {
 }
 
 const LEVEL_COLOR: Record<string, string> = {
-  Beginner: "bg-emerald-100 text-emerald-700",
-  Intermediate: "bg-blue-100 text-blue-700",
-  Advanced: "bg-purple-100 text-purple-700",
+  "Beginner": "bg-teal-50 text-teal-700 border border-teal-100",
+  "Intermediate": "bg-indigo-50 text-indigo-700 border border-indigo-100",
+  "Advanced": "bg-purple-50 text-purple-700 border border-purple-100",
 };
 const LANG_COLOR: Record<string, string> = {
-  English: "bg-slate-100 text-slate-600",
-  "Hindi+English": "bg-orange-100 text-orange-700",
-  Hindi: "bg-orange-100 text-orange-700",
+  "English": "bg-slate-100 text-slate-500",
+  "Hindi+English": "bg-orange-50 text-orange-600",
+  "Hindi": "bg-orange-50 text-orange-600",
 };
 
 function FreeResources() {
@@ -329,8 +329,8 @@ function FreeResources() {
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-blue-100 bg-blue-50 px-5 py-4">
-        <p className="text-sm font-medium text-blue-900">Hand-picked free YouTube courses — zero cost, zero signup. Hit <b>Start Course</b> to save it to your learning, then watch on YouTube.</p>
+      <div className="rounded-2xl border border-slate-200 bg-gradient-to-r from-slate-50 to-white px-5 py-4">
+        <p className="text-sm text-slate-600">Hand-picked free YouTube courses — zero cost, zero signup. Hit <b>Start Course</b> to save it to your learning, then watch on YouTube.</p>
       </div>
 
       {/* Filters */}
@@ -357,27 +357,27 @@ function FreeResources() {
               {items.map((r) => {
                 const isEnrolled = enrolled.has(r.id);
                 return (
-                  <div key={r.id} className="card flex flex-col gap-3 p-4 transition-shadow hover:shadow-md hover:border-blue-200">
+                  <div key={r.id} className="card flex flex-col gap-4 p-4 transition-all duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:-translate-y-0.5">
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1">
                         <p className="font-semibold text-slate-900 leading-tight">{r.title}</p>
                         <p className="text-xs text-slate-500 mt-0.5">{r.creator}</p>
                       </div>
-                      <span className="text-lg">▶</span>
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-slate-500 text-xs">▶</span>
                     </div>
                     <p className="text-sm text-slate-600 leading-relaxed flex-1">{r.description}</p>
                     <div className="flex flex-wrap gap-1.5">
                       <span className={`chip text-xs ${LEVEL_COLOR[r.level]}`}>{r.level}</span>
                       <span className={`chip text-xs ${LANG_COLOR[r.language]}`}>{r.language}</span>
                       {r.lessons && <span className="chip text-xs bg-slate-100 text-slate-500">{r.lessons}+ videos</span>}
-                      <span className="chip text-xs bg-red-50 text-red-600">YouTube Free</span>
+                      <span className="chip bg-red-50 text-red-500 border border-red-100">YouTube Free</span>
                     </div>
                     <div className="flex gap-2 mt-auto pt-1">
-                      <a href={r.url} target="_blank" rel="noopener noreferrer" className="btn-ghost flex-1 text-center text-sm py-1.5">Watch on YouTube ↗</a>
+                      <a href={r.url} target="_blank" rel="noopener noreferrer" className="btn-ghost btn-sm flex-1 text-center">Watch ↗</a>
                       {info?.persona.role === "student" && (
                         isEnrolled
-                          ? <span className="flex-1 text-center text-sm py-1.5 rounded-lg bg-emerald-50 text-emerald-700 font-medium">✓ In My Learning</span>
-                          : <button className="btn-primary flex-1 text-sm py-1.5" disabled={enrolling === r.id} onClick={() => enroll(r)}>{enrolling === r.id ? <Spinner /> : "Start Course"}</button>
+                          ? <span className="flex-1 text-center rounded-lg py-1 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">✓ Saved</span>
+                          : <button className="btn-primary btn-sm flex-1" disabled={enrolling === r.id} onClick={() => enroll(r)}>{enrolling === r.id ? <Spinner /> : "Add to My Learning"}</button>
                       )}
                     </div>
                   </div>
@@ -401,11 +401,11 @@ function TrainInner() {
   const tab = (tabs.find((t) => t.id === sp.get("tab"))?.id ?? "resources") as (typeof TABS)[number]["id"];
   return (
     <div className="mx-auto max-w-6xl">
-      <PageHeader title="GURUKOOL UPSKILL" subtitle="Free courses, structured learning, real progress." />
+      <PageHeader title="Upskill" subtitle="Curated courses, structured learning, real progress." />
       <div role="tablist" className="mb-6 flex gap-1 overflow-x-auto border-b border-slate-200">
         {tabs.map((t) => (
           <button key={t.id} role="tab" aria-selected={tab === t.id} onClick={() => router.replace(`/train?tab=${t.id}`, { scroll: false })}
-            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium ${tab === t.id ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-800"}`}>{t.label}</button>
+            className={`whitespace-nowrap border-b-2 px-4 py-2 text-sm font-medium ${tab === t.id ? "border-slate-900 text-slate-900" : "border-transparent text-slate-400 hover:text-slate-700"}`}>{t.label}</button>
         ))}
       </div>
       {tab === "resources" && <FreeResources />}

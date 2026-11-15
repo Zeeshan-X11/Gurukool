@@ -92,16 +92,16 @@ function NavLinks({ role, onClose }: { role: string | undefined; onClose?: () =>
               ${n.sub ? "ml-5 py-1.5 text-xs" : "py-2 text-sm font-medium"}
               ${active
                 ? "bg-blue-50 text-blue-700"
-                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
               }`}
             style={{ paddingLeft: n.sub ? undefined : "10px", paddingRight: "10px" }}
           >
-            <span className={`flex-shrink-0 ${active ? "text-blue-600" : "text-gray-400 group-hover:text-gray-600"}`}>
+            <span className={`flex-shrink-0 ${active ? "text-white" : "text-slate-400 group-hover:text-slate-600"}`}>
               {ICONS[n.iconKey]}
             </span>
             <span>{n.label}</span>
             {active && !n.sub && (
-              <span className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-500" />
+              <span className="ml-auto h-1.5 w-1.5 rounded-full bg-white/60" />
             )}
           </Link>
         );
@@ -128,7 +128,7 @@ export default function Sidebar() {
       <header className="no-print sticky top-0 z-30 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 md:hidden">
         <img src="/udaan-logo.png" alt="UDAAN" className="h-8 w-auto object-contain" />
         <button
-          className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100"
+          className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >

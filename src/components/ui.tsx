@@ -39,8 +39,8 @@ export function PageHeader({ title, subtitle, right }: { title: string; subtitle
   return (
     <div className="mb-7 flex flex-wrap items-start justify-between gap-4">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">{title}</h1>
-        {subtitle && <p className="mt-1 text-sm text-gray-500 leading-relaxed max-w-xl">{subtitle}</p>}
+        <h1 className="text-xl font-semibold tracking-tight text-slate-900">{title}</h1>
+        {subtitle && <p className="mt-0.5 text-sm text-slate-400 leading-relaxed max-w-xl">{subtitle}</p>}
       </div>
       {right && <div className="flex items-center gap-2">{right}</div>}
     </div>
@@ -49,14 +49,14 @@ export function PageHeader({ title, subtitle, right }: { title: string; subtitle
 
 export function Alert({ kind = "info", children }: { kind?: "info" | "warn" | "error" | "success"; children: React.ReactNode }) {
   const cls = {
-    info:    "border-blue-200 bg-blue-50 text-blue-800",
-    warn:    "border-amber-200 bg-amber-50 text-amber-800",
-    error:   "border-red-200   bg-red-50   text-red-700",
-    success: "border-emerald-200 bg-emerald-50 text-emerald-800",
+    info:    "border-slate-200 bg-slate-50 text-slate-700",
+    warn:    "border-amber-200 bg-amber-50 text-amber-700",
+    error:   "border-red-200 bg-red-50 text-red-600",
+    success: "border-emerald-200 bg-emerald-50 text-emerald-700",
   }[kind];
   const icon = { info: "ℹ", warn: "⚠", error: "✕", success: "✓" }[kind];
   return (
-    <div className={`flex items-start gap-3 rounded-xl border px-4 py-3 text-sm ${cls}`}>
+    <div className={`flex items-start gap-2.5 rounded-xl border px-4 py-3 text-sm ${cls}`}>
       <span className="mt-0.5 shrink-0 font-bold">{icon}</span>
       <div>{children}</div>
     </div>
@@ -95,15 +95,15 @@ export function Spinner() {
 
 export function StatCard({ label, value, sub, color = "blue" }: { label: string; value: string | number; sub?: string; color?: "blue" | "green" | "amber" | "violet" }) {
   const colors = {
-    blue:   "bg-blue-50 text-blue-700 border-blue-100",
-    green:  "bg-emerald-50 text-emerald-700 border-emerald-100",
-    amber:  "bg-amber-50 text-amber-700 border-amber-100",
-    violet: "bg-violet-50 text-violet-700 border-violet-100",
+    blue:   "bg-white text-slate-900 border-slate-200",
+    green:  "bg-white text-slate-900 border-slate-200",
+    amber:  "bg-white text-slate-900 border-slate-200",
+    violet: "bg-white text-slate-900 border-slate-200",
   }[color];
   return (
     <div className={`rounded-xl border p-4 ${colors}`}>
-      <div className="text-xs font-semibold uppercase tracking-widest opacity-70">{label}</div>
-      <div className="mt-1 text-2xl font-bold">{value}</div>
+      <div className="text-xs font-medium text-slate-400 uppercase tracking-widest">{label}</div>
+      <div className="mt-1.5 text-2xl font-semibold text-slate-900">{value}</div>
       {sub && <div className="mt-0.5 text-xs opacity-60">{sub}</div>}
     </div>
   );
