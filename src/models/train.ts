@@ -108,11 +108,25 @@ const TrainingSessionSchema = new Schema(
 );
 TrainingSessionSchema.index({ trainerId: 1, startAt: 1 }, { unique: true, partialFilterExpression: { status: "SCHEDULED" } });
 
+const FreeResourceEnrollmentSchema = new Schema(
+  {
+    studentId: { type: String, required: true, index: true },
+    resourceId: { type: String, required: true },
+    resourceTitle: { type: String, required: true },
+    resourceUrl: { type: String, required: true },
+    domain: { type: String, required: true },
+    enrolledAt: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
+);
+FreeResourceEnrollmentSchema.index({ studentId: 1, resourceId: 1 }, { unique: true });
+
 export const TrainingCourse = models.TrainingCourse || model("TrainingCourse", TrainingCourseSchema);
 export const TrainingEnrollment = models.TrainingEnrollment || model("TrainingEnrollment", TrainingEnrollmentSchema);
 export const TrainingAssignment = models.TrainingAssignment || model("TrainingAssignment", TrainingAssignmentSchema);
 export const TrainingSubmission = models.TrainingSubmission || model("TrainingSubmission", TrainingSubmissionSchema);
 export const TrainingSession = models.TrainingSession || model("TrainingSession", TrainingSessionSchema);
+export const FreeResourceEnrollment = models.FreeResourceEnrollment || model("FreeResourceEnrollment", FreeResourceEnrollmentSchema);
 
 export type LessonT = { _id: mongoose.Types.ObjectId; title: string; explanation: string; objectives: string[]; durationMinutes: number; videoUrl?: string };
 export type ModuleT = { _id: mongoose.Types.ObjectId; title: string; summary: string; lessons: LessonT[] };

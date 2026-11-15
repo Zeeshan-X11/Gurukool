@@ -9,8 +9,7 @@ import { RESOURCES, RESOURCE_DOMAINS } from "@/lib/train/resources";
 
 const TABS = [
   { id: "resources", label: "🎓 Free Resources" },
-  { id: "catalog", label: "Training Catalog" },
-  { id: "my", label: "My Training" },
+  { id: "my", label: "My Learning" },
   { id: "trainer", label: "Trainer Dashboard" },
 ] as const;
 type Facets = { categories: string[]; difficulties: string[] };
@@ -58,14 +57,17 @@ function Catalog() {
 type MyEnroll = { id: string; courseId: string; title: string; trainer: string; isDemo: boolean; engagementPct: number; completedLessons: number; totalLessons: number; submitted: number; reviewed: number; totalAssignments: number; demonstratedPct: number | null; showInPortfolio: boolean; completed: boolean };
 type MySession = { id: string; courseId: string; courseTitle: string; title: string; agenda: string; trainer: string; when: string; durationMinutes: number; status: string; isDemo: boolean };
 type MyFeedback = { assignmentTitle: string; courseId: string; courseTitle: string; score: number; maxMarks: number; feedback: string };
+type FreeEnroll = { id: string; resourceId: string; title: string; url: string; domain: string; enrolledAt: string };
 
 function MyTraining() {
   const { info } = usePersona();
   const [d, setD] = useState<{ enrollments: MyEnroll[]; upcomingSessions: MySession[]; feedback: MyFeedback[]; mentorshipSessions: { id: string; mentorId: string; mentor: string; topic: string; startAt: string; endAt: string; when: string; durationMinutes: number }[] } | null>(null);
+  const [freeEnrolls, setFreeEnrolls] = useState<FreeEnroll[]>([]);
   const [err, setErr] = useState<ApiErr | null>(null);
   useEffect(() => {
     if (info?.persona.role !== "student") return;
     api<typeof d>("/api/train/me").then((x) => setD(x)).catch((e) => setErr(toErr(e)));
+    api<{ enrollments: FreeEnroll[] }>("/api/train/free-enroll").then((x) => setFreeEnrolls(x.enrollments)).catch(() => {});
   }, [info]);
   return (
     <PersonaGate need="student" info={info}>
@@ -74,7 +76,7 @@ function MyTraining() {
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="space-y-4 lg:col-span-2">
             <h2 className="h2">Enrolled programs</h2>
-            {d.enrollments.length === 0 ? <Alert kind="info">You haven&apos;t enrolled yet. Browse the <Link className="font-semibold underline" href="/train?tab=catalog">Training Catalog</Link>.</Alert>
+            {d.enrollments.length === 0 && freeEnrolls.length === 0 ? <Alert kind="info">You haven&apos;t started any courses yet. Browse <Link className="font-semibold underline" href="/train?tab=resources">Free Resources</Link> to get started.</Alert>
               : d.enrollments.map((e) => (
                 <div key={e.id} className="card space-y-3">
                   <div className="flex flex-wrap items-start justify-between gap-2">
@@ -89,6 +91,20 @@ function MyTraining() {
                   <Link href={`/train/courses/${e.courseId}`} className="btn-primary">Continue learning →</Link>
                 </div>
               ))}
+            {freeEnrolls.length > 0 && (
+              <>
+                <h3 className="font-medium text-slate-700 mt-2">Free YouTube Courses</h3>
+                {freeEnrolls.map((e) => (
+                  <div key={e.id} className="card flex items-center justify-between gap-3 p-4">
+                    <div>
+                      <p className="font-semibold text-slate-900">{e.title}</p>
+                      <p className="text-xs text-slate-500">{e.domain}</p>
+                    </div>
+                    <a href={e.url} target="_blank" rel="noopener noreferrer" className="btn-primary whitespace-nowrap text-sm">Watch ↗</a>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
           <div className="space-y-6">
             <div className="card space-y-3">
@@ -280,9 +296,29 @@ const LANG_COLOR: Record<string, string> = {
 };
 
 function FreeResources() {
+  const { info } = usePersona();
   const [domain, setDomain] = useState("All");
   const [level, setLevel] = useState("All");
   const [q, setQ] = useState("");
+  const [enrolled, setEnrolled] = useState<Set<string>>(new Set());
+  const [enrolling, setEnrolling] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (info?.persona.role !== "student") return;
+    api<{ enrollments: { resourceId: string }[] }>("/api/train/free-enroll")
+      .then((d) => setEnrolled(new Set(d.enrollments.map((e) => e.resourceId))))
+      .catch(() => {});
+  }, [info]);
+
+  async function enroll(r: { id: string; title: string }) {
+    if (enrolling) return;
+    setEnrolling(r.id);
+    try {
+      await api("/api/train/free-enroll", { method: "POST", body: JSON.stringify({ resourceId: r.id }) });
+      setEnrolled((prev) => new Set([...prev, r.id]));
+    } catch {}
+    finally { setEnrolling(null); }
+  }
 
   const filtered = RESOURCES.filter((r) => {
     if (domain !== "All" && r.domain !== domain) return false;
@@ -294,7 +330,7 @@ function FreeResources() {
   return (
     <div className="space-y-5">
       <div className="rounded-xl border border-blue-100 bg-blue-50 px-5 py-4">
-        <p className="text-sm font-medium text-blue-900">Hand-picked free YouTube courses — zero cost, zero signup. Click any card to open the playlist on YouTube.</p>
+        <p className="text-sm font-medium text-blue-900">Hand-picked free YouTube courses — zero cost, zero signup. Hit <b>Start Course</b> to save it to your learning, then watch on YouTube.</p>
       </div>
 
       {/* Filters */}
@@ -318,25 +354,35 @@ function FreeResources() {
           <div key={dom} className="space-y-3">
             <h2 className="text-base font-semibold text-slate-800">{dom}</h2>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {items.map((r) => (
-                <a key={r.id} href={r.url} target="_blank" rel="noopener noreferrer"
-                  className="card flex flex-col gap-3 p-4 transition-shadow hover:shadow-md hover:border-blue-200 cursor-pointer">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex-1">
-                      <p className="font-semibold text-slate-900 leading-tight">{r.title}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{r.creator}</p>
+              {items.map((r) => {
+                const isEnrolled = enrolled.has(r.id);
+                return (
+                  <div key={r.id} className="card flex flex-col gap-3 p-4 transition-shadow hover:shadow-md hover:border-blue-200">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1">
+                        <p className="font-semibold text-slate-900 leading-tight">{r.title}</p>
+                        <p className="text-xs text-slate-500 mt-0.5">{r.creator}</p>
+                      </div>
+                      <span className="text-lg">▶</span>
                     </div>
-                    <span className="text-lg">▶</span>
+                    <p className="text-sm text-slate-600 leading-relaxed flex-1">{r.description}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className={`chip text-xs ${LEVEL_COLOR[r.level]}`}>{r.level}</span>
+                      <span className={`chip text-xs ${LANG_COLOR[r.language]}`}>{r.language}</span>
+                      {r.lessons && <span className="chip text-xs bg-slate-100 text-slate-500">{r.lessons}+ videos</span>}
+                      <span className="chip text-xs bg-red-50 text-red-600">YouTube Free</span>
+                    </div>
+                    <div className="flex gap-2 mt-auto pt-1">
+                      <a href={r.url} target="_blank" rel="noopener noreferrer" className="btn-ghost flex-1 text-center text-sm py-1.5">Watch on YouTube ↗</a>
+                      {info?.persona.role === "student" && (
+                        isEnrolled
+                          ? <span className="flex-1 text-center text-sm py-1.5 rounded-lg bg-emerald-50 text-emerald-700 font-medium">✓ In My Learning</span>
+                          : <button className="btn-primary flex-1 text-sm py-1.5" disabled={enrolling === r.id} onClick={() => enroll(r)}>{enrolling === r.id ? <Spinner /> : "Start Course"}</button>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed flex-1">{r.description}</p>
-                  <div className="flex flex-wrap gap-1.5 mt-auto">
-                    <span className={`chip text-xs ${LEVEL_COLOR[r.level]}`}>{r.level}</span>
-                    <span className={`chip text-xs ${LANG_COLOR[r.language]}`}>{r.language}</span>
-                    {r.lessons && <span className="chip text-xs bg-slate-100 text-slate-500">{r.lessons}+ videos</span>}
-                    <span className="chip text-xs bg-red-50 text-red-600">YouTube Free</span>
-                  </div>
-                </a>
-              ))}
+                );
+              })}
             </div>
           </div>
         );
@@ -355,7 +401,7 @@ function TrainInner() {
   const tab = (tabs.find((t) => t.id === sp.get("tab"))?.id ?? "resources") as (typeof TABS)[number]["id"];
   return (
     <div className="mx-auto max-w-6xl">
-      <PageHeader title="GURUKOOL TRAIN" subtitle="Structured learning. Industry-led training. Measurable progress." />
+      <PageHeader title="GURUKOOL UPSKILL" subtitle="Free courses, structured learning, real progress." />
       <div role="tablist" className="mb-6 flex gap-1 overflow-x-auto border-b border-slate-200">
         {tabs.map((t) => (
           <button key={t.id} role="tab" aria-selected={tab === t.id} onClick={() => router.replace(`/train?tab=${t.id}`, { scroll: false })}
@@ -363,7 +409,6 @@ function TrainInner() {
         ))}
       </div>
       {tab === "resources" && <FreeResources />}
-      {tab === "catalog" && <Catalog />}
       {tab === "my" && <MyTraining />}
       {tab === "trainer" && <TrainerDashboard />}
       <p className="mt-10 text-xs text-slate-400">Lesson completion measures engagement, not mastery. Demonstrated skill comes from trainer-evaluated assignments. Courses marked “Demo content” are sample material; their trainer is a fictional demo profile. Times are IST.</p>
