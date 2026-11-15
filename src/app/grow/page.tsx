@@ -1,7 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PageHeader, api, useStudent } from "@/components/ui";
 import RecruiterPanel from "@/components/RecruiterPanel";
+import { CAREER_GOALS, isCareerGoal, type CareerGoal } from "@/lib/careers";
+import { ATS_WEIGHTS, analyzeResume } from "@/lib/ats";
 
 type R = { name: string; email: string; github: string; linkedin: string; education: string; skills: string; projects: string };
 const EMPTY: R = { name: "", email: "", github: "", linkedin: "", education: "", skills: "", projects: "" };
@@ -26,6 +28,9 @@ export default function GrowPage() {
       skills: cur.skills || student.skills.join(", "),
     }));
   }, [student]);
+  const [target, setTarget] = useState<CareerGoal>("Backend Developer");
+  useEffect(() => { if (student && isCareerGoal(student.careerGoal)) setTarget(student.careerGoal); }, [student]);
+  const ats = useMemo(() => analyzeResume(r, target), [r, target]);
   const set = (k: keyof R) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setR({ ...r, [k]: e.target.value });
   const projects = r.projects.split("\n").map((s) => s.trim()).filter(Boolean);
   const links = [r.email, r.github, r.linkedin].filter(Boolean);
@@ -70,6 +75,40 @@ export default function GrowPage() {
           ))}
         </div>
       </div>
+      <section className="card no-print mt-6">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="h2">ATS check</h2>
+            <p className="text-xs text-slate-500">Scored live against the role&apos;s required skills, the way keyword-based applicant tracking systems screen resumes.</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <select className="input w-auto" value={target} onChange={(e) => setTarget(e.target.value as CareerGoal)} aria-label="Target role">
+              {CAREER_GOALS.map((g) => <option key={g}>{g}</option>)}
+            </select>
+            <span className={`text-3xl font-bold ${ats.score >= 75 ? "text-emerald-600" : ats.score >= 50 ? "text-amber-600" : "text-red-600"}`}>{ats.score}</span>
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-4">
+          {(Object.keys(ATS_WEIGHTS) as (keyof typeof ATS_WEIGHTS)[]).map((k) => (
+            <div key={k} className="text-sm">
+              <div className="mb-1 flex justify-between"><span className="capitalize text-slate-600">{k}</span><span className="text-slate-400">{Math.round(ATS_WEIGHTS[k] * 100)}% weight</span></div>
+              <div className="h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-blue-500" style={{ width: `${ats.components[k] * 100}%` }} /></div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {ats.keywords.map((k) => (
+            <span key={k.skill} title={k.status === "listed" ? "Listed but not shown in any project (half credit)" : undefined}
+              className={`chip ${k.status === "demonstrated" ? "bg-emerald-100 text-emerald-700" : k.status === "listed" ? "bg-amber-100 text-amber-800" : "bg-slate-100 text-slate-500 line-through"}`}>
+              {k.skill}
+            </span>
+          ))}
+        </div>
+        <p className="mt-1 text-xs text-slate-400">Green: used in a project. Amber: only listed. Struck out: missing.</p>
+        {ats.suggestions.length > 0 && (
+          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">{ats.suggestions.map((x) => <li key={x}>{x}</li>)}</ul>
+        )}
+      </section>
       <RecruiterPanel resume={{ github: r.github, linkedin: r.linkedin, projects: r.projects }} />
     </div>
   );
