@@ -99,10 +99,45 @@ const RecruiterInterestSchema = new Schema(
 );
 RecruiterInterestSchema.index({ pendingKey: 1 }, { unique: true, partialFilterExpression: { pendingKey: { $type: "string" } } });
 
+// ── Mentor Application (self-signup, reviewed by admin) ─────────────────────
+const MentorApplicationSchema = new Schema(
+  {
+    name: { type: String, required: true, trim: true, maxlength: 100 },
+    email: { type: String, required: true, trim: true, lowercase: true },
+    designation: { type: String, required: true, trim: true, maxlength: 100 },
+    organization: { type: String, required: true, trim: true, maxlength: 120 },
+    yearsOfExperience: { type: Number, required: true, min: 0, max: 50 },
+    expertise: { type: [String], default: [] },
+    bio: { type: String, default: "", maxlength: 1500 },
+    linkedin: { type: String, default: "" },
+    availability: { type: [SlotSchema], default: [] },
+    status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending", index: true },
+    adminNote: { type: String, default: "" }, // admin's reason for rejection
+  },
+  { timestamps: true }
+);
+
+// ── Mentor Connection Request (student → mentor) ─────────────────────────────
+const MentorConnectionSchema = new Schema(
+  {
+    studentId: { type: String, required: true, index: true },
+    studentName: { type: String, required: true },
+    mentorId: { type: Schema.Types.ObjectId, ref: "Mentor", required: true, index: true },
+    status: { type: String, enum: ["pending", "accepted", "rejected"], default: "pending", index: true },
+    message: { type: String, default: "", maxlength: 500 }, // optional note from student
+    // one live request per student+mentor
+    pairKey: { type: String },
+  },
+  { timestamps: true }
+);
+MentorConnectionSchema.index({ pairKey: 1 }, { unique: true, partialFilterExpression: { pairKey: { $type: "string" } } });
+
 export const Mentor = models.Mentor || model("Mentor", MentorSchema);
 export const MentorSession = models.MentorSession || model("MentorSession", MentorSessionSchema);
 export const Recruiter = models.Recruiter || model("Recruiter", RecruiterSchema);
 export const RecruiterInterest = models.RecruiterInterest || model("RecruiterInterest", RecruiterInterestSchema);
+export const MentorApplication = models.MentorApplication || model("MentorApplication", MentorApplicationSchema);
+export const MentorConnection = models.MentorConnection || model("MentorConnection", MentorConnectionSchema);
 
 export type MentorT = {
   _id: mongoose.Types.ObjectId; name: string; headline: string; designation: string; organization: string;

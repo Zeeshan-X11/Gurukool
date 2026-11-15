@@ -114,7 +114,7 @@ export default function VideoMeet({ roomCode, displayName, onLeave }: Props) {
       track.onended = () => {
         setVideo(false);
         setAudio(false);
-        try { localVideoRef.current?.srcObject && (localVideoRef.current.srcObject as MediaStream).getTracks().forEach((t) => t.stop()); } catch {}
+        try { if (localVideoRef.current?.srcObject) { (localVideoRef.current.srcObject as MediaStream).getTracks().forEach((t) => t.stop()); } } catch {}
         const bs = blackSilence();
         window.localStream = bs;
         if (localVideoRef.current) localVideoRef.current.srcObject = bs;
